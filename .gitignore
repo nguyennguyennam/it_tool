@@ -25,3 +25,5 @@ pnpm-lock.yaml
 pnpm-workspace.yaml
 .env
 .drizzle
+dist
+public/css/tailwind.css

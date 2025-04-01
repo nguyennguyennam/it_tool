@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "A set of useful IT tools in a MVC-architecture.",
   "scripts": {
-    "start": "tsx src/index.ts",
-    "dev": "tsx --watch src/index.ts"
+    "start": "tailwindcss -o public/css/tailwind.css -m -w && tsx src/index.ts",
+    "dev": "concurrently \"tsx --watch src/index.ts\" \"tailwindcss -i src/views/input.css -o public/css/tailwind.css -m -w\"",
+    "format": "prettier --w ./src"
   },
   "keywords": [],
   "author": "Nguyet Anh <frillyanh@gmail.com>",
@@ -32,10 +33,18 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@tailwindcss/cli": "^4.0.17",
     "@types/express": "^5.0.1",
     "@types/express-session": "^1.18.1",
     "@types/node": "^22.13.14",
+    "autoprefixer": "^10.4.21",
+    "concurrently": "^9.1.2",
     "drizzle-kit": "^0.30.6",
+    "postcss": "^8.5.3",
+    "prettier": "^3.5.3",
+    "prettier-plugin-ejs": "^1.0.3",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "tailwindcss": "^4.0.17",
     "tsx": "^4.19.3"
   }
 }

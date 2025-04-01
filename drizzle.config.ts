@@ -6,10 +6,7 @@ export default defineConfig({
   schema: "./src/models/",
   out: "./drizzle",
   dbCredentials: {
-    user: process.env["DB_USER"],
-    password: process.env["DB_PASS"],
-    host: process.env["DB_HOST"] || "localhost",
-    port: parseInt(process.env["DB_PORT"] || "5432"),
-    database: "it_tools",
+    url: process.env["DB_CONNECTION"]!,
+    ssl: "prefer",
   },
 });

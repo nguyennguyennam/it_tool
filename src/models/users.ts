@@ -26,8 +26,12 @@ export const users = pg.pgTable(
   },
   (table) => [
     {
-      username_unique: pg.uniqueIndex("unique_index_username").on(sql`lower(${table.username})`),
-      email_unique: pg.uniqueIndex("unique_index_email").on(sql`lower(${table.email})`),
+      username_unique: pg
+        .uniqueIndex("unique_index_username")
+        .on(sql`lower(${table.username})`),
+      email_unique: pg
+        .uniqueIndex("unique_index_email")
+        .on(sql`lower(${table.email})`),
     },
-  ]
+  ],
 );

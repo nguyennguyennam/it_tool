@@ -21,7 +21,7 @@ app.use(
     cookie: {
       secure: true,
     },
-  })
+  }),
 );
 
 // Setup view engine for EJS
@@ -39,8 +39,11 @@ app.get(
         content: "home",
       },
     });
-  })
+  }),
 );
+
+// Setup public folder for static file serving.
+app.use("/static", express.static(path.join(__dirname, "..", "public")));
 
 // Start the app.
 app.listen(parseInt(process.env["PORT"]!), () => {
