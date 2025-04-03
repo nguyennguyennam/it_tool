@@ -6,10 +6,9 @@ import * as pg from "drizzle-orm/pg-core";
  *
  * - An unregistered user is of permission level 0.
  * - A normal user is of permission level 1. They can favorite tools they like.
- * - A premium user is of permission level 2. They can access premium tools.
- * - An administrative user is of permission level 3. They can enable or disable or hide tools.
+ * - An administrative user is of permission level 2. They can enable or disable or hide tools.
  */
-export const userRole = pg.pgEnum("user_role", ["user", "premium", "admin"]);
+export const userRole = pg.pgEnum("user_role", ["user", "admin"]);
 
 /**
  * The basic user table, includes a simple username, password (hashed) and roles.
@@ -22,6 +21,7 @@ export const users = pg.pgTable(
     email: pg.text().notNull(),
     avatar: pg.text(),
     password: pg.text().notNull(),
+    premium: pg.date(),
     role: userRole().notNull().default("user"),
   },
   (table) => [

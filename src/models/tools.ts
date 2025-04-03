@@ -14,6 +14,15 @@ export const visibility = pg.pgEnum("visibility", [
 ]);
 
 /**
+ * Represents a section for tools. A tool can belong to a section, or no sections,
+ * which eventually gets classified as "Uncatergorized".
+ */
+export const sections = pg.pgTable("sections", {
+  id: pg.serial().primaryKey(),
+  name: pg.text(),
+});
+
+/**
  * The table for tools available in the tools set.
  */
 export const tools = pg.pgTable("tools", {
@@ -23,4 +32,5 @@ export const tools = pg.pgTable("tools", {
   path: pg.text().notNull().unique(),
   premium: pg.boolean().default(false),
   state: visibility().default("disabled"),
+  section: pg.serial("section_id").references(() => sections.id),
 });
