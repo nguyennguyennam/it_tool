@@ -15,9 +15,37 @@
 </div>
 
 <div class="mt-12 flex w-full flex-col gap-4 lg:p-4">
-  <h2 class="text-xl font-semibold">All Tools</h2>
+  <div class="flex w-full items-center justify-between gap-4">
+    <h2 class="text-xl font-semibold">All Tools</h2>
 
-  <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div class="flex items-center gap-2">
+      <button id="layout-grid-button">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 -960 960 960"
+          class="fill-pearl hover:fill-pearl/50 size-6 cursor-pointer duration-200"
+        >
+          <path
+            d="M200-520q-33 0-56.5-23.5T120-600v-160q0-33 23.5-56.5T200-840h160q33 0 56.5 23.5T440-760v160q0 33-23.5 56.5T360-520H200Zm0 400q-33 0-56.5-23.5T120-200v-160q0-33 23.5-56.5T200-440h160q33 0 56.5 23.5T440-360v160q0 33-23.5 56.5T360-120H200Zm400-400q-33 0-56.5-23.5T520-600v-160q0-33 23.5-56.5T600-840h160q33 0 56.5 23.5T840-760v160q0 33-23.5 56.5T760-520H600Zm0 400q-33 0-56.5-23.5T520-200v-160q0-33 23.5-56.5T600-440h160q33 0 56.5 23.5T840-360v160q0 33-23.5 56.5T760-120H600ZM200-600h160v-160H200v160Zm400 0h160v-160H600v160Zm0 400h160v-160H600v160Zm-400 0h160v-160H200v160Zm400-400Zm0 240Zm-240 0Zm0-240Z"
+          />
+        </svg>
+      </button>
+
+      <button id="layout-col-button">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 -960 960 960"
+          class="fill-pearl hover:fill-pearl/50 size-6 cursor-pointer duration-200"
+        >
+          <path
+            d="M200-520q-33 0-56.5-23.5T120-600v-160q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v160q0 33-23.5 56.5T760-520H200Zm0-80h560v-160H200v160Zm0 480q-33 0-56.5-23.5T120-200v-160q0-33 23.5-56.5T200-440h560q33 0 56.5 23.5T840-360v160q0 33-23.5 56.5T760-120H200Zm0-80h560v-160H200v160Zm0-400v-160 160Zm0 400v-160 160Z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="content-layout" class="grid grid-cols-3">
     <% content.tools.flatMap(section => section.tools).forEach(tool => { %>
     <a
       class="flex cursor-pointer flex-col gap-4 rounded-xl bg-transparent p-6 duration-200 hover:bg-zinc-700"
@@ -29,3 +57,25 @@
     <% }) %>
   </div>
 </div>
+
+<script defer>
+  $("#layout-grid-button").click(() => {
+    const state = Flip.getState("#content-layout", {
+      props: "grid-template-columns",
+    });
+    $("#content-layout").removeClass("grid-cols-1").addClass("grid-cols-3");
+    Flip.from(state, {
+      duration: 0.5,
+    });
+  });
+
+  $("#layout-col-button").click(() => {
+    const state = Flip.getState("#content-layout", {
+      props: "grid-template-columns",
+    });
+    $("#content-layout").removeClass("grid-cols-3").addClass("grid-cols-1");
+    Flip.from(state, {
+      duration: 0.5,
+    });
+  });
+</script>

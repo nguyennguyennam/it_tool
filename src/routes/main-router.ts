@@ -1,5 +1,5 @@
 import express from "express";
-import { getHomeHandler } from "../controllers/base-controller";
+import { getHomeHandler, getToolHandler } from "../controllers/base-controller";
 
 /**
  * This router for base-path routing, with no additional depths.
@@ -10,5 +10,6 @@ import { getHomeHandler } from "../controllers/base-controller";
 const mainRouter = express.Router();
 
 mainRouter.get("/", getHomeHandler);
+mainRouter.get("/:tool", getToolHandler);
 
 export default mainRouter;

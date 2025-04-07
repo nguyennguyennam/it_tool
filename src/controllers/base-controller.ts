@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import expressAsyncHandler from "express-async-handler";
-import { getAllTools } from "../services/tools-service";
+import { getToolByPath, getToolsFormatted } from "../services/tools-service";
 
 /**
  * GET /: Retrieves the home page.
@@ -10,37 +10,36 @@ import { getAllTools } from "../services/tools-service";
  */
 export const getHomeHandler: RequestHandler = expressAsyncHandler(
   async (req, res) => {
-    const query = await getAllTools({});
-
-    // We want to make this into an easy to consume data type for frontend.
-    // We want to return an array of sections, where each section contains a "tools" array.
-    const sectionsMap = new Map<number, Array<object>>();
-    const sectionsData = new Map<number, object>();
-
-    for (const node of query) {
-      if (!sectionsData.get(node.sections.id)) {
-        sectionsData.set(node.sections.id, node.sections);
-        sectionsMap.set(node.sections.id, []);
-      }
-      sectionsMap.get(node.sections.id)!.push(node.tools);
-    }
-
-    // We want to traverse in order.
-    const contentData: Array<object> = [];
-    sectionsData.forEach((v, k) => {
-      contentData.push({
-        ...v,
-        tools: sectionsMap.get(k),
-      });
-    });
-
     res.render("layouts/main", {
       layout: {
         title: "IT Tools",
         content: "home",
       },
       content: {
-        tools: contentData,
+        tools: await getToolsFormatted({}),
+      },
+    });
+  },
+);
+
+/**
+ * GET /:tool: Retrieve the tool at the path.
+ */
+export const getToolHandler: RequestHandler = expressAsyncHandler(
+  async (req, res) => {
+    const [tool, formattedTools] = await Promise.all([
+      getToolByPath(req.params.tool),
+      getToolsFormatted({}),
+    ]);
+
+    res.render("layouts/main", {
+      layout: {
+        title: tool.length == 0 ? "Tool not found" : tool[0].name,
+        content: tool.length == 0 ? "404" : tool[0].path,
+      },
+      content: {
+        tools: formattedTools,
+        selectedTool: tool.length == 0 ? 0 : tool[0].id,
       },
     });
   },

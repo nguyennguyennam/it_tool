@@ -17,6 +17,19 @@
 
     <!-- CDNJS for JQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- CDNJS for GSAP -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+
+    <!-- CDNJS for FLIP -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/Flip.min.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        console.log(Flip);
+        gsap.registerPlugin(Flip);
+      });
+    </script>
   </head>
 
   <body
@@ -94,12 +107,21 @@
               />
             </svg>
 
+            <% if (content.selectedTool && content.selectedTool == tool.id) { %>
+            <a
+              class="text-pearl cursor-pointer font-semibold underline"
+              href="/<%= tool.path %>"
+            >
+              <%= tool.name %>
+            </a>
+            <% } else { %>
             <a
               class="hover:text-pearl relative inline-block cursor-pointer text-zinc-300 duration-200 group-hover:translate-x-8"
               href="/<%= tool.path %>"
             >
               <%= tool.name %>
             </a>
+            <% } %>
           </div>
           <% }) %>
         </div>
