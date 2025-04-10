@@ -7,18 +7,14 @@ import { drizzle } from "drizzle-orm/node-postgres";
 const db = async () => {
   try {
     const pool = new Pool({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
-      port: process.env.DB_PORT,
+      connectionString: process.env.DB_CONNECTION,
       idleTimeoutMillis: 3000,
     });
 
     const client = await pool.connect();
     console.log("Database connection successful!");
     client.release();
-    return drizzle(pool, { schema: { ...userSchema, ...toolSchema }}); // Ép kiểu schema
+    return drizzle(pool, { schema: { ...userSchema, ...toolSchema }}); 
   } catch (err) {
     console.error("Error connecting to the database:", err);
     return null; // Return null if connection fails

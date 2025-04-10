@@ -17,7 +17,7 @@ app.use(
   session({
     resave: true,
     saveUninitialized: false,
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET as string,
     store: new memoryStore({
       checkPeriod: 86400000,
     }),

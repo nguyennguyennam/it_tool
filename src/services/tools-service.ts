@@ -55,8 +55,11 @@ export async function getAllTools(params: { user?: number }) {
       and(eq(favorites.toolId, tools.id), eq(favorites.userId, params.user)),
     );
   }
-
-  return query;
+  const results = await query.execute();
+  if (!results || results.length == 0) {
+    throw new Error("No tools found.");
+  }
+  return results;
 }
 
 /**
