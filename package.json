@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A set of useful IT tools in a MVC-architecture.",
   "scripts": {
-    "start": "tailwindcss -o public/css/tailwind.css -m -w && tsx src/index.ts",
+    "start": "tailwindcss -o public/css/tailwind.css -m && tsx src/index.ts",
     "dev": "concurrently \"tsx --watch src/index.ts\" \"tailwindcss -i src/views/input.css -o public/css/tailwind.css -m -w\"",
     "format": "prettier --w ./src"
   },
