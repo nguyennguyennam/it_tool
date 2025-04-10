@@ -32,42 +32,93 @@
     </script>
   </head>
 
-  <body class="font-inter text-pearl min-h-screen justify-stretch bg-zinc-900">
+  <style>
+    body {
+      grid-template-rows: 64px 1fr;
+    }
+
+    .toolbar-opened > aside {
+      translate: 0%;
+      position: absolute;
+      inset: 0px;
+      z-index: 50;
+      size: 100% 100%;
+    }
+
+    .toolbar-closed > aside {
+      translate: -100%;
+      position: absolute;
+      inset: 0px;
+      z-index: 50;
+      size: 100% 100%;
+    }
+
+    aside {
+      scrollbar-width: none;
+    }
+
+    @media screen and (min-width: 1024px) {
+      body {
+        grid-template-columns: 256px 1fr;
+      }
+
+      .toolbar-opened > aside {
+        grid-column-start: 1;
+        grid-row-start: 2;
+        position: relative;
+      }
+
+      .toolbar-opened > main {
+        grid-column-start: 2;
+        grid-row-start: 2;
+      }
+
+      .toolbar-closed > aside {
+        display: none;
+      }
+
+      .toolbar-closed > main {
+        grid-column-start: 1;
+        grid-column-end: 3;
+        grid-row-start: 2;
+      }
+    }
+  </style>
+
+  <body
+    class="font-poppins text-pearl toolbar-closed grid min-h-screen w-full justify-stretch bg-zinc-900 duration-200 lg:max-h-screen lg:gap-6 lg:p-6"
+  >
     <nav
-      class="absolute inset-x-0 top-0 flex h-16 items-center justify-between bg-zinc-800 px-6 duration-200 lg:inset-x-4 lg:top-4 lg:rounded-xl"
+      class="relative flex items-center justify-between gap-8 bg-zinc-800 px-6 py-1 lg:col-span-2"
     >
-      <button
-        id="toolbar-toggle"
-        class="cursor-pointer duration-500 hover:rotate-180"
-      >
+      <button id="toolbar-toggle" class="hover:fill-pearl/50 duration-200">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 -960 960 960"
           class="fill-pearl size-6"
         >
           <path
-            d="M160-240q-17 0-28.5-11.5T120-280q0-17 11.5-28.5T160-320h640q17 0 28.5 11.5T840-280q0 17-11.5 28.5T800-240H160Zm0-200q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520h640q17 0 28.5 11.5T840-480q0 17-11.5 28.5T800-440H160Zm0-200q-17 0-28.5-11.5T120-680q0-17 11.5-28.5T160-720h640q17 0 28.5 11.5T840-680q0 17-11.5 28.5T800-640H160Z"
+            d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
           />
         </svg>
       </button>
 
       <h1
-        class="from-lavender to-cotton-candy absolute top-1/2 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 cursor-grab bg-gradient-to-r bg-clip-text text-2xl font-black text-transparent duration-200 hover:scale-110 hover:rotate-3 md:block"
+        class="from-cotton-candy to-cadillac top-1/2 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r bg-clip-text text-2xl font-black text-transparent lg:absolute lg:block"
       >
         IT Tools
       </h1>
 
       <a
         href="/login"
-        class="bg-cotton-candy border-cotton-candy hover:text-cotton-candy rounded-full border-2 px-6 py-2 font-semibold text-black duration-200 hover:bg-transparent"
+        class="border-cotton-candy bg-cotton-candy hover:text-cotton-candy rounded-full border-2 px-6 py-2 font-semibold text-black duration-200 hover:bg-transparent"
+        >Login</a
       >
-        Login
-      </a>
     </nav>
 
     <aside
       id="toolbar"
-      class="absolute inset-0 z-50 flex -translate-x-full flex-col items-start justify-center gap-8 overflow-y-scroll bg-zinc-800 px-6 duration-200 lg:top-24 lg:bottom-4 lg:max-w-64 lg:rounded-xl"
+      class="flex max-h-full flex-col gap-8 overflow-y-scroll bg-zinc-800 p-6 py-16 duration-200 lg:rounded-xl lg:py-6"
     >
       <button
         id="toolbar-close"
@@ -84,78 +135,55 @@
         </svg>
       </button>
 
-      <div class="flex flex-col items-start justify-center gap-8 py-6">
-        <% content.tools.forEach(section => { %>
-        <div class="flex w-full flex-col gap-2">
-          <h2
-            class="text-sm font-semibold tracking-tight text-zinc-500 uppercase"
+      <% content.tools.forEach(section => { %>
+      <div class="flex flex-col gap-4">
+        <h2 class="text-sm font-semibold text-zinc-500 uppercase">
+          <%= section.name %>
+        </h2>
+
+        <div class="flex flex-col items-start gap-1">
+          <% section.tools.forEach(tool => { %>
+          <div
+            class="hover:text-pearl/50 flex flex-row items-center gap-2 duration-200"
           >
-            <%= section.name %>
-          </h2>
+            <img
+              src="/static/images/tools/<%= tool.path %>.svg"
+              alt=""
+              class="size-4"
+            />
 
-          <div class="flex w-full flex-col">
-            <% section.tools.forEach(tool => { %>
-            <div class="group relative py-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 -960 960 960"
-                class="fill-pearl absolute inset-y-2 left-0 size-6 -translate-x-full opacity-0 duration-200 group-hover:translate-x-0 group-hover:opacity-100"
-              >
-                <path
-                  d="M504-480 348-636q-11-11-11-28t11-28q11-11 28-11t28 11l184 184q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L404-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l156-156Z"
-                />
-              </svg>
-
-              <% if (content.selectedTool && content.selectedTool == tool.id) {
-              %>
-              <a
-                class="text-pearl cursor-pointer font-semibold underline"
-                href="/<%= tool.path %>"
-              >
-                <%= tool.name %>
-              </a>
-              <% } else { %>
-              <a
-                class="hover:text-pearl relative inline-block cursor-pointer text-zinc-300 duration-200 group-hover:translate-x-8"
-                href="/<%= tool.path %>"
-              >
-                <%= tool.name %>
-              </a>
-              <% } %>
-            </div>
-            <% }) %>
+            <a href="/<%= tool.path %>"><%= tool.name %></a>
           </div>
+          <% }) %>
         </div>
-        <% }) %>
       </div>
+      <% }) %>
     </aside>
 
     <main
-      class="absolute inset-0 top-16 flex flex-col items-center justify-center overflow-y-scroll bg-zinc-800 px-6 duration-200 lg:top-24 lg:right-4 lg:bottom-4 lg:left-4 lg:rounded-xl"
+      id="main-content"
+      class="flex flex-col items-center gap-4 overflow-y-scroll bg-zinc-800 p-6 lg:rounded-xl"
     >
-      <div class="flex flex-col items-center justify-center py-6">
-        <%- include('../pages/' + layout.content) %>
-      </div>
+      <%- include('../pages/' + layout.content) %>
     </main>
   </body>
 
   <script defer>
-    function openToolbar() {
-      $("main").addClass("lg:left-72").removeClass("lg:left-4");
-      $("#toolbar").removeClass("-translate-x-full").addClass("lg:left-4");
-    }
-
     function closeToolbar() {
-      $("#toolbar").addClass("-translate-x-full").removeClass("lg:left-4");
-      $("main").removeClass("lg:left-72").addClass("lg:left-4");
+      $("body").removeClass("toolbar-opened").addClass("toolbar-closed");
     }
 
-    $("#toolbar-close").click(closeToolbar);
-    $("#toolbar-toggle").click(() => {
-      if ($("#toolbar").hasClass("-translate-x-full")) {
-        openToolbar();
-      } else {
+    function openToolbar() {
+      $("body").removeClass("toolbar-closed").addClass("toolbar-opened");
+    }
+
+    $("#toolbar-close").on("click", closeToolbar);
+
+    $("#toolbar-toggle").on("click", () => {
+      if ($("body").hasClass("toolbar-opened")) {
         closeToolbar();
+      } else {
+        openToolbar();
       }
     });
   </script>
