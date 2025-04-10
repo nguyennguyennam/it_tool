@@ -2,13 +2,13 @@
   <p>
     A set of tools, maybe useful, maybe useless for fellow developers, developed
     using the Model-View-Controller setup for the course of
-    <span class="font-bold text-violet-300">Software Design</span>.
+    <span class="text-lavender font-bold">Software Design</span>.
   </p>
 
   <p>
     Created by rebels of the system, rising up against the C# cult led by the
     theory teacher. The main point of this system is to be able to
-    <span class="font-bold text-violet-300">make changes to tools</span>
+    <span class="text-lavender font-bold">make changes to tools</span>
     (create new, remove, and edit tools) at runtime without the needs of
     recompiling or redeploying.
   </p>
@@ -45,7 +45,10 @@
     </div>
   </div>
 
-  <div id="content-layout" class="grid grid-cols-3">
+  <div
+    id="content-layout"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+  >
     <% content.tools.flatMap(section => section.tools).forEach(tool => { %>
     <a
       class="flex cursor-pointer flex-col gap-4 rounded-xl bg-transparent p-6 duration-200 hover:bg-zinc-700"
@@ -63,7 +66,7 @@
     const state = Flip.getState("#content-layout", {
       props: "grid-template-columns",
     });
-    $("#content-layout").removeClass("grid-cols-1").addClass("grid-cols-3");
+    $("#content-layout").addClass("md:grid-cols-2 lg:grid-cols-3");
     Flip.from(state, {
       duration: 0.5,
     });
@@ -73,7 +76,7 @@
     const state = Flip.getState("#content-layout", {
       props: "grid-template-columns",
     });
-    $("#content-layout").removeClass("grid-cols-3").addClass("grid-cols-1");
+    $("#content-layout").removeClass("md:grid-cols-2 lg:grid-cols-3");
     Flip.from(state, {
       duration: 0.5,
     });
