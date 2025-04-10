@@ -152,7 +152,15 @@
               class="size-4"
             />
 
+            <% if (content.selectedTool && content.selectedTool == tool.id) { %>
+            <a
+              href="/<%= tool.path %>"
+              class="from-pearl to-cotton-candy bg-gradient-to-r bg-clip-text font-semibold text-transparent underline"
+              ><%= tool.name %></a
+            >
+            <% } else { %>
             <a href="/<%= tool.path %>"><%= tool.name %></a>
+            <% } %>
           </div>
           <% }) %>
         </div>
