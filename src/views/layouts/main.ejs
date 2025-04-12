@@ -83,19 +83,28 @@
         grid-row-start: 2;
       }
     }
+
+    body {
+      background-image: url("/static/images/circle-scatter-haikei.png");
+      background-position: center;
+      background-size: cover;
+    }
   </style>
 
   <body
-    class="font-poppins text-pearl toolbar-closed grid min-h-screen w-full justify-stretch bg-zinc-900 duration-200 lg:max-h-screen lg:gap-6 lg:p-6"
+    class="font-poppins text-pearl toolbar-closed grid min-h-screen w-full justify-stretch bg-zinc-900/75 duration-200 lg:max-h-screen lg:gap-6 lg:p-6"
   >
     <nav
-      class="relative flex items-center justify-between gap-8 bg-zinc-800 px-6 py-1 lg:col-span-2"
+      class="relative flex items-center justify-between gap-8 bg-zinc-800/75 px-6 py-1 backdrop-blur-md lg:col-span-2"
     >
-      <button id="toolbar-toggle" class="hover:fill-pearl/50 duration-200">
+      <button
+        id="toolbar-toggle"
+        class="hover:fill-pearl/50 fill-pearl cursor-pointer duration-200"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 -960 960 960"
-          class="fill-pearl size-6"
+          class="size-6"
         >
           <path
             d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
@@ -104,7 +113,8 @@
       </button>
 
       <h1
-        class="from-cotton-candy to-cadillac top-1/2 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r bg-clip-text text-2xl font-black text-transparent lg:absolute lg:block"
+        id="nav-title"
+        class="from-cotton-candy to-cadillac top-1/2 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 cursor-pointer bg-gradient-to-r bg-clip-text text-2xl font-black text-transparent duration-200 hover:scale-110 lg:absolute lg:block"
       >
         IT Tools
       </h1>
@@ -118,7 +128,7 @@
 
     <aside
       id="toolbar"
-      class="flex max-h-full flex-col gap-8 overflow-y-scroll bg-zinc-800 p-6 py-16 duration-200 lg:rounded-xl lg:py-6"
+      class="flex max-h-full flex-col gap-8 overflow-y-scroll bg-zinc-800 p-6 py-16 duration-200 lg:rounded-xl lg:bg-zinc-800/75 lg:py-6 lg:backdrop-blur-md"
     >
       <button
         id="toolbar-close"
@@ -137,7 +147,7 @@
 
       <% content.tools.forEach(section => { %>
       <div class="flex flex-col gap-4">
-        <h2 class="text-sm font-semibold text-zinc-500 uppercase">
+        <h2 class="text-sm font-semibold text-zinc-400 uppercase">
           <%= section.name %>
         </h2>
 
@@ -170,7 +180,7 @@
 
     <main
       id="main-content"
-      class="flex size-full flex-col items-center gap-4 overflow-y-scroll bg-zinc-800 p-6 lg:rounded-xl"
+      class="flex size-full flex-col items-center gap-4 overflow-y-scroll bg-zinc-800/75 p-6 backdrop-blur-md lg:rounded-xl"
     >
       <%- include('../pages/' + layout.content) %>
     </main>
