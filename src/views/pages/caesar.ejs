@@ -1,0 +1,181 @@
+<div class="bg-cadilac text-pearl flex h-full flex-col gap-4 rounded-lg p-8">
+  <h1 class="mb-4 justify-center text-center text-3xl font-bold">
+    Caesar Cyphor
+  </h1>
+  <p class="text-center text-balance">
+    Learn how the uber-popular ceasar cipher works, as it was prominently used
+    in the show Gravity Falls. It's a simple way to encrypt a message by
+    shifting characters on the alphabet.
+  </p>
+  <label for="text-caesar" class="mt-4 mb-2 block text-sm font-semibold"
+    >Text to Caesar Cypher:</label
+  >
+  <textarea
+    id="text_caesar"
+    rows="5"
+    class="w-full rounded-lg border p-4 text-sm focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500"
+    placeholder="Enter text to here"
+  ></textarea>
+
+  <form class="mx-auto mt-2 mb-2 max-w-xs">
+    <label
+      for="quantity-input"
+      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+      >Choose quantity:</label
+    >
+    <div class="relative flex max-w-[8rem] items-center">
+      <button
+        type="button"
+        id="decrement-button"
+        data-action="decrement"
+        data-input-counter-decrement="quantity-input"
+        class="h-11 rounded-s-lg border border-gray-300 bg-gray-100 p-3 hover:bg-gray-200 focus:ring-2 focus:ring-gray-100 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700"
+      >
+        <svg
+          class="h-3 w-3 text-gray-900 dark:text-white"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 18 2"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M1 1h16"
+          />
+        </svg>
+      </button>
+      <input
+        type="text"
+        id="quantity-input"
+        data-input-counter
+        aria-describedby="helper-text-explanation"
+        class="block h-11 w-full border-x-0 border-gray-300 bg-gray-50 py-2.5 text-center text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+        placeholder="0"
+        value="0"
+        required
+      />
+      <button
+        type="button"
+        id="increment-button"
+        data-action="increment"
+        data-input-counter-increment="quantity-input"
+        class="h-11 rounded-e-lg border border-gray-300 bg-gray-100 p-3 hover:bg-gray-200 focus:ring-2 focus:ring-gray-100 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700"
+      >
+        <svg
+          class="h-3 w-3 text-gray-900 dark:text-white"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 18 18"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 1v16M1 9h16"
+          />
+        </svg>
+      </button>
+    </div>
+  </form>
+  <div class="relative">
+    <input
+      type="text"
+      id="generateCaesar"
+      value="Click 'Generate' to create a cypher"
+      class="w-full rounded-md border px-3 py-2 pr-10 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none"
+      readonly
+    />
+    <button
+      id="copyButton"
+      class="absolute inset-y-0 right-0 flex cursor-pointer items-center px-3 focus:outline-none"
+      title="Copy to clipboard"
+      onclick="copyCypher()"
+    >
+      <svg
+        xmlns="https://www.svgrepo.com/svg/3110/copy"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        class="h-5 w-5"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002-2h2a2 2 0 002 2m-2 2h2m-2-2h2m-2 4h2m-2-2h2m-2-2h2m-2-2h2"
+        />
+      </svg>
+      <div
+        id="copy_Cypher_text"
+        class="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 -translate-y-full rounded-md bg-gray-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity duration-200"
+      >
+        Copy Caessar Cypher
+      </div>
+    </button>
+  </div>
+</div>
+
+<script>
+  function generateCypher() {
+    const str = $("#text_caesar").val();
+    const shift = parseInt($("#quantity-input").val());
+    const s = (26 - shift) % 26;
+    const n = s > 0 ? s : 26 + (s % 26);
+    return [...str]
+      .map((l, i) => {
+        const c = str.charCodeAt(i);
+        if (c >= 65 && c <= 90)
+          return String.fromCharCode(((c - 65 + n) % 26) + 65);
+        if (c >= 97 && c <= 122)
+          return String.fromCharCode(((c - 97 + n) % 26) + 97);
+        return l;
+      })
+      .join("");
+  }
+  function process(action) {
+    const current_val = $("#quantity-input").val();
+    console.log(current_val);
+    const new_val = parseInt(current_val) + (action == "increment" ? 1 : -1);
+    $("#quantity-input").val(new_val);
+    $("#quantity-input").trigger("input");
+  }
+  $(document).ready(function () {
+    $("#increment-button").on("click", function () {
+      process($(this).data("action"));
+    });
+
+    $("#decrement-button").on("click", function () {
+      process($(this).data("action"));
+    });
+  });
+  $(document).ready(function () {
+    // Initial generation on page load
+    const initialResult = generateCypher();
+    $("#generateCaesar").val(initialResult);
+
+    $("#increment-button").on("click", function () {
+      process($(this).data("action"));
+    });
+
+    $("#decrement-button").on("click", function () {
+      process($(this).data("action"));
+    });
+
+    // Listen for changes in the text area
+    $("#text_caesar").on("input", function () {
+      const result = generateCypher();
+      $("#generateCaesar").val(result);
+    });
+
+    // The 'input' event triggered in 'process' will be caught here
+    $("#quantity-input").on("input", function () {
+      const result = generateCypher();
+      $("#generateCaesar").val(result);
+    });
+  });
+</script>

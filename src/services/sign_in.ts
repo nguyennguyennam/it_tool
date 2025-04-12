@@ -18,14 +18,12 @@ export const signIn = async (username: string, passoword: string) => {
 export const signUp = async (user_info: Object[]) => {
   const drizzle = await db();
   if (!db) return [];
-  return await drizzle
-    ?.insert(users)
-    .values({
-      username: Object[1],
-      email: Object[2],
-      avatar: Object[3],
-      password: Object[4],
-    });
+  return await drizzle?.insert(users).values({
+    username: Object[1],
+    email: Object[2],
+    avatar: Object[3],
+    password: Object[4],
+  });
 };
 
 export const forgotPassowrd = async (email: string) => {

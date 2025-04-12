@@ -1,0 +1,141 @@
+<title>Công Cụ Chọn Màu</title>
+
+<div
+  class="bg-pearl text-cadillac align-items-center h-screen w-full rounded-lg p-6"
+>
+  <h2 class="mb-4 text-center text-xl font-semibold">Công Cụ Chọn Màu</h2>
+  <div class="mb-4 flex flex-col items-center gap-4">
+    <label for="color-input" class="block text-sm font-medium">Chọn Màu:</label>
+    <input
+      type="color"
+      id="color-input"
+      class="h-10 w-full cursor-pointer rounded shadow-sm"
+    />
+    <div
+      id="color-preview"
+      class="h-6 w-6 rounded border border-gray-300"
+    ></div>
+  </div>
+
+  <div
+    id="color-info"
+    class="mt-4 rounded-md border border-gray-200 bg-gray-50 p-4"
+  >
+    <p class="mb-1">
+      <label class="font-medium">HEX:</label><span id="hex-value"></span>
+      <button
+        data-copy="hex"
+        class="ml-2 inline-block rounded-sm bg-slate-600 px-2 py-1 text-xs text-white hover:bg-slate-700"
+      >
+        Sao chép
+      </button>
+    </p>
+    <p class="mb-1">
+      <label class="font-medium">RGB:</label><span id="rgb-value"></span>
+      <button
+        data-copy="rgb"
+        class="ml-2 inline-block rounded-sm bg-slate-600 px-2 py-1 text-xs text-white hover:bg-slate-700"
+      >
+        Sao chép
+      </button>
+    </p>
+    <p class="mb-1">
+      <label class="font-medium">HSL:</label><span id="hsl-value"></span>
+      <button
+        data-copy="hsl"
+        class="ml-2 inline-block rounded-sm bg-slate-600 px-2 py-1 text-xs text-white hover:bg-slate-700"
+      >
+        Sao chép
+      </button>
+    </p>
+  </div>
+
+  <div id="similar-colors-container" class="mt-6">
+    <h3 class="mb-2 text-sm font-semibold">Màu Tương Tự:</h3>
+    <div id="similar-colors" class="flex gap-2 overflow-x-auto pb-2"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"></script>
+<script>
+  const colorInput = document.getElementById("color-input");
+  const colorPreview = document.getElementById("color-preview");
+  const colorInfoDiv = document.getElementById("color-info");
+  const hexValueSpan = document.getElementById("hex-value");
+  const rgbValueSpan = document.getElementById("rgb-value");
+  const hslValueSpan = document.getElementById("hsl-value");
+  const body = document.body;
+  const copyButtons = colorInfoDiv.querySelectorAll("button");
+  const similarColorsContainer = document.getElementById(
+    "similar-colors-container",
+  );
+  const similarColorsDiv = document.getElementById("similar-colors");
+
+  const updateColorInfo = (color) => {
+    const hex = color.hex();
+    const rgb = color.rgb();
+    const hsl = color.hsl();
+
+    body.style.backgroundColor = hex;
+    colorPreview.style.backgroundColor = hex;
+    colorInfoDiv.classList.remove("hidden");
+    hexValueSpan.textContent = hex;
+    rgbValueSpan.textContent = rgb;
+    hslValueSpan.textContent = hsl;
+  };
+
+  const generateSimilarColors = (color) => {
+    similarColorsDiv.innerHTML = "";
+    const variations = [0.05, 0.1, 0.15];
+    const methods = ["brighten", "darken", "saturate", "desaturate"];
+
+    methods.forEach((method) => {
+      variations.forEach((amount) => {
+        const similarColor = color[method](amount);
+        const colorBox = document.createElement("div");
+        colorBox.className = "w-8 h-8 rounded shadow-sm cursor-pointer";
+        colorBox.style.backgroundColor = similarColor.hex();
+        colorBox.addEventListener("click", () => {
+          colorInput.value = similarColor.hex();
+          updateColorInfo(similarColor);
+          generateSimilarColors(similarColor);
+        });
+        similarColorsDiv.appendChild(colorBox);
+      });
+    });
+    similarColorsContainer.classList.remove("hidden");
+  };
+
+  colorInput.addEventListener("input", (event) => {
+    const selectedColor = chroma(event.target.value);
+    updateColorInfo(selectedColor);
+    generateSimilarColors(selectedColor);
+  });
+
+  copyButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const format = button.dataset.copy;
+      const textToCopy =
+        format === "hex"
+          ? hexValueSpan.textContent
+          : format === "rgb"
+            ? rgbValueSpan.textContent
+            : format === "hsl"
+              ? hslValueSpan.textContent
+              : "";
+
+      navigator.clipboard
+        .writeText(textToCopy)
+        .then(() => {
+          alert(`Đã sao chép ${format} code: ${textToCopy}`);
+        })
+        .catch((err) => {
+          console.error("Không thể sao chép: ", err);
+        });
+    });
+  });
+
+  const initialColor = chroma(colorInput.value);
+  updateColorInfo(initialColor);
+  generateSimilarColors(initialColor);
+</script>
