@@ -14,11 +14,11 @@ const db = async () => {
     const client = await pool.connect();
     console.log("Database connection successful!");
     client.release();
-    return drizzle(pool, { schema: { ...userSchema, ...toolSchema }}); 
+    return drizzle(pool, { schema: { ...userSchema, ...toolSchema } });
   } catch (err) {
     console.error("Error connecting to the database:", err);
     return null; // Return null if connection fails
   }
-}
+};
 
 export default db;

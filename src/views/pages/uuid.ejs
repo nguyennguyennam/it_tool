@@ -1,0 +1,62 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.2.0/uuid.min.js"></script>
+<div class="font-poppins flex flex-col items-center gap-4 p-8">
+  <h1 class="font-poppins mb-4 text-center text-3xl font-bold">
+    UUID Generator
+  </h1>
+  <p class="text-center text-balance">
+    Generate a Universally Unique Identifier, most commonly used as primary
+    keys. Did you know, Minecraft profiles use UUIDs?
+  </p>
+  <div class="relative mb-4 w-full">
+    <button
+      onclick="generateUUID()"
+      class="bg-cotton-candy hover:bg-cadillac flex w-full cursor-pointer items-center justify-center rounded-xl px-4 py-2 font-bold text-black"
+    >
+      Generate UUID
+      <svg
+        xmlns="https://www.svgrepo.com/svg/28675/right-arrow"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        class="ml-2 h-5 w-5"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M13 7l5 5m0 0l-5 5m5-5H6"
+        />
+      </svg>
+    </button>
+  </div>
+  <div id="UUID_generated" class="mt-4 text-center text-sm"></div>
+  <button
+    onclick="CopyUUID()"
+    class="bg-cotton-candy hover:bg-cadillac w-full cursor-pointer rounded-xl px-4 py-2 font-bold text-black"
+  >
+    Copy UUID
+  </button>
+</div>
+<script>
+  function generateUUID() {
+    const generatedUUID = uuid.v4();
+    $("#UUID_generated").text(generatedUUID);
+  }
+
+  function CopyUUID() {
+    const uuidText = document.getElementById("UUID_generated").textContent;
+    if (uuidText) {
+      navigator.clipboard
+        .writeText(uuidText)
+        .then(() => {
+          alert("UUID copied to clipboard!");
+        })
+        .catch((err) => {
+          console.error("Failed to copy UUID: ", err);
+          alert("Failed to copy UUID.");
+        });
+    } else {
+      alert("Please generate a UUID first!");
+    }
+  }
+</script>

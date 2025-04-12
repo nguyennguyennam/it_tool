@@ -38,7 +38,7 @@ app.use("/", mainRouter);
 app.use("/static", express.static(path.join(__dirname, "..", "public")));
 
 //User middleware Json to dynamically map attributes from req.body
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 // Start the app.
 app.listen(parseInt(process.env["PORT"]!), () => {

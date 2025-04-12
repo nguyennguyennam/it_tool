@@ -9,7 +9,9 @@ export const signin_Controller = async (req: Request, res: Response) => {
     const { name, password } = req.body as { name: string; password: string };
     const result = await sign_in.signIn(name, password);
     if (result) {
-      return res.status(200).json({ message: "Sign in successful", data: result });
+      return res
+        .status(200)
+        .json({ message: "Sign in successful", data: result });
     } else {
       return res.status(401).json({ error: "Invalid credentials" });
     }
