@@ -1,0 +1,183 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+
+<div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
+  <div
+    class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-700 py-4"
+  >
+    <h1
+      class="from-cotton-candy to-cadillac bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+    >
+      Hash
+    </h1>
+
+    <p class="w-full">
+      Hash a string of text into various digests using various hashing
+      algorithms, provided by CryptoJS.
+    </p>
+  </div>
+
+  <div class="flex w-full flex-col gap-4">
+    <label class="flex flex-col gap-2 font-semibold">
+      String to hash
+      <input
+        type="text"
+        id="input-string"
+        class="focus:ring-cotton-candy hover:ring-cotton-candy/50 h-12 rounded-md bg-zinc-700 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50"
+        placeholder="String..."
+        value="lunaluny"
+      />
+    </label>
+
+    <button
+      id="hash"
+      class="border-cotton-candy bg-cotton-candy hover:text-cotton-candy cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold text-black duration-200 hover:bg-transparent"
+    >
+      Hash
+    </button>
+  </div>
+
+  <style>
+    #output-grid {
+      display: grid;
+      grid-template-columns: 5rem 1fr;
+      grid-template-rows: 3rem;
+    }
+  </style>
+
+  <div class="flex w-full flex-col gap-4">
+    <h2 class="font-semibold">Hashed Results</h2>
+
+    <div id="output-grid" class="items-center gap-4">
+      <h3 class="shrink-0 font-light">MD5</h3>
+      <div
+        class="flex h-full w-full items-center justify-between bg-zinc-700 px-4 py-2"
+      >
+        <input type="text" readonly id="output-md5" class="w-full" />
+        <button
+          id="output-md5-copy"
+          class="fill-pearl hover:fill-pearl/50 group relative shrink-0 cursor-pointer!"
+        >
+          <span
+            class="bg-pearl absolute bottom-0 left-1/2 z-10 hidden -translate-x-1/2 -translate-y-full items-center justify-center rounded-md px-4 py-2 font-semibold text-black uppercase group-hover:flex"
+            >Copy</span
+          >
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 -960 960 960"
+            class="size-6"
+          >
+            <path
+              d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <h3 class="shrink-0 font-light">SHA-1</h3>
+      <div
+        class="flex h-full w-full items-center justify-between bg-zinc-700 px-4 py-2"
+      >
+        <input type="text" readonly id="output-sha1" class="w-full" />
+        <button
+          id="output-sha1-copy"
+          class="fill-pearl hover:fill-pearl/50 group relative shrink-0 cursor-pointer!"
+        >
+          <span
+            class="bg-pearl absolute bottom-0 left-1/2 z-10 hidden -translate-x-1/2 -translate-y-full items-center justify-center rounded-md px-4 py-2 font-semibold text-black uppercase group-hover:flex"
+            >Copy</span
+          >
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 -960 960 960"
+            class="size-6"
+          >
+            <path
+              d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <h3 class="shrink-0 font-light">SHA-256</h3>
+      <div
+        class="flex h-full w-full items-center justify-between bg-zinc-700 px-4 py-2"
+      >
+        <input type="text" readonly id="output-sha256" class="w-full" />
+        <button
+          id="output-sha256-copy"
+          class="fill-pearl hover:fill-pearl/50 group relative shrink-0 cursor-pointer!"
+        >
+          <span
+            class="bg-pearl absolute bottom-0 left-1/2 z-10 hidden -translate-x-1/2 -translate-y-full items-center justify-center rounded-md px-4 py-2 font-semibold text-black uppercase group-hover:flex"
+            >Copy</span
+          >
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 -960 960 960"
+            class="size-6"
+          >
+            <path
+              d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <h3 class="shrink-0 font-light">SHA-512</h3>
+      <div
+        class="flex h-full w-full items-center justify-between gap-4 bg-zinc-700 px-4 py-2"
+      >
+        <input type="text" readonly id="output-sha512" class="w-full" />
+        <button
+          id="output-sha512-copy"
+          class="fill-pearl hover:fill-pearl/50 group relative shrink-0 cursor-pointer!"
+        >
+          <span
+            class="bg-pearl absolute bottom-0 left-1/2 z-10 hidden -translate-x-1/2 -translate-y-full items-center justify-center rounded-md px-4 py-2 font-semibold text-black uppercase group-hover:flex"
+            >Copy</span
+          >
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 -960 960 960"
+            class="size-6"
+          >
+            <path
+              d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script defer>
+  $("#hash").click(() => {
+    const content = $("#input-string").val();
+    const md5 = CryptoJS.MD5(content).toString();
+    const sha1 = CryptoJS.SHA1(content).toString();
+    const sha256 = CryptoJS.SHA256(content).toString();
+    const sha512 = CryptoJS.SHA512(content).toString();
+
+    $("#output-md5").val(md5);
+    $("#output-sha1").val(sha1);
+    $("#output-sha256").val(sha256);
+    $("#output-sha512").val(sha512);
+  });
+
+  function addCopyFunctionality(name) {
+    $(`#output-${name}-copy`).click(() => {
+      navigator.clipboard.writeText($(`#output-${name}`).val());
+      $(`#output-${name}-copy > span`).text("Copied!");
+      setTimeout(() => {
+        $(`#output-${name}-copy > span`).text("Copy");
+      }, 3000);
+    });
+  }
+
+  ["md5", "sha1", "sha256", "sha512"].forEach(addCopyFunctionality);
+</script>

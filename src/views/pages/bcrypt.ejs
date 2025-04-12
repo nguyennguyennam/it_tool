@@ -1,0 +1,177 @@
+<script src="https://unpkg.com/bcryptjs@3.0.2/umd/index.js"></script>
+
+<style>
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    display: none;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+</style>
+
+<div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
+  <div
+    class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-700 py-4"
+  >
+    <h1
+      class="from-cotton-candy to-cadillac bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+    >
+      BCrypt
+    </h1>
+
+    <p class="w-full">
+      Hash or compare a string using the BCrypt algorithm, mainly used for
+      encrypting passwords prior to saving down to the database.
+    </p>
+  </div>
+
+  <div
+    class="flex w-full flex-col gap-4 rounded-lg border-[1px] border-zinc-600 bg-zinc-700 p-6"
+  >
+    <h2 class="text-cadillac text-xl font-semibold">Encrypt</h2>
+
+    <label class="flex flex-col gap-2 font-semibold">
+      String to hash
+      <input
+        type="text"
+        id="input-string"
+        class="focus:ring-cotton-candy hover:ring-cotton-candy/50 h-12 rounded-md bg-zinc-900 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50"
+        placeholder="String to bcrypt"
+        value="lunaluny"
+      />
+    </label>
+
+    <label class="flex flex-col gap-2 font-semibold">
+      Salt
+      <input
+        type="number"
+        id="input-salt"
+        class="focus:ring-cotton-candy hover:ring-cotton-candy/50 h-12 rounded-md bg-zinc-900 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50"
+        placeholder="Salt length"
+        value="10"
+      />
+    </label>
+
+    <button
+      id="encrypt"
+      class="border-cotton-candy bg-cotton-candy hover:text-cotton-candy cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold text-black duration-200 hover:bg-transparent"
+    >
+      Encrypt
+    </button>
+
+    <hr class="border-pearl my-4 w-full" />
+
+    <div class="flex flex-col gap-2 font-semibold">
+      Encrypted String
+      <div
+        class="flex h-12 w-full items-center justify-between rounded-md bg-zinc-900 px-4 py-2 font-normal"
+      >
+        <input
+          type="text"
+          readonly
+          id="output-encrypt"
+          class="w-full cursor-copy"
+        />
+        <button
+          id="output-encrypt-copy"
+          class="fill-pearl hover:fill-pearl/50 group relative shrink-0 cursor-pointer!"
+        >
+          <span
+            class="bg-pearl absolute bottom-0 left-1/2 z-10 hidden -translate-x-1/2 -translate-y-full items-center justify-center rounded-md px-4 py-2 font-semibold text-black uppercase group-hover:flex"
+            >Copy</span
+          >
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 -960 960 960"
+            class="size-6"
+          >
+            <path
+              d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="flex w-full flex-col gap-4 rounded-lg border-[1px] border-zinc-600 bg-zinc-700 p-6"
+  >
+    <h2 class="text-cadillac text-xl font-semibold">Decrypt</h2>
+
+    <label class="flex flex-col gap-2 font-semibold">
+      String to compare
+      <input
+        type="text"
+        id="input-string-compare"
+        class="focus:ring-cotton-candy hover:ring-cotton-candy/50 h-12 rounded-md bg-zinc-900 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50"
+        placeholder="String to compare"
+        value="lunaluny"
+      />
+    </label>
+
+    <label class="flex flex-col gap-2 font-semibold">
+      Hash to compare
+      <input
+        type="text"
+        id="input-hash-compare"
+        class="focus:ring-cotton-candy hover:ring-cotton-candy/50 h-12 rounded-md bg-zinc-900 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50"
+        placeholder="Hash to compare"
+        value="$2b$10$g1HmZzK2R967oIvJAYxrA.ceX91mzgHw8D9qsHkH4c.dERm075d7C"
+      />
+    </label>
+
+    <button
+      id="decrypt"
+      class="border-cotton-candy bg-cotton-candy hover:text-cotton-candy cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold text-black duration-200 hover:bg-transparent"
+    >
+      Decrypt
+    </button>
+
+    <hr class="border-pearl my-4 w-full" />
+
+    <div class="flex flex-row items-baseline gap-4 font-semibold">
+      <span class="font-normal">Result:</span>
+      <span class="text-xl" id="output-decrypt">Unknown</span>
+    </div>
+  </div>
+</div>
+
+<script defer>
+  $("#encrypt").click(() => {
+    const input = $("#input-string").val();
+    const salt = $("#input-salt").val();
+    bcrypt.hash(input, parseInt(salt)).then((val) => {
+      $("#output-encrypt").val(val);
+    });
+  });
+
+  $("#output-encrypt-copy").click(() => {
+    navigator.clipboard.writeText($("#output-encrypt").val());
+    $(`#output-encrypt-copy > span`).text("Copied!");
+    setTimeout(() => {
+      $(`#output-encrypt-copy > span`).text("Copy");
+    }, 3000);
+  });
+
+  $("#decrypt").click(() => {
+    bcrypt
+      .compare($("#input-string-compare").val(), $("#input-hash-compare").val())
+      .then((result) => {
+        if (result) {
+          $("#output-decrypt")
+            .removeClass("text-rose-400")
+            .addClass("text-emerald-400")
+            .text("MATCHED!");
+        } else {
+          $("#output-decrypt")
+            .addClass("text-rose-400")
+            .removeClass("text-emerald-400")
+            .text("NOT MATCHED!");
+        }
+      });
+  });
+</script>
