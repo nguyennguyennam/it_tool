@@ -1,0 +1,118 @@
+<div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
+  <div
+    class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-700 py-4"
+  >
+    <h1
+      class="from-cotton-candy to-cadillac bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+    >
+      2024 Day 2: Red-Nosed Reports
+    </h1>
+
+    <p class="w-full">
+      Solve the puzzle of the event Advent of Code year 2024, day 2. Both parts.
+    </p>
+  </div>
+
+  <div class="flex w-full flex-col gap-8">
+    <label class="flex w-full flex-col gap-4 font-semibold">
+      <span class="min-w-fit">The puzzle input</span>
+      <textarea
+        id="input-puzzle"
+        rows="5"
+        class="focus:ring-cotton-candy font-space-mono hover:ring-cotton-candy/50 w-full cursor-not-allowed resize-none rounded-md bg-zinc-700 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50"
+        placeholder="Your puzzle input"
+      ></textarea>
+    </label>
+
+    <button
+      id="solve"
+      class="border-cotton-candy bg-cotton-candy enabled:hover:text-cotton-candy disabled:border-cotton-candy/50 disabled:bg-cotton-candy/50 w-full cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold text-black duration-200 enabled:hover:bg-transparent disabled:cursor-progress"
+    >
+      SOLVE
+    </button>
+  </div>
+
+  <hr class="w-full rounded-2xl border-2 border-zinc-700" />
+
+  <div class="flex w-full flex-col gap-8">
+    <span class="font-semibold">The puzzle output</span>
+
+    <div class="flex w-full flex-col gap-4">
+      <div class="flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-4">
+        <span class="w-24">Part 1</span>
+        <input
+          type="text"
+          id="output-part-1"
+          readonly
+          class="font-space-mono h-12 w-full cursor-not-allowed rounded-xl bg-zinc-700 px-4"
+        />
+      </div>
+      <div class="flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-4">
+        <span class="w-24">Part 2</span>
+        <input
+          type="text"
+          id="output-part-2"
+          readonly
+          class="font-space-mono h-12 w-full cursor-not-allowed rounded-xl bg-zinc-700 px-4"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+<script defer>
+  function isSafe(arr) {
+    const decreasing = arr[0] - arr[1] > 0;
+    for (let i = 0; i < arr.length - 1; i++) {
+      if (
+        (decreasing && arr[i] <= arr[i + 1]) ||
+        (!decreasing && arr[i] >= arr[i + 1]) ||
+        Math.abs(arr[i] - arr[i + 1]) < 1 ||
+        Math.abs(arr[i] - arr[i + 1]) > 3
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  function solvePartOne(input) {
+    let count = 0;
+    for (const arr of input) {
+      if (isSafe(arr)) count++;
+    }
+
+    $("#output-part-1").val(count);
+  }
+
+  function solvePartTwo(input) {
+    let count = 0;
+    for (const arr of input) {
+      for (let i = 0; i < arr.length; i++) {
+        const modified = [...arr.slice(0, i), ...arr.slice(i + 1, arr.length)];
+        if (isSafe(modified)) {
+          count++;
+          break;
+        }
+      }
+    }
+
+    $("#output-part-2").val(count);
+  }
+
+  $("#solve").click(() => {
+    try {
+      const input = $("#input-puzzle")
+        .val()
+        .split("\n")
+        .map((str) => str.split(/\s+/).map(Number));
+
+      solvePartOne(input);
+      solvePartTwo(input);
+    } catch (e) {
+      console.log(e);
+      alert("Invalid input?");
+    }
+  });
+</script>
