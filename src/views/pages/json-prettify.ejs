@@ -1,0 +1,97 @@
+<style>
+  textarea {
+    font-family: monospace;
+    min-height: 100px;
+    overflow: auto;
+  }
+</style>
+<div class="bg-cadilac w-full max-w-3xl rounded-lg p-8 text-white shadow-md">
+  <h1 class="mb-2 justify-center text-center text-3xl font-bold">
+    JSON Prettifier
+  </h1>
+  <p class="mb-4 text-center text-balance">
+    Prettify a jumbled string of JSON to be able to discern information easier.
+  </p>
+  <div class="mb-4">
+    <label for="jsonInput" class="mb-2 block font-bold">Enter JSON:</label>
+    <textarea
+      id="jsonInput"
+      class="focus:shadow-outline w-full resize-none rounded border px-3 py-2 leading-tight text-white focus:outline-none"
+      placeholder='{"name": "John Doe", "age": 30, "city": "New York"}'
+    ></textarea>
+  </div>
+
+  <div class="mb-4 flex justify-end">
+    <button
+      id="prettifyBtn"
+      class="bg-cotton-candy focus:shadow-outline rounded px-4 py-2 font-bold text-gray-600 hover:bg-[#fb9f9f] focus:outline-none"
+    >
+      Prettify JSON
+    </button>
+  </div>
+
+  <div>
+    <label for="jsonOutput" class="mb-2 block font-bold"
+      >Prettified JSON:</label
+    >
+    <textarea
+      id="jsonOutput"
+      class="focus:shadow-outline w-full resize-none rounded border px-3 py-2 leading-tight text-white focus:outline-none"
+      readonly
+      placeholder="Prettified JSON will appear here"
+    ></textarea>
+    <div class="mt-2 flex justify-end">
+      <button
+        id="copyBtn"
+        class="bg-cotton-candy focus:shadow-outline w-1/7 rounded px-4 py-2 font-bold text-gray-600 hover:bg-[#fb9f9f] focus:outline-none"
+      >
+        Copy
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $("#jsonInput").on("input", function () {
+      this.style.height = "auto";
+      this.style.height = this.scrollHeight + "px";
+    });
+
+    $("#prettifyBtn").on("click", function () {
+      const jsonInput = $("#jsonInput").val();
+      try {
+        const parsedJson = JSON.parse(jsonInput);
+        const prettyJson = JSON.stringify(parsedJson, null, 4);
+        $("#jsonOutput").val(prettyJson);
+        $("#jsonOutput")
+          .css("height", "auto")
+          .css("height", $("#jsonOutput")[0].scrollHeight + "px");
+      } catch (error) {
+        $("#jsonOutput").val(`Error: Invalid JSON format\n${error.message}`);
+        $("#jsonOutput")
+          .css("height", "auto")
+          .css("height", $("#jsonOutput")[0].scrollHeight + "px");
+      }
+    });
+
+    $("#copyBtn").on("click", function () {
+      const jsonOutput = $("#jsonOutput").val();
+      navigator.clipboard
+        .writeText(jsonOutput)
+        .then(() => {
+          const originalText = $(this).text();
+          $(this).text("Copied!");
+          setTimeout(() => {
+            $(this).text(originalText);
+          }, 1500); // Đổi lại sau 1.5 giây
+        })
+        .catch((err) => {
+          console.error("Failed to copy text: ", err);
+          alert("Failed to copy text. Please try again.");
+        });
+    });
+
+    $("#jsonInput").trigger("input");
+  });
+</script>

@@ -1,0 +1,62 @@
+<div class="bg-cadilac text-pearl flex h-full flex-col gap-4 rounded-lg p-8">
+  <h1 class="mb-4 justify-center text-center text-3xl font-bold">
+    URI Components
+  </h1>
+  <p class="text-center text-balance">
+    Encode to and decode from percent-encoded URI components, to be used in
+    query items or paths in a URL.
+  </p>
+  <div class="mb-4">
+    <label for="inputURI" class="mb-2 block font-bold"
+      >Enter URI Component:</label
+    >
+    <input
+      type="text"
+      id="inputURI"
+      class="w-full rounded border px-3 py-2 text-white"
+      placeholder="Enter URI here"
+    />
+  </div>
+
+  <div class="grid grid-cols-1 gap-4">
+    <div>
+      <label for="encodedOutput" class="mb-2 block font-bold"
+        >Encoded Component:</label
+      >
+      <textarea
+        id="encodedOutput"
+        rows="3"
+        class="focus:shadow-outline w-full resize-none appearance-none rounded border bg-gray-50 px-3 py-2 leading-tight text-black shadow focus:outline-none"
+        placeholder="Encode result here"
+      ></textarea>
+    </div>
+
+    <div>
+      <label for="decodedOutput" class="mb-2 block font-bold"
+        >Decoded Component:</label
+      >
+      <textarea
+        id="decodedOutput"
+        rows="3"
+        class="focus:shadow-outline w-full resize-none appearance-none rounded border bg-gray-50 px-3 py-2 leading-tight text-black shadow focus:outline-none"
+        placeholder="Decode result here"
+      ></textarea>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    $("#inputURI").on("input", function () {
+      const inputURI = $(this).val();
+      const encodedURI = encodeURIComponent(inputURI);
+      let decodedURI = "";
+      try {
+        decodedURI = decodeURIComponent(inputURI);
+      } catch (error) {
+        decodedURI = `Error: ${error.message}`;
+      }
+      $("#encodedOutput").val(encodedURI);
+      $("#decodedOutput").val(decodedURI);
+    });
+  });
+</script>
