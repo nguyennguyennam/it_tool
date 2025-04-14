@@ -1,4 +1,4 @@
-<div class="bg-cadilac text-pearl flex h-full flex-col gap-4 rounded-lg p-8">
+<div class="flex h-full flex-col gap-4 rounded-lg p-8">
   <h1 class="mb-4 justify-center text-center text-3xl font-bold">
     Caesar Cyphor
   </h1>
@@ -13,7 +13,7 @@
   <textarea
     id="text_caesar"
     rows="5"
-    class="w-full rounded-lg border p-4 text-sm focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500"
+    class="focus:border-bashful focus:ring-bashful dark:focus:border-lavender dark:focus:ring-lavender w-full shrink-0 resize-none rounded-lg border p-4 text-sm outline-none focus:ring-4"
     placeholder="Enter text to here"
   ></textarea>
 
@@ -27,8 +27,6 @@
       <button
         type="button"
         id="decrement-button"
-        data-action="decrement"
-        data-input-counter-decrement="quantity-input"
         class="h-11 rounded-s-lg border border-gray-300 bg-gray-100 p-3 hover:bg-gray-200 focus:ring-2 focus:ring-gray-100 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700"
       >
         <svg
@@ -50,7 +48,6 @@
       <input
         type="text"
         id="quantity-input"
-        data-input-counter
         aria-describedby="helper-text-explanation"
         class="block h-11 w-full border-x-0 border-gray-300 bg-gray-50 py-2.5 text-center text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
         placeholder="0"
@@ -60,8 +57,6 @@
       <button
         type="button"
         id="increment-button"
-        data-action="increment"
-        data-input-counter-increment="quantity-input"
         class="h-11 rounded-e-lg border border-gray-300 bg-gray-100 p-3 hover:bg-gray-200 focus:ring-2 focus:ring-gray-100 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700"
       >
         <svg
@@ -137,34 +132,23 @@
       })
       .join("");
   }
-  function process(action) {
-    const current_val = $("#quantity-input").val();
-    console.log(current_val);
-    const new_val = parseInt(current_val) + (action == "increment" ? 1 : -1);
-    $("#quantity-input").val(new_val);
-    $("#quantity-input").trigger("input");
-  }
+
   $(document).ready(function () {
     $("#increment-button").on("click", function () {
-      process($(this).data("action"));
+      $("#quantity-input").val(Number($("#quantity-input").val()) + 1);
+      $("#quantity-input").trigger("input");
     });
 
     $("#decrement-button").on("click", function () {
-      process($(this).data("action"));
+      $("#quantity-input").val(Number($("#quantity-input").val()) - 1);
+      $("#quantity-input").trigger("input");
     });
   });
+
   $(document).ready(function () {
     // Initial generation on page load
     const initialResult = generateCypher();
     $("#generateCaesar").val(initialResult);
-
-    $("#increment-button").on("click", function () {
-      process($(this).data("action"));
-    });
-
-    $("#decrement-button").on("click", function () {
-      process($(this).data("action"));
-    });
 
     // Listen for changes in the text area
     $("#text_caesar").on("input", function () {

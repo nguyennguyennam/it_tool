@@ -13,10 +13,10 @@
 
 <div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
   <div
-    class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-700 py-4"
+    class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-300 py-4 dark:border-zinc-700"
   >
     <h1
-      class="from-cotton-candy to-cadillac bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+      class="from-cadillac to-bashful dark:from-cotton-candy dark:to-cadillac bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
     >
       BCrypt
     </h1>
@@ -28,7 +28,7 @@
   </div>
 
   <div
-    class="flex w-full flex-col gap-4 rounded-lg border-[1px] border-zinc-600 bg-zinc-700 p-6"
+    class="flex w-full flex-col gap-4 rounded-lg border-[1px] border-zinc-400 bg-zinc-300 p-6 dark:border-zinc-600 dark:bg-zinc-700"
   >
     <h2 class="text-cadillac text-xl font-semibold">Encrypt</h2>
 
@@ -37,7 +37,7 @@
       <input
         type="text"
         id="input-string"
-        class="focus:ring-cotton-candy hover:ring-cotton-candy/50 h-12 rounded-md bg-zinc-900 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50"
+        class="focus:ring-bashful hover:ring-bashful/50 dark:focus:ring-cotton-candy dark:hover:ring-cotton-candy/50 h-12 rounded-md bg-zinc-100 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50 dark:bg-zinc-900"
         placeholder="String to bcrypt"
         value="lunaluny"
       />
@@ -48,7 +48,7 @@
       <input
         type="number"
         id="input-salt"
-        class="focus:ring-cotton-candy hover:ring-cotton-candy/50 h-12 rounded-md bg-zinc-900 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50"
+        class="focus:ring-bashful hover:ring-bashful/50 dark:focus:ring-cotton-candy dark:hover:ring-cotton-candy/50 h-12 rounded-md bg-zinc-100 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50 dark:bg-zinc-900"
         placeholder="Salt length"
         value="10"
       />
@@ -56,17 +56,17 @@
 
     <button
       id="encrypt"
-      class="border-cotton-candy bg-cotton-candy hover:text-cotton-candy cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold text-black duration-200 hover:bg-transparent"
+      class="border-bashful bg-bashful hover:text-bashful dark:border-cotton-candy dark:bg-cotton-candy dark:hover:text-cotton-candy text-pearl cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold duration-200 hover:bg-transparent dark:text-black"
     >
       Encrypt
     </button>
 
-    <hr class="border-pearl my-4 w-full" />
+    <hr class="dark:border-pearl my-4 w-full border-zinc-500" />
 
     <div class="flex flex-col gap-2 font-semibold">
       Encrypted String
       <div
-        class="flex h-12 w-full items-center justify-between rounded-md bg-zinc-900 px-4 py-2 font-normal"
+        class="flex h-12 w-full items-center justify-between rounded-md bg-zinc-100 px-4 py-2 font-normal dark:bg-zinc-900"
       >
         <input
           type="text"
@@ -76,10 +76,10 @@
         />
         <button
           id="output-encrypt-copy"
-          class="fill-pearl hover:fill-pearl/50 group relative shrink-0 cursor-pointer!"
+          class="dark:fill-pearl dark:hover:fill-pearl/50 group relative shrink-0 cursor-pointer! fill-zinc-950 hover:fill-zinc-950/50"
         >
           <span
-            class="bg-pearl absolute bottom-0 left-1/2 z-10 hidden -translate-x-1/2 -translate-y-full items-center justify-center rounded-md px-4 py-2 font-semibold text-black uppercase group-hover:flex"
+            class="dark:bg-pearl text-pearl absolute bottom-0 left-1/2 z-10 hidden -translate-x-1/2 -translate-y-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-semibold uppercase group-hover:flex dark:text-black"
             >Copy</span
           >
 
@@ -98,7 +98,7 @@
   </div>
 
   <div
-    class="flex w-full flex-col gap-4 rounded-lg border-[1px] border-zinc-600 bg-zinc-700 p-6"
+    class="flex w-full flex-col gap-4 rounded-lg border-[1px] border-zinc-400 bg-zinc-300 p-6 dark:border-zinc-600 dark:bg-zinc-700"
   >
     <h2 class="text-cadillac text-xl font-semibold">Decrypt</h2>
 
@@ -107,7 +107,7 @@
       <input
         type="text"
         id="input-string-compare"
-        class="focus:ring-cotton-candy hover:ring-cotton-candy/50 h-12 rounded-md bg-zinc-900 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50"
+        class="focus:ring-bashful hover:ring-bashful/50 dark:focus:ring-cotton-candy dark:hover:ring-cotton-candy/50 h-12 rounded-md bg-zinc-100 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50 dark:bg-zinc-900"
         placeholder="String to compare"
         value="lunaluny"
       />
@@ -118,7 +118,7 @@
       <input
         type="text"
         id="input-hash-compare"
-        class="focus:ring-cotton-candy hover:ring-cotton-candy/50 h-12 rounded-md bg-zinc-900 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50"
+        class="focus:ring-bashful hover:ring-bashful/50 dark:focus:ring-cotton-candy dark:hover:ring-cotton-candy/50 h-12 rounded-md bg-zinc-100 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50 dark:bg-zinc-900"
         placeholder="Hash to compare"
         value="$2b$10$g1HmZzK2R967oIvJAYxrA.ceX91mzgHw8D9qsHkH4c.dERm075d7C"
       />
@@ -126,12 +126,12 @@
 
     <button
       id="decrypt"
-      class="border-cotton-candy bg-cotton-candy hover:text-cotton-candy cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold text-black duration-200 hover:bg-transparent"
+      class="border-bashful bg-bashful hover:text-bashful dark:border-cotton-candy dark:bg-cotton-candy dark:hover:text-cotton-candy text-pearl cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold duration-200 hover:bg-transparent dark:text-black"
     >
       Decrypt
     </button>
 
-    <hr class="border-pearl my-4 w-full" />
+    <hr class="dark:border-pearl my-4 w-full border-zinc-500" />
 
     <div class="flex flex-row items-baseline gap-4 font-semibold">
       <span class="font-normal">Result:</span>
@@ -163,13 +163,13 @@
       .then((result) => {
         if (result) {
           $("#output-decrypt")
-            .removeClass("text-rose-400")
-            .addClass("text-emerald-400")
+            .removeClass("text-rose-800 dark:text-rose-400")
+            .addClass("text-emerald-800 dark:text-emerald-400")
             .text("MATCHED!");
         } else {
           $("#output-decrypt")
-            .addClass("text-rose-400")
-            .removeClass("text-emerald-400")
+            .addClass("text-rose-800 dark:text-rose-400")
+            .removeClass("text-emerald-800 dark:text-emerald-400")
             .text("NOT MATCHED!");
         }
       });

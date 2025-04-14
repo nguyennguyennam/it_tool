@@ -1,11 +1,10 @@
 <style>
   textarea {
-    font-family: monospace;
-    min-height: 100px;
-    overflow: auto;
+    font-family: "Space Mono", monospace;
   }
 </style>
-<div class="bg-cadilac w-full max-w-3xl rounded-lg p-8 text-white shadow-md">
+
+<div class="w-full max-w-3xl rounded-lg p-8">
   <h1 class="mb-2 justify-center text-center text-3xl font-bold">
     JSON Prettifier
   </h1>
@@ -16,7 +15,8 @@
     <label for="jsonInput" class="mb-2 block font-bold">Enter JSON:</label>
     <textarea
       id="jsonInput"
-      class="focus:shadow-outline w-full resize-none rounded border px-3 py-2 leading-tight text-white focus:outline-none"
+      rows="3"
+      class="focus:shadow-outline dark:border-pearl min-h-full w-full resize-none rounded border border-zinc-400 px-3 py-2 leading-tight focus:outline-none"
       placeholder='{"name": "John Doe", "age": 30, "city": "New York"}'
     ></textarea>
   </div>
@@ -36,7 +36,8 @@
     >
     <textarea
       id="jsonOutput"
-      class="focus:shadow-outline w-full resize-none rounded border px-3 py-2 leading-tight text-white focus:outline-none"
+      rows="3"
+      class="focus:shadow-outline dark:border-pearl min-h-full w-full resize-none rounded border border-zinc-400 px-3 py-2 leading-tight focus:outline-none"
       readonly
       placeholder="Prettified JSON will appear here"
     ></textarea>
@@ -62,7 +63,7 @@
       const jsonInput = $("#jsonInput").val();
       try {
         const parsedJson = JSON.parse(jsonInput);
-        const prettyJson = JSON.stringify(parsedJson, null, 4);
+        const prettyJson = JSON.stringify(parsedJson, null, 2);
         $("#jsonOutput").val(prettyJson);
         $("#jsonOutput")
           .css("height", "auto")
