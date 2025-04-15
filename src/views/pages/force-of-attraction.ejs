@@ -1,0 +1,147 @@
+<style>
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  input::-webkit-inner-spin-button,
+  input::-webkit-outer-spin-button {
+    display: none;
+  }
+</style>
+
+<div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
+  <div
+    class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-700 py-4"
+  >
+    <h1
+      class="from-cadillac to-bashful dark:from-cotton-candy dark:to-cadillac bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+    >
+      Force of Attraction
+    </h1>
+
+    <p class="w-full">
+      Compute the force of attraction between two objects, measured in SI units
+      and assuming they are proper, well-formed on this Earth.
+    </p>
+  </div>
+
+  <div class="flex w-full flex-col gap-6 lg:grid lg:grid-cols-2">
+    <label class="flex w-full flex-col gap-2 text-sm font-semibold">
+      Object 1
+
+      <div
+        class="has-[:focus]:ring-bashful hover:ring-bashful/50 group dark:has-[:focus]:ring-cotton-candy dark:hover:ring-cotton-candy/50 flex w-full flex-row gap-2 rounded-xl border-2 border-zinc-300 ring-2 ring-transparent dark:border-zinc-700"
+      >
+        <input
+          type="number"
+          id="input-m1"
+          class="h-full w-full bg-transparent pl-4 outline-none"
+        />
+
+        <span
+          class="shrink-0 rounded-r-xl bg-zinc-300 px-4 py-2 dark:bg-zinc-700"
+          >kg</span
+        >
+      </div>
+    </label>
+
+    <label class="flex w-full flex-col gap-2 text-sm font-semibold">
+      Object 2
+
+      <div
+        class="has-[:focus]:ring-bashful hover:ring-bashful/50 group dark:has-[:focus]:ring-cotton-candy dark:hover:ring-cotton-candy/50 flex w-full flex-row gap-2 rounded-xl border-2 border-zinc-300 ring-2 ring-transparent dark:border-zinc-700"
+      >
+        <input
+          type="number"
+          id="input-m2"
+          class="h-full w-full bg-transparent pl-4 outline-none"
+        />
+
+        <span
+          class="shrink-0 rounded-r-xl bg-zinc-300 px-4 py-2 dark:bg-zinc-700"
+          >kg</span
+        >
+      </div>
+    </label>
+
+    <label class="flex w-full flex-col gap-2 text-sm font-semibold">
+      Distance
+
+      <div
+        class="has-[:focus]:ring-bashful hover:ring-bashful/50 group dark:has-[:focus]:ring-cotton-candy dark:hover:ring-cotton-candy/50 flex w-full flex-row gap-2 rounded-xl border-2 border-zinc-300 ring-2 ring-transparent dark:border-zinc-700"
+      >
+        <input
+          type="number"
+          id="input-d"
+          class="h-full w-full bg-transparent pl-4 outline-none"
+        />
+
+        <span
+          class="shrink-0 rounded-r-xl bg-zinc-300 px-4 py-2 dark:bg-zinc-700"
+          >m</span
+        >
+      </div>
+    </label>
+
+    <label class="flex w-full flex-col gap-2 text-sm font-semibold">
+      Gravitational Constant
+
+      <div
+        class="flex w-full flex-row gap-2 rounded-xl border-2 border-zinc-300 ring-2 ring-transparent hover:cursor-not-allowed dark:border-zinc-700"
+      >
+        <input
+          type="number"
+          class="h-full w-full bg-transparent pl-4 outline-none hover:cursor-not-allowed"
+          id="input-g"
+          readonly
+          value="6.67E-11"
+        />
+
+        <span
+          class="shrink-0 rounded-r-xl bg-zinc-300 px-4 py-2 dark:bg-zinc-700"
+          >Nm^2/kg^2</span
+        >
+      </div>
+    </label>
+
+    <label
+      class="mt-4 flex w-full flex-col gap-2 text-sm font-semibold lg:col-span-2"
+    >
+      Force
+
+      <div
+        class="flex w-full flex-row gap-2 rounded-xl border-2 border-zinc-300 ring-2 ring-transparent hover:cursor-not-allowed dark:border-zinc-700"
+      >
+        <input
+          type="number"
+          class="h-full w-full bg-transparent pl-4 outline-none hover:cursor-not-allowed"
+          id="output-f"
+          readonly
+          placeholder="Force of attraction"
+        />
+
+        <span
+          class="shrink-0 rounded-r-xl bg-zinc-300 px-4 py-2 dark:bg-zinc-700"
+          >N</span
+        >
+      </div>
+    </label>
+  </div>
+
+  <button
+    id="calc"
+    class="border-bashful bg-bashful hover:text-bashful dark:border-cotton-candy dark:bg-cotton-candy dark:hover:text-cotton-candy text-pearl cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold duration-200 hover:bg-transparent dark:text-black"
+  >
+    Calculate
+  </button>
+</div>
+
+<script defer>
+  $("#calc").click(() => {
+    const m1 = Number($("#input-m1").val());
+    const m2 = Number($("#input-m2").val());
+    const g = Number($("#input-g").val());
+    const d = Number($("#input-d").val());
+    $("#output-f").val((g * m1 * m2) / (d * d));
+  });
+</script>

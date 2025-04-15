@@ -1,0 +1,104 @@
+<style>
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  input::-webkit-inner-spin-button,
+  input::-webkit-outer-spin-button {
+    display: none;
+  }
+</style>
+
+<div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
+  <div
+    class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-700 py-4"
+  >
+    <h1
+      class="from-cadillac to-bashful dark:from-cotton-candy dark:to-cadillac bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+    >
+      Relativity
+    </h1>
+
+    <p class="w-full">
+      Calculate the velocity of an object, given parameters about its velocity
+      according to different objects.
+    </p>
+  </div>
+
+  <div class="flex w-full flex-col gap-6 lg:grid lg:grid-cols-2">
+    <label class="flex w-full flex-col gap-2 text-sm font-semibold">
+      Velocity of A
+
+      <div
+        class="has-[:focus]:ring-bashful hover:ring-bashful/50 group dark:has-[:focus]:ring-cotton-candy dark:hover:ring-cotton-candy/50 flex w-full flex-row gap-2 rounded-xl border-2 border-zinc-300 ring-2 ring-transparent dark:border-zinc-700"
+      >
+        <input
+          type="number"
+          id="input-v"
+          class="h-full w-full bg-transparent pl-4 outline-none"
+        />
+
+        <span
+          class="shrink-0 rounded-r-xl bg-zinc-300 px-4 py-2 dark:bg-zinc-700"
+          >c</span
+        >
+      </div>
+    </label>
+
+    <label class="flex w-full flex-col gap-2 text-sm font-semibold">
+      Velocity of B to A
+
+      <div
+        class="has-[:focus]:ring-bashful hover:ring-bashful/50 group dark:has-[:focus]:ring-cotton-candy dark:hover:ring-cotton-candy/50 flex w-full flex-row gap-2 rounded-xl border-2 border-zinc-300 ring-2 ring-transparent dark:border-zinc-700"
+      >
+        <input
+          type="number"
+          id="input-u1"
+          class="h-full w-full bg-transparent pl-4 outline-none"
+        />
+
+        <span
+          class="shrink-0 rounded-r-xl bg-zinc-300 px-4 py-2 dark:bg-zinc-700"
+          >c</span
+        >
+      </div>
+    </label>
+
+    <label
+      class="mt-4 flex w-full flex-col gap-2 text-sm font-semibold lg:col-span-2"
+    >
+      Velocity of B
+
+      <div
+        class="has-[:focus]:ring-bashful hover:ring-bashful/50 group dark:has-[:focus]:ring-cotton-candy dark:hover:ring-cotton-candy/50 flex w-full flex-row gap-2 rounded-xl border-2 border-zinc-300 ring-2 ring-transparent dark:border-zinc-700"
+      >
+        <input
+          type="number"
+          id="output-u"
+          class="h-full w-full bg-transparent pl-4 outline-none"
+        />
+
+        <span
+          class="shrink-0 rounded-r-xl bg-zinc-300 px-4 py-2 dark:bg-zinc-700"
+          >c</span
+        >
+      </div>
+    </label>
+  </div>
+
+  <button
+    id="calc"
+    class="border-bashful bg-bashful hover:text-bashful dark:border-cotton-candy dark:bg-cotton-candy dark:hover:text-cotton-candy text-pearl cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold duration-200 hover:bg-transparent dark:text-black"
+  >
+    Calculate
+  </button>
+</div>
+
+<script defer>
+  $("#calc").click(() => {
+    const v = Number($("#input-v").val());
+    const u1 = Number($("#input-u1").val());
+
+    $("#output-u").val((v + u1) / (1 + v * u1));
+  });
+</script>

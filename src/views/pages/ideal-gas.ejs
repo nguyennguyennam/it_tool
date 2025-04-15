@@ -1,0 +1,156 @@
+<style>
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  input::-webkit-inner-spin-button,
+  input::-webkit-outer-spin-button {
+    display: none;
+  }
+</style>
+
+<div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
+  <div
+    class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-700 py-4"
+  >
+    <h1
+      class="from-cadillac to-bashful dark:from-cotton-candy dark:to-cadillac bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+    >
+      Ideal Gas
+    </h1>
+
+    <p class="w-full">
+      Compute the missing component of the Ideal Gas formula.
+    </p>
+  </div>
+
+  <div class="flex w-full flex-col gap-6 lg:grid lg:grid-cols-2">
+    <label class="flex w-full flex-col gap-2 text-sm font-semibold">
+      Absolute pressure
+
+      <div
+        class="has-[:focus]:ring-bashful hover:ring-bashful/50 group dark:has-[:focus]:ring-cotton-candy dark:hover:ring-cotton-candy/50 flex w-full flex-row gap-2 rounded-xl border-2 border-zinc-300 ring-2 ring-transparent dark:border-zinc-700"
+      >
+        <input
+          type="number"
+          id="input-p"
+          class="h-full w-full bg-transparent pl-4 outline-none"
+        />
+
+        <span
+          class="shrink-0 rounded-r-xl bg-zinc-300 px-4 py-2 dark:bg-zinc-700"
+          >Pa</span
+        >
+      </div>
+    </label>
+
+    <label class="flex w-full flex-col gap-2 text-sm font-semibold">
+      Volume
+
+      <div
+        class="has-[:focus]:ring-bashful hover:ring-bashful/50 group dark:has-[:focus]:ring-cotton-candy dark:hover:ring-cotton-candy/50 flex w-full flex-row gap-2 rounded-xl border-2 border-zinc-300 ring-2 ring-transparent dark:border-zinc-700"
+      >
+        <input
+          type="number"
+          id="input-v"
+          class="h-full w-full bg-transparent pl-4 outline-none"
+        />
+
+        <span
+          class="shrink-0 rounded-r-xl bg-zinc-300 px-4 py-2 dark:bg-zinc-700"
+          >m^3</span
+        >
+      </div>
+    </label>
+
+    <label class="flex w-full flex-col gap-2 text-sm font-semibold">
+      Moles
+
+      <div
+        class="has-[:focus]:ring-bashful hover:ring-bashful/50 group dark:has-[:focus]:ring-cotton-candy dark:hover:ring-cotton-candy/50 flex w-full flex-row gap-2 rounded-xl border-2 border-zinc-300 ring-2 ring-transparent dark:border-zinc-700"
+      >
+        <input
+          type="number"
+          id="input-n"
+          class="h-full w-full bg-transparent pl-4 outline-none"
+        />
+
+        <span
+          class="shrink-0 rounded-r-xl bg-zinc-300 px-4 py-2 dark:bg-zinc-700"
+          >mol</span
+        >
+      </div>
+    </label>
+
+    <label class="flex w-full flex-col gap-2 text-sm font-semibold">
+      Perfect Gas Constant
+
+      <div
+        class="flex w-full flex-row gap-2 rounded-xl border-2 border-zinc-300 ring-2 ring-transparent hover:cursor-not-allowed dark:border-zinc-700"
+      >
+        <input
+          type="number"
+          class="h-full w-full bg-transparent pl-4 outline-none hover:cursor-not-allowed"
+          id="input-r"
+          readonly
+          value="8.314"
+        />
+
+        <span
+          class="shrink-0 rounded-r-xl bg-zinc-300 px-4 py-2 dark:bg-zinc-700"
+          >J/(mol*K)</span
+        >
+      </div>
+    </label>
+
+    <label
+      class="flex w-full flex-col gap-2 text-sm font-semibold lg:col-span-2"
+    >
+      Temperature
+
+      <div
+        class="has-[:focus]:ring-bashful hover:ring-bashful/50 group dark:has-[:focus]:ring-cotton-candy dark:hover:ring-cotton-candy/50 flex w-full flex-row gap-2 rounded-xl border-2 border-zinc-300 ring-2 ring-transparent dark:border-zinc-700"
+      >
+        <input
+          type="number"
+          id="input-t"
+          class="h-full w-full bg-transparent pl-4 outline-none"
+        />
+
+        <span
+          class="shrink-0 rounded-r-xl bg-zinc-300 px-4 py-2 dark:bg-zinc-700"
+          >K</span
+        >
+      </div>
+    </label>
+  </div>
+
+  <button
+    id="calc"
+    class="border-bashful bg-bashful hover:text-bashful dark:border-cotton-candy dark:bg-cotton-candy dark:hover:text-cotton-candy text-pearl cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold duration-200 hover:bg-transparent dark:text-black"
+  >
+    Calculate
+  </button>
+</div>
+
+<script defer>
+  $("#calc").click(() => {
+    const p = Number($("#input-p").val());
+    const v = Number($("#input-v").val());
+    const n = Number($("#input-n").val());
+    const r = Number($("#input-r").val());
+    const t = Number($("#input-t").val());
+
+    console.log(p, v, n, r, t);
+
+    if (!p) {
+      $("#input-p").val((n * r * t) / v);
+    } else if (!v) {
+      $("#input-v").val((n * r * t) / p);
+    } else if (!n) {
+      $("#input-n").val((p * v) / (r * t));
+    } else {
+      $("#input-t").val((p * v) / (n * r));
+    }
+  });
+</script>
