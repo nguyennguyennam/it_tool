@@ -1,0 +1,79 @@
+    <div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8 p-8">
+        <h1
+            class="from-cadillac to-bashful dark:from-cotton-candy dark:to-cadillac bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent">
+            Flexbox Tool
+        </h1>
+
+        <div class="w-full">
+            <div class="mb-4">
+                <label for="orderInput" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Order:</label>
+                <input type="text" id="orderInput" value="1"
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 bg-white placeholder-gray-700 dark:placeholder-white dark:border-gray-700">
+            </div>
+
+            <div class="mb-4">
+                <label for="flexGrowInput" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Flex-grow:</label>
+                <input type="text" id="flexGrowInput" value="1"
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 bg-white placeholder-gray-700 dark:placeholder-white dark:border-gray-700">
+            </div>
+
+            <div class="mb-4">
+                <label for="flexShrinkInput" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Flex-shrink:</label>
+                <input type="text" id="flexShrinkInput" value="1"
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 bg-white placeholder-gray-700 dark:placeholder-white dark:border-gray-700">
+            </div>
+
+            <div class="mb-4">
+                <label for="flexBasisInput" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Flex-basis:</label>
+                <input type="text" id="flexBasisInput" value="auto"
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 bg-white placeholder-gray-700 dark:placeholder-white dark:border-gray-700">
+            </div>
+
+            <div class="mb-4">
+                <label for="alignSelfInput" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Align-self:</label>
+                <input type="text" id="alignSelfInput" value="auto"
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 bg-white placeholder-gray-700 dark:placeholder-white dark:border-gray-700">
+            </div>
+
+            <div class="mt-6 text-center">
+                <button id="generateBtn"
+                    class="px-6 py-2 text-white rounded-lg transition cursor-pointer bg-gradient-to-r from-cadillac to-bashful hover:opacity-90 dark:from-cotton-candy dark:to-cadillac">
+                    Generate CSS
+                </button>
+            </div>
+
+            <div id="result" class="space-y-4 mt-6"></div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#generateBtn').click(function () {
+                var order = $('#orderInput').val().trim();
+                var flexGrow = $('#flexGrowInput').val().trim();
+                var flexShrink = $('#flexShrinkInput').val().trim();
+                var flexBasis = $('#flexBasisInput').val().trim();
+                var alignSelf = $('#alignSelfInput').val().trim();
+
+                var resultDiv = $('#result');
+                resultDiv.empty();
+
+                var cssCode = `
+                .flex-item {
+                    order: ${order};
+                    flex-grow: ${flexGrow};
+                    flex-shrink: ${flexShrink};
+                    flex-basis: ${flexBasis};
+                    align-self: ${alignSelf};
+                }
+                `;
+
+                resultDiv.html(`
+                    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+                        <p class="font-semibold text-gray-700 dark:text-gray-300">Generated CSS:</p>
+                        <pre class="text-lg font-mono text-gray-900 dark:text-white">${cssCode}</pre>
+                    </div>
+                `);
+            });
+        });
+    </script>
