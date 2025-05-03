@@ -1,79 +1,78 @@
-    <div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8 p-8">
-        <h1
-            class="from-cadillac to-bashful dark:from-cotton-candy dark:to-cadillac bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent">
-            Flexbox Tool
-        </h1>
+<div class="flex w-full max-w-4xl flex-col items-center justify-center">
+    <h1
+        class="from-cadillac to-bashful dark:from-cotton-candy dark:to-cadillac">
+        Sequence Tool
+    </h1>
 
-        <div class="w-full">
-            <div class="mb-4">
-                <label for="orderInput" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Order:</label>
-                <input type="text" id="orderInput" value="1"
-                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 bg-white placeholder-gray-700 dark:placeholder-white dark:border-gray-700">
-            </div>
-
-            <div class="mb-4">
-                <label for="flexGrowInput" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Flex-grow:</label>
-                <input type="text" id="flexGrowInput" value="1"
-                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 bg-white placeholder-gray-700 dark:placeholder-white dark:border-gray-700">
-            </div>
-
-            <div class="mb-4">
-                <label for="flexShrinkInput" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Flex-shrink:</label>
-                <input type="text" id="flexShrinkInput" value="1"
-                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 bg-white placeholder-gray-700 dark:placeholder-white dark:border-gray-700">
-            </div>
-
-            <div class="mb-4">
-                <label for="flexBasisInput" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Flex-basis:</label>
-                <input type="text" id="flexBasisInput" value="auto"
-                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 bg-white placeholder-gray-700 dark:placeholder-white dark:border-gray-700">
-            </div>
-
-            <div class="mb-4">
-                <label for="alignSelfInput" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Align-self:</label>
-                <input type="text" id="alignSelfInput" value="auto"
-                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 bg-white placeholder-gray-700 dark:placeholder-white dark:border-gray-700">
-            </div>
-
-            <div class="mt-6 text-center">
-                <button id="generateBtn"
-                    class="px-6 py-2 text-white rounded-lg transition cursor-pointer bg-gradient-to-r from-cadillac to-bashful hover:opacity-90 dark:from-cotton-candy dark:to-cadillac">
-                    Generate CSS
-                </button>
-            </div>
-
-            <div id="result" class="space-y-4 mt-6"></div>
+    <div class="w-full">
+        <div class="mb-3">
+            <label for="typeSelect" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Type:</label>
+            <select id="typeSelect"
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 bg-white dark:text-white dark:border-gray-700">
+                <option value="arithmetic">Arithmetic</option>
+                <option value="geometric">Geometric</option>
+            </select>
         </div>
+
+        <div class="mb-6">
+            <label for="startInput" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Start:</label>
+            <input type="number" id="startInput" value="1"
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 bg-white placeholder-gray-700 dark:placeholder-white dark:border-gray-700">
+        </div>
+
+        <div class="mb-6">
+            <label for="stepInput" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Step / Ratio:</label>
+            <input type="number" id="stepInput" value="2"
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 bg-white placeholder-gray-700 dark:placeholder-white dark:border-gray-700">
+        </div>
+
+        <div class="mb-6">
+            <label for="lengthInput" class="block text-gray-700 dark:text-gray-300 font-medium mb-2">Length:</label>
+            <input type="number" id="lengthInput" value="5"
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 bg-white placeholder-gray-700 dark:placeholder-white dark:border-gray-700">
+        </div>
+
+        <div class="mt-8 text-center">
+            <button id="generateSequenceBtn"
+                class="px-8 py-3 text-lg text-white rounded-lg transition cursor-pointer bg-gradient-to-r from-cadillac to-bashful hover:opacity-90 dark:from-cotton-candy dark:to-cadillac focus:outline-none focus:ring-4 focus:ring-blue-500 dark:focus:ring-blue-800">
+                Generate Sequence
+            </button>
+        </div>
+
+        <div id="sequenceResult" class="space-y-4 mt-8"></div>
     </div>
+</div>
 
-    <script>
-        $(document).ready(function () {
-            $('#generateBtn').click(function () {
-                var order = $('#orderInput').val().trim();
-                var flexGrow = $('#flexGrowInput').val().trim();
-                var flexShrink = $('#flexShrinkInput').val().trim();
-                var flexBasis = $('#flexBasisInput').val().trim();
-                var alignSelf = $('#alignSelfInput').val().trim();
+<script>
+    $(document).ready(function () {
+        $('#generateSequenceBtn').click(function () {
+            const type = $('#typeSelect').val();
+            const start = parseFloat($('#startInput').val().trim());
+            const step = parseFloat($('#stepInput').val().trim());
+            const length = parseInt($('#lengthInput').val().trim());
+            let sequence = [];
 
-                var resultDiv = $('#result');
-                resultDiv.empty();
+            if (isNaN(start) || isNaN(step) || isNaN(length) || length <= 0) {
+                $('#sequenceResult').html(`<p class="text-red-500 font-semibold">Please enter valid numbers.</p>`);
+                return;
+            }
 
-                var cssCode = `
-                .flex-item {
-                    order: ${order};
-                    flex-grow: ${flexGrow};
-                    flex-shrink: ${flexShrink};
-                    flex-basis: ${flexBasis};
-                    align-self: ${alignSelf};
+            if (type === "arithmetic") {
+                for (let i = 0; i < length; i++) {
+                    sequence.push(start + i * step);
                 }
-                `;
+            } else if (type === "geometric") {
+                for (let i = 0; i < length; i++) {
+                    sequence.push(start * Math.pow(step, i));
+                }
+            }
 
-                resultDiv.html(`
-                    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
-                        <p class="font-semibold text-gray-700 dark:text-gray-300">Generated CSS:</p>
-                        <pre class="text-lg font-mono text-gray-900 dark:text-white">${cssCode}</pre>
-                    </div>
-                `);
-            });
+            $('#sequenceResult').html(`
+                <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-inner">
+                    <p class="font-semibold text-gray-700 dark:text-gray-300 mb-2">Generated Sequence:</p>
+                    <pre class="text-lg font-mono text-gray-900 dark:text-white">${sequence.join(", ")}</pre>
+                </div>
+            `);
         });
-    </script>
+    });
+</script>

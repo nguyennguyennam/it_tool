@@ -1,0 +1,143 @@
+<div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
+    <div
+        class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-700 py-4"
+    >
+        <h1
+            class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+        >
+            Weather Checker
+        </h1>
+
+        <p class="w-full text-gray-600 dark:text-gray-400">
+            Enter a city name to get the current weather information.
+        </p>
+    </div>
+    <div class="flex flex-col gap-3 w-full items-start">
+        <label for="city_name" class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-xl font-semibold text-transparent">City Name: (Type city name here)</label>
+        <input id="city_name" type="text" class="bg-pearl border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-zinc-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g., Ho Chi Minh City">
+    </div>
+    <div class="w-full">
+        <button id="weatherButton" class="w-full py-3 rounded-md bg-gradient-to-r from-cadillac to-bashful text-white text-xl font-semibold hover:shadow-md focus:outline-none">
+            Check Weather!
+        </button>
+    </div>
+
+    <div id="weather-details-container" class="flex w-full flex-col items-center mt-8 rounded-md bg-zinc-200 dark:bg-zinc-700 p-6 shadow-md" style="display: none;">
+        <h2 id="weather-day" class="font-semibold dark:text-cotton-candy text-xl text-center"></h2>
+        <p id="weather-city" class="dark:text-bashful text-lg text-center"></p>
+        <div class="flex items-center justify-center mt-2">
+            <img id="weather-icon" src="" alt="Weather Icon" class="w-20 h-20">
+            <p id="weather-temperature" class="dark:text-bashful text-3xl font-bold ml-4"></p>
+        </div>
+        <p id="weather-description" class="dark:text-bashful text-lg text-center mt-2"></p>
+        <div class="flex items-center justify-center gap-4 mt-4">
+            <div class="flex flex-col items-center">
+                <span class="font-semibold dark:text-pearl">Humidity:</span>
+                <p id="weather-humidity" class="dark:text-bashful"></p>
+            </div>
+            <div class="flex flex-col items-center">
+                <span class="font-semibold dark:text-pearl">Wind:</span>
+                <p id="weather-wind-speed" class="dark:text-bashful"></p>
+            </div>
+            <div class="flex flex-col items-center">
+                <span class="font-semibold dark:text-pearl">Feels Like:</span>
+                <p id="weather-feels-like" class="dark:text-bashful"></p>
+            </div>
+        </div>
+    </div>
+    <div id="no-weather-container" class="flex w-full flex-col gap-4 items-center mt-8" style="display: none;">
+        <h2 class="font-semibold dark:text-cotton-candy">No Weather Found</h2>
+        <p id="no-weather-message" class="dark:text-bashful">Could not retrieve weather information for the specified city.</p>
+    </div>
+    <div id="weather-error-container" class="flex w-full flex-col gap-4 items-center mt-8" style="display: none;">
+        <h2 class="font-semibold text-red-500 dark:text-red-400">Error</h2>
+        <p id="weather-error-message" class="text-red-500 dark:text-red-400">An error occurred while fetching weather data.</p>
+    </div>
+    <div id="weather-loading-container" class="flex w-full flex-col gap-4 items-center mt-8" style="display: none;">
+        <h2 class="font-semibold dark:text-cotton-candy">Loading</h2>
+        <p id="weather-loading-message" class="dark:text-bashful">Fetching weather information...</p>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        const cityNameInput = $("#city_name");
+        const weatherButton = $("#weatherButton");
+        const weatherDetailsContainer = $("#weather-details-container");
+        const weatherDay = $("#weather-day");
+        const weatherCity = $("#weather-city");
+        const weatherTemperature = $("#weather-temperature");
+        const weatherFeelsLike = $("#weather-feels-like");
+        const weatherDescription = $("#weather-description");
+        const weatherHumidity = $("#weather-humidity");
+        const weatherWindSpeed = $("#weather-wind-speed");
+        const weatherIcon = $("#weather-icon");
+        const noWeatherContainer = $("#no-weather-container");
+        const weatherErrorContainer = $("#weather-error-container");
+        const weatherLoadingContainer = $("#weather-loading-container");
+
+        weatherDetailsContainer.hide();
+        noWeatherContainer.hide();
+        weatherErrorContainer.hide();
+
+        weatherButton.on("click", function () {
+            const city = cityNameInput.val().trim();
+            if (city) {
+                fetchWeather(city);
+            } else {
+                alert("Please enter a city name.");
+            }
+        });
+
+        cityNameInput.on("keypress", function (event) {
+            if (event.key === "Enter") {
+                weatherButton.click();
+            }
+        });
+
+        function fetchWeather(city) {
+            weatherLoadingContainer.show();
+            weatherDetailsContainer.hide();
+            noWeatherContainer.hide();
+            weatherErrorContainer.hide();
+
+            const apiKey = '8cb16da53f5ebefa93ffb1723a34a7d1';
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
+
+            $.ajax({
+                url: apiUrl,
+                method: 'GET',
+                success: function (data) {
+                    weatherLoadingContainer.hide();
+                    if (data) {
+                        displayWeather(data);
+                        weatherDetailsContainer.show();
+                    } else {
+                        noWeatherContainer.show();
+                    }
+                },
+                error: function (error) {
+                    weatherLoadingContainer.hide();
+                    weatherErrorContainer.show();
+                    console.error("Error fetching weather:", error);
+                }
+            });
+        }
+
+        function displayWeather(data) {
+            const date = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            weatherDay.text(date.toLocaleDateString('en-US', options));
+            weatherCity.text(`${data.name}, ${data.sys?.country || 'N/A'}`);
+            weatherTemperature.text(data.main?.temp ? `${Math.round(data.main.temp)}°C` : 'N/A');
+            weatherFeelsLike.text(data.main?.feels_like ? `Feels like ${Math.round(data.main.feels_like)}°C` : 'N/A');
+            weatherDescription.text(data.weather?.[0]?.description || 'N/A');
+            weatherHumidity.text(data.main?.humidity ? `${data.main.humidity}%` : 'N/A');
+            weatherWindSpeed.text(data.wind?.speed ? `${data.wind.speed} m/s` : 'N/A');
+            const iconCode = data.weather?.[0]?.icon;
+            const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+            weatherIcon.attr('src', iconUrl || '');
+            weatherIcon.attr('alt', data.weather?.[0]?.description || 'Weather Icon');
+        }
+    });
+</script>

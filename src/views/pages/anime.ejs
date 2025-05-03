@@ -1,0 +1,163 @@
+<div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
+    <div
+        class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-700 py-4"
+    >
+        <h1
+            class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+        >
+            Anime Discovery
+        </h1>
+
+        <p class="w-full text-gray-600 dark:text-gray-400">
+            Look up a categorized list of anime, curated over 10 years. Maybe your next waifu or husbando is here.
+        </p>
+    </div>
+    <div class="flex flex-col gap-3 w-full items-start">
+        <label for="film_name" class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-xl font-semibold text-transparent">Movie name: (Type your movie name here)</label>
+        <input id="film_name" type="text" class="bg-pearl border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-zinc-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g., Attack on Titan">
+    </div>
+    <div class="w-full">
+        <button id="drawButton" class="w-full py-3 rounded-md bg-gradient-to-r from-cadillac to-bashful text-white text-xl font-semibold hover:shadow-md focus:outline-none">
+            Select your movie!
+        </button>
+    </div>
+
+    <div id="anime-details-container" class="flex w-full flex-col gap-4 items-start mt-8 rounded-md bg-zinc-200 dark:bg-zinc-700 p-6 shadow-md" style="display: none;">
+        <h2 class="font-semibold dark:text-cotton-candy text-xl">Anime Details</h2>
+        <div class="flex flex-col gap-2 w-full">
+            <label class="font-semibold dark:text-pearl">Title:</label>
+            <p id="anime-title" class="dark:text-bashful"></p>
+        </div>
+        <div class="flex flex-col gap-2 w-full">
+            <label class="font-semibold dark:text-pearl">Japanese Title:</label>
+            <p id="anime-title-japanese" class="dark:text-bashful"></p>
+        </div>
+        <div class="flex flex-col gap-2 w-full">
+            <label class="font-semibold dark:text-pearl">Type:</label>
+            <p id="anime-type" class="dark:text-bashful"></p>
+        </div>
+        <div class="flex flex-col gap-2 w-full">
+            <label class="font-semibold dark:text-pearl">Episodes:</label>
+            <p id="anime-episodes" class="dark:text-bashful"></p>
+        </div>
+        <div class="flex flex-col gap-2 w-full">
+            <label class="font-semibold dark:text-pearl">Status:</label>
+            <p id="anime-status" class="dark:text-bashful"></p>
+        </div>
+        <div class="flex flex-col gap-2 w-full">
+            <label class="font-semibold dark:text-pearl">Aired:</label>
+            <p id="anime-aired" class="dark:text-bashful"></p>
+        </div>
+        <div class="flex flex-col gap-2 w-full">
+            <label class="font-semibold dark:text-pearl">Rating:</label>
+            <p id="anime-rating" class="dark:text-bashful"></p>
+        </div>
+        <div class="flex flex-col gap-2 w-full">
+            <label class="font-semibold dark:text-pearl">Score:</label>
+            <p id="anime-score" class="dark:text-bashful"></p>
+        </div>
+        <div class="flex flex-col gap-2 w-full">
+            <label class="font-semibold dark:text-pearl">Synopsis:</label>
+            <p id="anime-synopsis" class="dark:text-bashful"></p>
+        </div>
+        <div class="flex flex-col gap-2 w-full">
+            <label class="font-semibold dark:text-pearl">Image:</label>
+            <img id="anime-image" src="" alt="Anime Image" class="max-w-full h-auto rounded shadow">
+        </div>
+    </div>
+    <div id="no-results-container" class="flex w-full flex-col gap-4 items-center mt-8" style="display: none;">
+        <h2 class="font-semibold dark:text-cotton-candy">No Results Found</h2>
+        <p id="no-results-message" class="dark:text-bashful">No anime found matching your query.</p>
+    </div>
+    <div id="error-container" class="flex w-full flex-col gap-4 items-center mt-8" style="display: none;">
+        <h2 class="font-semibold text-red-500 dark:text-red-400">Error</h2>
+        <p id="error-message" class="text-red-500 dark:text-red-400">An error occurred during the search.</p>
+    </div>
+    <div id="loading-container" class="flex w-full flex-col gap-4 items-center mt-8" style="display: none;">
+        <h2 class="font-semibold dark:text-cotton-candy">Loading</h2>
+        <p id="loading-message" class="dark:text-bashful">Searching for anime information...</p>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        const filmNameInput = $("#film_name");
+        const drawButton = $("#drawButton");
+        const animeDetailsContainer = $("#anime-details-container");
+        const animeTitle = $("#anime-title");
+        const animeTitleJapanese = $("#anime-title-japanese");
+        const animeType = $("#anime-type");
+        const animeEpisodes = $("#anime-episodes");
+        const animeStatus = $("#anime-status");
+        const animeAired = $("#anime-aired");
+        const animeRating = $("#anime-rating");
+        const animeScore = $("#anime-score");
+        const animeSynopsis = $("#anime-synopsis");
+        const animeImage = $("#anime-image");
+        const noResultsContainer = $("#no-results-container");
+        const errorContainer = $("#error-container");
+        const loadingContainer = $("#loading-container");
+
+        animeDetailsContainer.hide();
+        noResultsContainer.hide();
+        errorContainer.hide();
+
+        drawButton.on("click", function () {
+            const query = filmNameInput.val().trim();
+            if (query) {
+                performSearch(query);
+            } else {
+                alert("Please enter an anime name.");
+            }
+        });
+
+        filmNameInput.on("keypress", function (event) {
+            if (event.key === "Enter") {
+                drawButton.click();
+            }
+        });
+
+        function performSearch(query) {
+            loadingContainer.show();
+            animeDetailsContainer.hide();
+            noResultsContainer.hide();
+            errorContainer.hide();
+
+            const apiUrl = `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}`;
+
+            $.ajax({
+                url: apiUrl,
+                method: 'GET',
+                success: function (data) {
+                    loadingContainer.hide();
+                    if (data.data && data.data.length > 0) {
+                        const firstAnime = data.data[0];
+                        displayAnimeDetails(firstAnime);
+                        animeDetailsContainer.show();
+                    } else {
+                        noResultsContainer.show();
+                    }
+                },
+                error: function (error) {
+                    loadingContainer.hide();
+                    errorContainer.show();
+                    console.error("Error searching anime:", error);
+                }
+            });
+        }
+
+        function displayAnimeDetails(anime) {
+            animeTitle.text(anime.title || 'N/A');
+            animeTitleJapanese.text(anime.title_japanese || 'N/A');
+            animeType.text(anime.type || 'N/A');
+            animeEpisodes.text(anime.episodes || 'N/A');
+            animeStatus.text(anime.status || 'N/A');
+            animeAired.text(anime.aired?.string || 'N/A');
+            animeRating.text(anime.rating || 'N/A');
+            animeScore.text(anime.score || 'N/A');
+            animeSynopsis.text(anime.synopsis || 'N/A');
+            animeImage.attr('src', anime.images?.jpg?.image_url || '');
+            animeImage.attr('alt', anime.title || 'Anime Image');
+        }
+    });
+</script>
