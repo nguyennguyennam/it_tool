@@ -1,0 +1,238 @@
+<div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
+    <div
+        class="flex w-full flex-col text-center gap-2"
+    >
+        <h1
+            class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+        >
+            Image Mask
+        </h1>
+
+        <p class="w-full text-gray-600 dark:text-gray-400">
+            Select an image and choose a mask shape to crop the image.
+        </p>
+    </div>
+    <div class="flex flex-col gap-3 w-full items-start">
+        <label for="target_image" class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-xl font-semibold text-transparent">Image:</label>
+        <div class="relative w-full">
+            <input id="target_image" type="file" class="peer bg-pearl border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-zinc-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" accept="image/*">
+            <label id="target_image_label" class="absolute top-1/2 left-2 -translate-y-1/2 text-gray-500 peer-focus:text-blue-500 peer-placeholder-shown:block hidden dark:text-gray-400">Choose file</label>
+        </div>
+    </div>
+    <div class="flex flex-col gap-3 w-full items-start">
+        <label for="mask_shape" class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-xl font-semibold text-transparent">Mask Shape:</label>
+        <select id="mask_shape" class="bg-pearl border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-zinc-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <option value="rect">Rectangle</option>
+            <option value="circle">Circle</option>
+            <option value="ellipse">Ellipse</option>
+            </select>
+    </div>
+    <div class="w-full mt-4">
+        <canvas id="preview_canvas" width="300" height="200" class="border border-gray-400 rounded-md"></canvas>
+    </div>
+    <div class="w-full mt-6">
+        <button id="apply_mask_button" class="w-full py-3 cursor-pointer rounded-md bg-gradient-to-r from-cadillac to-bashful text-white text-xl font-semibold hover:shadow-md focus:outline-none">
+            Apply Mask & Download
+        </button>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+<script>
+    $(document).ready(function () {
+        const targetImageInput = $("#target_image");
+        const targetImageLabel = $("#target_image_label");
+        const maskShapeSelect = $("#mask_shape");
+        const previewCanvasElement = $("#preview_canvas")[0];
+        const applyMaskButton = $("#apply_mask_button"); // Get the button element
+        const fabricCanvas = new fabric.Canvas(previewCanvasElement);
+        let targetFabricImage = null;
+        let currentMask = null;
+
+        function updateFileInputLabel(input) {
+            if (input.files && input.files[0]) {
+                $("#target_image_label").text(input.files[0].name).removeClass('peer-placeholder-shown:block').addClass('block');
+            } else {
+                $("#target_image_label").text('Choose file').removeClass('block').addClass('peer-placeholder-shown:block');
+            }
+        }
+
+        function handleTargetImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    fabric.Image.fromURL(e.target.result, (img) => {
+                        targetFabricImage = img;
+                        fabricCanvas.clear();
+                        fabricCanvas.add(targetFabricImage);
+                        resizeCanvas();
+                        initializeMask(maskShapeSelect.val());
+                        fabricCanvas.renderAll();
+                        updateFileInputLabel(targetImageInput[0]);
+                    });
+                };
+                reader.readAsDataURL(file);
+            } else {
+                targetFabricImage = null;
+                fabricCanvas.clear();
+                currentMask = null;
+                updateFileInputLabel(targetImageInput[0]);
+            }
+        }
+
+        targetImageInput.on('change', handleTargetImageUpload);
+
+        function resizeCanvas() {
+            if (targetFabricImage) {
+                const aspectRatio = targetFabricImage.width / targetFabricImage.height;
+                const maxWidth = 300;
+                const maxHeight = 200;
+                let width = maxWidth;
+                let height = maxHeight;
+
+                if (aspectRatio > maxWidth / maxHeight) {
+                    height = width / aspectRatio;
+                } else {
+                    width = height * aspectRatio;
+                }
+
+                previewCanvasElement.width = width;
+                previewCanvasElement.height = height;
+                fabricCanvas.setWidth(width);
+                fabricCanvas.setHeight(height);
+                targetFabricImage.scaleToWidth(width);
+                targetFabricImage.scaleToHeight(height);
+                targetFabricImage.set({ top: fabricCanvas.getHeight() / 2, left: fabricCanvas.getWidth() / 2, originX: 'center', originY: 'center' });
+                targetFabricImage.setCoords();
+                if (currentMask) {
+                    scaleMaskToCanvas();
+                }
+                fabricCanvas.renderAll();
+            } else {
+                previewCanvasElement.width = 300;
+                previewCanvasElement.height = 200;
+                fabricCanvas.setWidth(300);
+                fabricCanvas.setHeight(200);
+                fabricCanvas.clear();
+                currentMask = null;
+            }
+        }
+
+        function initializeMask(shape) {
+            const canvasWidth = fabricCanvas.getWidth();
+            const canvasHeight = fabricCanvas.getHeight();
+            const centerX = canvasWidth / 2;
+            const centerY = canvasHeight / 2;
+
+            const commonProps = {
+                left: centerX,
+                top: centerY,
+                originX: 'center',
+                originY: 'center',
+                fill: 'rgba(0,0,0,0.5)',
+                opacity: 0.5,
+                selectable: true,
+                hasControls: true,
+                hasBorders: true
+            };
+
+            fabricCanvas.remove(currentMask);
+            switch (shape) {
+                case 'rect':
+                    currentMask = new fabric.Rect({ width: canvasWidth / 2, height: canvasHeight / 2, ...commonProps });
+                    break;
+                case 'circle':
+                    currentMask = new fabric.Circle({ radius: Math.min(canvasWidth, canvasHeight) / 4, ...commonProps });
+                    break;
+                case 'ellipse':
+                    currentMask = new fabric.Ellipse({ rx: canvasWidth / 4, ry: canvasHeight / 4, ...commonProps });
+                    break;
+            }
+            if (currentMask) {
+                fabricCanvas.add(currentMask);
+                fabricCanvas.setActiveObject(currentMask);
+            }
+        }
+
+        function updateMaskShape(shape) {
+            if (targetFabricImage) {
+                initializeMask(shape);
+                fabricCanvas.renderAll();
+            }
+        }
+
+        maskShapeSelect.on('change', function() {
+            updateMaskShape(this.value);
+        });
+
+        function scaleMaskToCanvas() {
+            if (currentMask && targetFabricImage) {
+                const canvasWidth = fabricCanvas.getWidth();
+                const canvasHeight = fabricCanvas.getHeight();
+                currentMask.scaleToWidth(canvasWidth / 2);
+                currentMask.scaleToHeight(canvasHeight / 2);
+                currentMask.set({ top: canvasHeight / 2, left: canvasWidth / 2 });
+                currentMask.setCoords();
+            }
+        }
+
+        $(window).on('resize', resizeCanvas);
+
+        function applyMaskAndDownload() {
+            if (!targetFabricImage || !currentMask) {
+                alert('Please upload an image and select a mask shape.');
+                return;
+            }
+
+            const originalWidth = targetFabricImage.width;
+            const originalHeight = targetFabricImage.height;
+            const tempCanvasElement = document.createElement('canvas');
+            tempCanvasElement.width = originalWidth;
+            tempCanvasElement.height = originalHeight;
+            const tempCtx = tempCanvasElement.getContext('2d');
+
+            tempCtx.beginPath();
+            const scaleX = originalWidth / fabricCanvas.getWidth();
+            const scaleY = originalHeight / fabricCanvas.getHeight();
+
+            const maskType = maskShapeSelect.val();
+
+            switch (maskType) {
+                case 'rect':
+                    const rectWidth = currentMask.width * (currentMask.scaleX || 1) * scaleX;
+                    const rectHeight = currentMask.height * (currentMask.scaleY || 1) * scaleY;
+                    const rectLeft = (currentMask.left - currentMask.originX * currentMask.width) * scaleX;
+                    const rectTop = (currentMask.top - currentMask.originY * currentMask.height) * scaleY;
+                    tempCtx.rect(rectLeft, rectTop, rectWidth, rectHeight);
+                    break;
+                case 'circle':
+                    const radius = currentMask.radius * (currentMask.scaleX || currentMask.scaleY || 1) * Math.max(scaleX, scaleY);
+                    const centerX = currentMask.left * scaleX;
+                    const centerY = currentMask.top * scaleY;
+                    tempCtx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+                    break;
+                case 'ellipse':
+                    const rx = currentMask.rx * (currentMask.scaleX || 1) * scaleX;
+                    const ry = currentMask.ry * (currentMask.scaleY || 1) * scaleY;
+                    const ellipseCenterX = currentMask.left * scaleX;
+                    const ellipseCenterY = currentMask.top * scaleY;
+                    tempCtx.ellipse(ellipseCenterX, ellipseCenterY, rx, ry, 0, 0, 2 * Math.PI);
+                    break;
+            }
+
+            tempCtx.clip();
+            tempCtx.drawImage(targetFabricImage.getElement(), 0, 0, originalWidth, originalHeight);
+
+            const dataURL = tempCanvasElement.toDataURL('image/png');
+            const a = document.createElement('a');
+            a.href = dataURL;
+            a.download = 'cropped_image.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        applyMaskButton.on('click', applyMaskAndDownload); // Attach the event listener here
+    });
+</script>
