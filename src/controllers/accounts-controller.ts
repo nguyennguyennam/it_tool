@@ -2,7 +2,11 @@ import bcrypt from "bcryptjs";
 import expressAsyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
-import { getAccountByEmail } from "../services/accounts-service";
+import {
+  getAccountByCredentials,
+  getAccountByEmail,
+  registerAccount,
+} from "../services/accounts-service";
 import { getToolsFormatted } from "../services/tools-service";
 import { UserInfo } from "../types";
 
@@ -14,6 +18,22 @@ export const getLoginController = expressAsyncHandler(async (req, res) => {
     layout: {
       title: "Login",
       content: "login",
+    },
+    content: {
+      tools: await getToolsFormatted(),
+      session: req["user"],
+    },
+  });
+});
+
+/**
+ * GET /register: Retrieve the register page.
+ */
+export const getRegisterController = expressAsyncHandler(async (req, res) => {
+  res.render("layouts/main", {
+    layout: {
+      title: "Register",
+      content: "register",
     },
     content: {
       tools: await getToolsFormatted(),
@@ -98,8 +118,87 @@ export const postLoginController = expressAsyncHandler(async (req, res) => {
       ),
       {
         httpOnly: true,
-        sameSite: "none",
-        secure: false,
+        sameSite: process.env.SESSION_SAME_SITE as any,
+        secure: Boolean(process.env.SESSION_SECURE),
+      },
+    )
+    .redirect("/");
+});
+
+/**
+ * POST /register: Post the register request to the server.
+ */
+export const postRegisterController = expressAsyncHandler(async (req, res) => {
+  const schema = z.object({
+    username: z
+      .string()
+      .min(2)
+      .regex(/[a-zA-Z-_][a-zA-Z-_0-9]+/),
+    email: z.string().email(),
+    password: z.string().min(2),
+  });
+
+  const body = schema.safeParse(req.body);
+  if (body.error) {
+    res.render("layouts/main", {
+      layout: {
+        title: "Register",
+        content: "register",
+      },
+      content: {
+        tools: await getToolsFormatted(),
+        session: req["user"],
+        errorMessage:
+          "Email is invalid or password is shorter than 2 characters.",
+      },
+    });
+    return;
+  }
+
+  const accounts = await getAccountByCredentials(
+    body.data.username,
+    body.data.email,
+  );
+
+  // Account conflict
+  if (accounts.length == 1) {
+    res.render("layouts/main", {
+      layout: {
+        title: "Register",
+        content: "register",
+      },
+      content: {
+        tools: await getToolsFormatted(),
+        session: req["user"],
+        errorMessage: "Email or username is already taken",
+      },
+    });
+    return;
+  }
+
+  const result = await registerAccount({
+    ...body.data,
+    password: bcrypt.hashSync(body.data.password, 12),
+  });
+
+  // Correct.
+  res
+    .cookie(
+      "authorization",
+      jwt.sign(
+        {
+          id: result[0].id,
+          username: result[0].username,
+          role: result[0].role,
+          premium: result[0].premium,
+          favoriteTools: [],
+        } satisfies UserInfo,
+        process.env.SESSION_SECRET!,
+      ),
+      {
+        httpOnly: true,
+        sameSite: process.env.SESSION_SAME_SITE as any,
+        secure: Boolean(process.env.SESSION_SECURE),
       },
     )
     .redirect("/");

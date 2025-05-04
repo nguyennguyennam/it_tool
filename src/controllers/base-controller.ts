@@ -10,7 +10,6 @@ import { getToolByPath, getToolsFormatted } from "../services/tools-service";
  */
 export const getHomeHandler: RequestHandler = expressAsyncHandler(
   async (req, res) => {
-    console.log(req["user"]);
     res.render("layouts/main", {
       layout: {
         title: "IT Tools",
