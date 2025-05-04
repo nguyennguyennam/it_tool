@@ -1,0 +1,129 @@
+<div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
+  <div class="flex w-full flex-col gap-2 py-4 text-center">
+    <h1
+      class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+    >
+      Integer Base Converter
+    </h1>
+    <p class="w-full">Convert a number from and to many different bases.</p>
+  </div>
+
+  <div class="flex w-full flex-col gap-4">
+    <label class="flex flex-col gap-2 font-semibold">
+      Number
+      <input
+        type="text"
+        id="input-number"
+        class="h-12 rounded-md bg-zinc-300 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50 hover:ring-indigo-500/50 focus:ring-indigo-500 dark:bg-zinc-700 dark:hover:ring-lime-500/50 dark:focus:ring-lime-500"
+        placeholder="Enter integer..."
+        value="255"
+      />
+    </label>
+
+    <div class="flex flex-row gap-4">
+      <label class="flex flex-col gap-2 font-semibold">
+        From Base
+        <select
+          id="from-base"
+          class="h-12 rounded-md bg-zinc-300 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none hover:ring-indigo-500/50 focus:ring-indigo-500 dark:bg-zinc-700 dark:hover:ring-lime-500/50 dark:focus:ring-lime-500"
+        >
+          <option value="2">Binary (2)</option>
+          <option value="8">Octal (8)</option>
+          <option value="10" selected>Decimal (10)</option>
+          <option value="16">Hexadecimal (16)</option>
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-2 font-semibold">
+        To Base
+        <select
+          id="to-base"
+          class="h-12 rounded-md bg-zinc-300 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none hover:ring-indigo-500/50 focus:ring-indigo-500 dark:bg-zinc-700 dark:hover:ring-lime-500/50 dark:focus:ring-lime-500"
+        >
+          <option value="2">Binary (2)</option>
+          <option value="8">Octal (8)</option>
+          <option value="10">Decimal (10)</option>
+          <option value="16" selected>Hexadecimal (16)</option>
+        </select>
+      </label>
+    </div>
+
+    <button
+      id="convert"
+      class="from-cadillac to-bashful dark:from-cotton-candy dark:to-cadillac text-pearl border-bashful cursor-pointer self-end rounded-md border border-2 bg-gradient-to-r px-4 py-2 font-semibold duration-200"
+    >
+      Convert
+    </button>
+  </div>
+
+  <div class="flex w-full flex-col gap-4">
+    <h2 class="font-semibold">Conversion Result</h2>
+
+    <div
+      class="flex h-12 w-full items-center justify-between rounded-md bg-zinc-300 px-4 py-2 dark:bg-zinc-700"
+    >
+      <input
+        type="text"
+        readonly
+        id="output-result"
+        class="w-full"
+        placeholder="Result will appear here"
+      />
+      <button
+        id="output-copy"
+        class="dark:fill-pearl dark:hover:fill-pearl/50 group relative shrink-0 cursor-pointer! fill-zinc-950 hover:fill-zinc-950/50"
+      >
+        <span
+          class="dark:bg-pearl text-pearl absolute bottom-0 left-1/2 z-10 hidden -translate-x-1/2 -translate-y-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-semibold uppercase group-hover:flex dark:text-black"
+          >Copy</span
+        >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 -960 960 960"
+          class="size-6"
+        >
+          <path
+            d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $("#convert").click(() => {
+      const number = $("#input-number").val();
+      const fromBase = parseInt($("#from-base").val(), 10);
+      const toBase = parseInt($("#to-base").val(), 10);
+      const outputResult = $("#output-result");
+
+      if (isNaN(parseInt(number, fromBase))) {
+        outputResult.val("Invalid input number for the selected base.");
+        return;
+      }
+
+      try {
+        const decimalValue = parseInt(number, fromBase);
+        outputResult.val(decimalValue.toString(toBase).toUpperCase());
+      } catch (error) {
+        outputResult.val("Conversion error.");
+        console.error("Conversion error:", error);
+      }
+    });
+
+    $("#output-copy").click(() => {
+      const result = $("#output-result").val();
+      if (result) {
+        navigator.clipboard.writeText(result);
+        const copyButton = $("#output-copy");
+        const span = copyButton.find("span");
+        span.text("Copied!");
+        setTimeout(() => {
+          span.text("Copy");
+        }, 3000);
+      }
+    });
+  });
+</script>
