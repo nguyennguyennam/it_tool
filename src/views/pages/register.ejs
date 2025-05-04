@@ -1,0 +1,66 @@
+<form
+  class="flex w-full max-w-2xl flex-col gap-6"
+  method="post"
+  enctype="application/x-www-form-urlencoded"
+>
+  <h1 class="text-3xl font-bold">Register</h1>
+
+  <div class="flex w-full flex-col gap-4">
+    <label for="username" class="flex w-full flex-col gap-2">
+      <span class="font-semibold">Username</span>
+      <input
+        type="text"
+        name="username"
+        id="username"
+        placeholder="username123"
+        class="dark:border-pearl min-h-12 rounded-lg border border-zinc-700 px-4 py-2 placeholder:opacity-50"
+      />
+    </label>
+
+    <label for="email" class="flex w-full flex-col gap-2">
+      <span class="font-semibold">Email Address</span>
+      <input
+        type="email"
+        name="email"
+        id="email"
+        placeholder="nguyenphucan@example.com"
+        class="dark:border-pearl min-h-12 rounded-lg border border-zinc-700 px-4 py-2 placeholder:opacity-50"
+      />
+    </label>
+
+    <label for="password" class="flex w-full flex-col gap-2">
+      <span class="font-semibold">Password</span>
+      <input
+        type="password"
+        name="password"
+        id="password"
+        class="dark:border-pearl min-h-12 rounded-lg border border-zinc-700 px-4 py-2 placeholder:opacity-50"
+      />
+    </label>
+
+    <label for="confirm" class="flex w-full flex-col gap-2">
+      <span class="font-semibold">Confirm Password</span>
+      <input
+        type="password"
+        id="confirm"
+        class="dark:border-pearl min-h-12 rounded-lg border border-zinc-700 px-4 py-2 placeholder:opacity-50"
+      />
+    </label>
+  </div>
+
+  <% if (content.errorMessage) { %>
+  <p class="text-left font-semibold text-rose-600 dark:text-rose-300">
+    <%= content.errorMessage %>
+  </p>
+  <% } %>
+
+  <div class="flex w-full flex-col items-end gap-2">
+    <a class="hover:underline" href="/login">Already have an account?</a>
+    <button
+      type="submit"
+      class="border-bashful bg-bashful hover:text-bashful dark:border-cotton-candy dark:bg-cotton-candy dark:hover:text-cotton-candy text-pearl cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold duration-200 hover:bg-transparent dark:text-black"
+    >
+      Register
+    </button>
+  </div>
+</form>

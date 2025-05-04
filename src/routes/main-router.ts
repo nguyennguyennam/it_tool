@@ -1,8 +1,10 @@
 import express from "express";
 import {
   getLoginController,
+  getRegisterController,
   logoutController,
   postLoginController,
+  postRegisterController,
 } from "../controllers/accounts-controller";
 import {
   getHomeHandler,
@@ -35,6 +37,11 @@ mainRouter
   .route("/login")
   .get(authenticate("none"), getLoginController)
   .post(postLoginController);
+mainRouter
+  .route("/register")
+  .get(authenticate("none"), getRegisterController)
+  .post(postRegisterController);
+
 mainRouter.use("/logout", logoutController);
 
 mainRouter.get("/:tool", authenticate("none"), getToolHandler);
