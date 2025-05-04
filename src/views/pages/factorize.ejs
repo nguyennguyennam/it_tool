@@ -1,156 +1,177 @@
 <div class="font-poppins flex flex-col items-center gap-6 p-3">
-    <h1
-        class="bg-gradient-to-r from-cadillac to-bashful bg-clip-text text-3xl font-bold text-transparent dark:from-cotton-candy dark:to-cadillac"
-    >
-        Prime Factorization
-    </h1>
+  <h1
+    class="from-cadillac to-bashful dark:from-cotton-candy dark:to-cadillac bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+  >
+    Prime Factorization
+  </h1>
 
-    <p class="text-center text-gray-700 dark:text-gray-300">
-        Factorize a number down to a product of prime numbers.
-    </p>
+  <p class="text-center text-gray-700 dark:text-gray-300">
+    Factorize a number down to a product of prime numbers.
+  </p>
 
-    <div class="w-full">
-        <div class="mb-4 flex flex-col gap-2">
-            <label for="numberInput" class="block text-gray-700 dark:text-gray-300 font-semibold"
-                ><strong>Enter Number:</strong></label
-            >
-            <input
-                type="text"
-                id="numberInput"
-                min="2"
-                class="h-12 w-full rounded-md bg-zinc-300 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50 focus:ring-bashful hover:ring-bashful/50 dark:bg-zinc-700 dark:text-white dark:focus:ring-cotton-candy dark:hover:ring-cotton-candy/50 dark:border-zinc-300"
-                placeholder="Enter a number >= 2"
-            />
-        </div>
-
-        <div class="flex justify-center"> <button
-                id="factorizeBtn"
-                class="bg-bashful items-center hover:bg-transparent text-pearl border-2 border-bashful dark:bg-cotton-candy dark:hover:bg-transparent dark:text-black dark:border-cotton-candy flex w-auto cursor-pointer items-center justify-center rounded-md px-4 py-2 font-semibold duration-200"
-            >
-                Factorize
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="ml-2 h-5 w-5">
-                    <path
-                        d="M459-240q-18 0-30-12t-12-30v-480q0-18 12-30t30-12h42q17 0 28.5 11.5T540-792l161 240-161 240q-11 17-28.5 28.5T501-240h-42Zm-260 0q-18 0-30-12t-12-30v-480q0-18 12-30t30-12h42q17 0 28.5 11.5T280-792l161 240-161 240q-11 17-28.5 28.5T221-240h-42Z"
-                    />
-                </svg>
-            </button>
-        </div>
-
-        <div id="factorizationResult" class="mt-6 rounded-md bg-zinc-300 px-4 py-3 dark:bg-zinc-700">
-            <p class="font-semibold text-gray-700 dark:text-gray-300 mb-2">Result:</p>
-            <p id="factors" class="text-gray-900 dark:text-white"></p>
-        </div>
-
-        <div id="primeSuggestions" class="mt-4 rounded-md bg-zinc-300 px-4 py-3 dark:bg-zinc-700 w-full">
-            <p class="font-semibold text-gray-700 dark:text-gray-300 mb-2">Prime Suggestions:</p>
-            <div id="suggestionsContainer" class="flex flex-wrap gap-2">
-                </div>
-        </div>
+  <div class="w-full">
+    <div class="mb-4 flex flex-col gap-2">
+      <label
+        for="numberInput"
+        class="block font-semibold text-gray-700 dark:text-gray-300"
+        ><strong>Enter Number:</strong></label
+      >
+      <input
+        type="text"
+        id="numberInput"
+        min="2"
+        class="focus:ring-bashful hover:ring-bashful/50 dark:focus:ring-cotton-candy dark:hover:ring-cotton-candy/50 h-12 w-full rounded-md bg-zinc-300 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50 dark:border-zinc-300 dark:bg-zinc-700 dark:text-white"
+        placeholder="Enter a number >= 2"
+      />
     </div>
+
+    <div class="flex justify-center">
+      <button
+        id="factorizeBtn"
+        class="bg-bashful text-pearl border-bashful dark:bg-cotton-candy dark:border-cotton-candy flex w-auto cursor-pointer items-center justify-center rounded-md border-2 px-4 py-2 font-semibold duration-200 hover:bg-transparent dark:text-black dark:hover:bg-transparent"
+      >
+        Factorize
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 -960 960 960"
+          class="ml-2 h-5 w-5"
+        >
+          <path
+            d="M459-240q-18 0-30-12t-12-30v-480q0-18 12-30t30-12h42q17 0 28.5 11.5T540-792l161 240-161 240q-11 17-28.5 28.5T501-240h-42Zm-260 0q-18 0-30-12t-12-30v-480q0-18 12-30t30-12h42q17 0 28.5 11.5T280-792l161 240-161 240q-11 17-28.5 28.5T221-240h-42Z"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <div
+      id="factorizationResult"
+      class="mt-6 rounded-md bg-zinc-300 px-4 py-3 dark:bg-zinc-700"
+    >
+      <p class="mb-2 font-semibold text-gray-700 dark:text-gray-300">Result:</p>
+      <p id="factors" class="text-gray-900 dark:text-white"></p>
+    </div>
+
+    <div
+      id="primeSuggestions"
+      class="mt-4 w-full rounded-md bg-zinc-300 px-4 py-3 dark:bg-zinc-700"
+    >
+      <p class="mb-2 font-semibold text-gray-700 dark:text-gray-300">
+        Prime Suggestions:
+      </p>
+      <div id="suggestionsContainer" class="flex flex-wrap gap-2"></div>
+    </div>
+  </div>
 </div>
 
 <script>
-    $(document).ready(function () {
-        $('#factorizationResult').hide();
-        $('#primeSuggestions').hide();
+  $(document).ready(function () {
+    $("#factorizationResult").hide();
+    $("#primeSuggestions").hide();
 
-        $('#factorizeBtn').click(function () {
-            const number = parseInt($('#numberInput').val());
-            const factorsDiv = $('#factors');
-            const resultDiv = $('#factorizationResult');
-            const suggestionsDiv = $('#primeSuggestions');
-            const suggestionsContainer = $('#suggestionsContainer');
+    $("#factorizeBtn").click(function () {
+      const number = parseInt($("#numberInput").val());
+      const factorsDiv = $("#factors");
+      const resultDiv = $("#factorizationResult");
+      const suggestionsDiv = $("#primeSuggestions");
+      const suggestionsContainer = $("#suggestionsContainer");
 
-            factorsDiv.empty();
-            suggestionsContainer.empty();
-            resultDiv.hide();
-            suggestionsDiv.hide();
+      factorsDiv.empty();
+      suggestionsContainer.empty();
+      resultDiv.hide();
+      suggestionsDiv.hide();
 
-            if (isNaN(number) || number < 2) {
-                factorsDiv.text('Please enter a valid number greater than or equal to 2.');
-                resultDiv.show();
-                return;
-            }
+      if (isNaN(number) || number < 2) {
+        factorsDiv.text(
+          "Please enter a valid number greater than or equal to 2.",
+        );
+        resultDiv.show();
+        return;
+      }
 
-            const primeFactors = getPrimeFactors(number);
+      const primeFactors = getPrimeFactors(number);
 
-            if (primeFactors.length > 0) {
-                factorsDiv.text(primeFactors.join(' x '));
-                resultDiv.show();
+      if (primeFactors.length > 0) {
+        factorsDiv.text(primeFactors.join(" x "));
+        resultDiv.show();
 
-                // Get the last prime factor (if any) for suggestions
-                const lastPrimeFactor = primeFactors[primeFactors.length - 1];
-                if (lastPrimeFactor > 1) {
-                    const nearbyPrimes = getNearbyPrimes(lastPrimeFactor, 5); // Get 5 nearby primes
-                    if (nearbyPrimes.length > 0) {
-                        nearbyPrimes.forEach(prime => {
-                            const suggestionButton = $('<button>')
-                                .text(prime)
-                                .attr('class', 'bg-bashful items-center hover:bg-transparent text-pearl border-2 border-bashful dark:bg-cotton-candy dark:hover:bg-transparent dark:text-black dark:border-cotton-candy flex w-auto cursor-pointer items-center justify-center rounded-md px-4 py-2 font-semibold duration-200 font-poppins flex flex-1 gap-3');
+        // Get the last prime factor (if any) for suggestions
+        const lastPrimeFactor = primeFactors[primeFactors.length - 1];
+        if (lastPrimeFactor > 1) {
+          const nearbyPrimes = getNearbyPrimes(lastPrimeFactor, 5); // Get 5 nearby primes
+          if (nearbyPrimes.length > 0) {
+            nearbyPrimes.forEach((prime) => {
+              const suggestionButton = $("<button>")
+                .text(prime)
+                .attr(
+                  "class",
+                  "bg-bashful items-center hover:bg-transparent text-pearl border-2 border-bashful dark:bg-cotton-candy dark:hover:bg-transparent dark:text-black dark:border-cotton-candy flex w-auto cursor-pointer items-center justify-center rounded-md px-4 py-2 font-semibold duration-200 font-poppins flex flex-1 gap-3",
+                );
 
-                            suggestionsContainer.append(suggestionButton);
+              suggestionsContainer.append(suggestionButton);
 
-                            suggestionButton.click(function() {
-                                $('#numberInput').val(prime);
-                                $('#factorizeBtn').click(); // Automatically factorize the suggested prime
-                            });
-                        });
-                        suggestionsDiv.show();
-                    }
-                }
-            } else {
-                factorsDiv.text('No prime factors found (this should not happen for numbers >= 2).');
-                resultDiv.show();
-            }
-        });
-
-        function getPrimeFactors(n) {
-            const factors = [];
-            let d = 2;
-            while (d * d <= n) {
-                while (n % d === 0) {
-                    factors.push(d);
-                    n /= d;
-                }
-                d++;
-            }
-            if (n > 1) {
-                factors.push(n);
-            }
-            return factors;
+              suggestionButton.click(function () {
+                $("#numberInput").val(prime);
+                $("#factorizeBtn").click(); // Automatically factorize the suggested prime
+              });
+            });
+            suggestionsDiv.show();
+          }
         }
-
-        function isPrime(num) {
-            if (num <= 1) return false;
-            for (let i = 2; i <= Math.sqrt(num); i++) {
-                if (num % i === 0) return false;
-            }
-            return true;
-        }
-
-        function getNearbyPrimes(prime, count) {
-            const nearby = [];
-            let lower = prime - 1;
-            let upper = prime + 1;
-
-            while (nearby.length < count) {
-                if (lower >= 2 && isPrime(lower)) {
-                    nearby.unshift(lower);
-                }
-                if (isPrime(upper)) {
-                    nearby.push(upper);
-                }
-                lower--;
-                upper++;
-
-                // Avoid infinite loop if count is too high for small primes
-                if (lower < 2 && upper > prime + count * 2) {
-                    break;
-                }
-            }
-
-            // Ensure we return at most 'count' primes
-            return nearby.slice(0, count);
-        }
+      } else {
+        factorsDiv.text(
+          "No prime factors found (this should not happen for numbers >= 2).",
+        );
+        resultDiv.show();
+      }
     });
+
+    function getPrimeFactors(n) {
+      const factors = [];
+      let d = 2;
+      while (d * d <= n) {
+        while (n % d === 0) {
+          factors.push(d);
+          n /= d;
+        }
+        d++;
+      }
+      if (n > 1) {
+        factors.push(n);
+      }
+      return factors;
+    }
+
+    function isPrime(num) {
+      if (num <= 1) return false;
+      for (let i = 2; i <= Math.sqrt(num); i++) {
+        if (num % i === 0) return false;
+      }
+      return true;
+    }
+
+    function getNearbyPrimes(prime, count) {
+      const nearby = [];
+      let lower = prime - 1;
+      let upper = prime + 1;
+
+      while (nearby.length < count) {
+        if (lower >= 2 && isPrime(lower)) {
+          nearby.unshift(lower);
+        }
+        if (isPrime(upper)) {
+          nearby.push(upper);
+        }
+        lower--;
+        upper++;
+
+        // Avoid infinite loop if count is too high for small primes
+        if (lower < 2 && upper > prime + count * 2) {
+          break;
+        }
+      }
+
+      // Ensure we return at most 'count' primes
+      return nearby.slice(0, count);
+    }
+  });
 </script>

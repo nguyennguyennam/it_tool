@@ -1,148 +1,158 @@
 <div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
-    <div
-        class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-700 py-4"
+  <div
+    class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-700 py-4"
+  >
+    <h1
+      class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
     >
-        <h1
-            class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
-        >
-            Random Number Generator
-        </h1>
+      Random Number Generator
+    </h1>
 
-        <p class="w-full">
-            Generate a random number within the specified bounds using sliders.
-        </p>
+    <p class="w-full">
+      Generate a random number within the specified bounds using sliders.
+    </p>
+  </div>
+
+  <div class="flex w-full flex-col gap-4">
+    <div class="flex w-full items-center gap-4">
+      <label for="min-bound" class="dark:text-pearl w-1/4 font-semibold"
+        >Min:</label
+      >
+      <input
+        type="range"
+        id="min-bound"
+        class="bg-bashful h-2 w-3/4 cursor-pointer appearance-none rounded-full"
+        min="0"
+        max="100"
+        value="0"
+      />
+      <span id="min-value" class="dark:text-pearl">0</span>
     </div>
 
-    <div class="flex w-full flex-col gap-4">
-        <div class="flex items-center gap-4 w-full">
-            <label for="min-bound" class="font-semibold w-1/4 dark:text-pearl">Min:</label>
-            <input
-                type="range"
-                id="min-bound"
-                class="w-3/4 appearance-none bg-bashful rounded-full h-2 cursor-pointer"
-                min="0"
-                max="100"
-                value="0"
-            />
-            <span id="min-value" class="dark:text-pearl">0</span>
-        </div>
-
-        <div class="flex items-center gap-4 w-full">
-            <label for="max-bound" class="font-semibold w-1/4 dark:text-pearl">Max:</label>
-            <input
-                type="range"
-                id="max-bound"
-                class="w-3/4 appearance-none bg-bashful rounded-full h-2 cursor-pointer"
-                min="0"
-                max="100"
-                value="100"
-            />
-            <span id="max-value" class="dark:text-pearl">100</span>
-        </div>
+    <div class="flex w-full items-center gap-4">
+      <label for="max-bound" class="dark:text-pearl w-1/4 font-semibold"
+        >Max:</label
+      >
+      <input
+        type="range"
+        id="max-bound"
+        class="bg-bashful h-2 w-3/4 cursor-pointer appearance-none rounded-full"
+        min="0"
+        max="100"
+        value="100"
+      />
+      <span id="max-value" class="dark:text-pearl">100</span>
     </div>
+  </div>
 
-    <div class="w-full">
-        <button
-            id="generate-button"
-            class="w-full py-3 rounded-md bg-gradient-to-r from-cadillac to-bashful text-white text-xl font-semibold hover:shadow-md focus:outline-none cursor-pointer"
-        >
-            Generate Random Number
-        </button>
-    </div>
+  <div class="w-full">
+    <button
+      id="generate-button"
+      class="from-cadillac to-bashful w-full cursor-pointer rounded-md bg-gradient-to-r py-3 text-xl font-semibold text-white hover:shadow-md focus:outline-none"
+    >
+      Generate Random Number
+    </button>
+  </div>
 
-    <div class="flex w-full flex-col gap-4 items-center">
-        <h2 class="font-semibold dark:text-pearl">Random Number</h2>
-        <div id="output-container" class="rounded-md flex justify-center items-center w-full max-w-md py-6">
-            <span id="random-number-output" class="text-2xl font-bold dark:text-pearl"></span>
-            <span id="loading-message" class="text-gray-600 dark:text-pearl"></span>
-        </div>
+  <div class="flex w-full flex-col items-center gap-4">
+    <h2 class="dark:text-pearl font-semibold">Random Number</h2>
+    <div
+      id="output-container"
+      class="flex w-full max-w-md items-center justify-center rounded-md py-6"
+    >
+      <span
+        id="random-number-output"
+        class="dark:text-pearl text-2xl font-bold"
+      ></span>
+      <span id="loading-message" class="dark:text-pearl text-gray-600"></span>
     </div>
+  </div>
 </div>
 
 <style>
-    input[type="range"]::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 20px;
-        height: 20px;
-        background: #a0aec0; /* Pearl color equivalent */
-        cursor: pointer;
-        border-radius: 50%;
-    }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #a0aec0; /* Pearl color equivalent */
+    cursor: pointer;
+    border-radius: 50%;
+  }
 
-    input[type="range"]::-moz-range-thumb {
-        width: 20px;
-        height: 20px;
-        background: #a0aec0; /* Pearl color equivalent */
-        cursor: pointer;
-        border-radius: 50%;
-        border: none;
-    }
+  input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #a0aec0; /* Pearl color equivalent */
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+  }
 
-    .dark input[type="range"]::-webkit-slider-thumb {
-        background: #f7fafc; /* Dark Pearl color equivalent */
-    }
+  .dark input[type="range"]::-webkit-slider-thumb {
+    background: #f7fafc; /* Dark Pearl color equivalent */
+  }
 
-    .dark input[type="range"]::-moz-range-thumb {
-        background: #f7fafc; /* Dark Pearl color equivalent */
-    }
+  .dark input[type="range"]::-moz-range-thumb {
+    background: #f7fafc; /* Dark Pearl color equivalent */
+  }
 </style>
 
 <script>
-    $(document).ready(function() {
-        const minBoundSlider = $("#min-bound");
-        const maxBoundSlider = $("#max-bound");
-        const minValueSpan = $("#min-value");
-        const maxValueSpan = $("#max-value");
-        const generateButton = $("#generate-button");
-        const randomNumberOutput = $("#random-number-output");
-        const loadingMessage = $("#loading-message");
-        const outputContainer = $("#output-container");
+  $(document).ready(function () {
+    const minBoundSlider = $("#min-bound");
+    const maxBoundSlider = $("#max-bound");
+    const minValueSpan = $("#min-value");
+    const maxValueSpan = $("#max-value");
+    const generateButton = $("#generate-button");
+    const randomNumberOutput = $("#random-number-output");
+    const loadingMessage = $("#loading-message");
+    const outputContainer = $("#output-container");
 
-        // Initialize loading message
-        loadingMessage.text("Adjust the sliders and click 'Generate'").show();
-        randomNumberOutput.hide();
-        outputContainer.removeClass("bg-zinc-300 dark:bg-zinc-700"); // Remove background
+    // Initialize loading message
+    loadingMessage.text("Adjust the sliders and click 'Generate'").show();
+    randomNumberOutput.hide();
+    outputContainer.removeClass("bg-zinc-300 dark:bg-zinc-700"); // Remove background
 
-        // Update min value display
-        minBoundSlider.on("input", function() {
-            minValueSpan.text($(this).val());
-            // Ensure min is not greater than max
-            if (parseInt($(this).val()) > parseInt(maxBoundSlider.val())) {
-                maxBoundSlider.val($(this).val());
-                maxValueSpan.text($(this).val());
-            }
-        });
-
-        // Update max value display
-        maxBoundSlider.on("input", function() {
-            maxValueSpan.text($(this).val());
-            // Ensure max is not less than min
-            if (parseInt($(this).val()) < parseInt(minBoundSlider.val())) {
-                minBoundSlider.val($(this).val());
-                minValueSpan.text($(this).val());
-            }
-        });
-
-        generateButton.on("click", function() {
-            const min = parseInt(minBoundSlider.val());
-            const max = parseInt(maxBoundSlider.val());
-
-            if (min > max) {
-                randomNumberOutput.text("Invalid Bounds").show();
-                loadingMessage.hide();
-                return;
-            }
-
-            loadingMessage.text("Generating...").show();
-            randomNumberOutput.hide();
-
-            // Simulate a short delay for visual feedback
-            setTimeout(() => {
-                const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-                randomNumberOutput.text(randomNumber).show();
-                loadingMessage.hide();
-            }, 500);
-        });
+    // Update min value display
+    minBoundSlider.on("input", function () {
+      minValueSpan.text($(this).val());
+      // Ensure min is not greater than max
+      if (parseInt($(this).val()) > parseInt(maxBoundSlider.val())) {
+        maxBoundSlider.val($(this).val());
+        maxValueSpan.text($(this).val());
+      }
     });
+
+    // Update max value display
+    maxBoundSlider.on("input", function () {
+      maxValueSpan.text($(this).val());
+      // Ensure max is not less than min
+      if (parseInt($(this).val()) < parseInt(minBoundSlider.val())) {
+        minBoundSlider.val($(this).val());
+        minValueSpan.text($(this).val());
+      }
+    });
+
+    generateButton.on("click", function () {
+      const min = parseInt(minBoundSlider.val());
+      const max = parseInt(maxBoundSlider.val());
+
+      if (min > max) {
+        randomNumberOutput.text("Invalid Bounds").show();
+        loadingMessage.hide();
+        return;
+      }
+
+      loadingMessage.text("Generating...").show();
+      randomNumberOutput.hide();
+
+      // Simulate a short delay for visual feedback
+      setTimeout(() => {
+        const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+        randomNumberOutput.text(randomNumber).show();
+        loadingMessage.hide();
+      }, 500);
+    });
+  });
 </script>

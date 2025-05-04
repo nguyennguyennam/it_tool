@@ -1,93 +1,83 @@
 <div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
-    <div class="flex w-full flex-col text-center gap-2">
-        <h1
-            class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
-        >
-            QR Code Generator
-        </h1>
-        <p class="w-full text-gray-600 dark:text-gray-400">
-            Enter text or a URL to generate a QR code.
-        </p>
+  <div class="flex w-full flex-col gap-2 text-center">
+    <h1
+      class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+    >
+      QR Code Generator
+    </h1>
+    <p class="w-full text-gray-600 dark:text-gray-400">
+      Generate a QR code to embed some information.
+    </p>
+  </div>
+  <div class="flex w-full flex-col items-start gap-3">
+    <label for="url_text" class="mb-2 block text-lg font-bold"
+      >Enter URL:</label
+    >
+    <input
+      id="url_text"
+      type="text"
+      class="bg-pearl block w-full rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-zinc-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+      placeholder="Type a URL here"
+    />
+    <div class="mb-4 flex items-center justify-center">
+      <canvas id="qr-canvas" width="200" height="200"></canvas>
     </div>
-    <div class="flex flex-col gap-3 w-full items-start">
-        <label for="url_text" class="text-lg font-bold mb-2 block">Enter URL:</label>
-        <input
-            id="url_text"
-            type="text"
-            class="bg-pearl border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-zinc-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Type a URL here"
-        />
-        <div class="flex justify-center items-center mb-4">
-            <canvas id="qr-canvas" width="200" height="200"></canvas>
-        </div>
-        <button
-            id="download-button"
-            class="w-full py-3 cursor-pointer rounded-md bg-gradient-to-r from-cadillac to-bashful text-white text-xl font-semibold hover:shadow-md focus:outline-none"
-        >
-            Download QR code
-        </button>
-    </div>
+    <button
+      id="download-button"
+      class="from-cadillac to-bashful w-full cursor-pointer rounded-md bg-gradient-to-r py-3 text-xl font-semibold text-white hover:shadow-md focus:outline-none"
+    >
+      Download QR code
+    </button>
+  </div>
 </div>
-<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-<!-- <script>
-    const inputField = document.getElementById('url_text');
-    const qrCanvas = document.getElementById('qr-canvas');
-    const downloadButton = document.getElementById('download-button');
-    let qrcode;
-    const qrSize = 200;
+<script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+<script>
+  const inputField = document.getElementById("url_text");
+  const qrCanvas = document.getElementById("qr-canvas");
+  const downloadButton = document.getElementById("download-button");
+  let qr;
+  const qrSize = 200;
 
-    function generateQRCode(url) {
-        if (!url.trim()) {
-            // Clear the canvas if the input is empty
-            if (qrcode) {
-                qrcode.clear();
-            }
-            return;
-        }
-
-        // Clear any existing QR code
-        if (qrcode) {
-            qrcode.clear();
-        }
-
-        qrcode = new QRCode(qrCanvas, {
-            text: url,
-            width: qrSize,
-            height: qrSize,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H,
-        });
+  function generateQRCode(url) {
+    if (!url.trim()) {
+      // Clear the canvas if the input is empty
+      qrCanvas.getContext("2d").clearRect(0, 0, qrSize, qrSize);
+      return;
     }
 
-    // Listen for changes to the URL field
-    inputField.addEventListener('input', function () {
-        const url = inputField.value.trim();
-        generateQRCode(url);
+    qr = new QRious({
+      element: qrCanvas,
+      value: url,
+      size: qrSize,
+      level: "H",
     });
+  }
 
-    // Generate initial QR code (if there's a default value)
-    generateQRCode(inputField.value.trim());
+  // Listen for changes to the URL field
+  inputField.addEventListener("input", function () {
+    const url = inputField.value.trim();
+    generateQRCode(url);
+  });
 
-    // Listen for download button click
-    downloadButton.addEventListener('click', function () {
-        if (!qrcode) {
-            alert("Please enter a URL to generate a QR code first.");
-            return;
-        }
+  // Generate initial QR code (if there's a default value)
+  generateQRCode(inputField.value.trim());
 
-        qrCanvas.toBlob(function (blob) {
-            const url = inputField.value.trim();
-            const filename = `QR_${url.replace(/[\W_]+/g, "_") || "code"}.png`;
-            const downloadLink = document.createElement('a');
-            const objectURL = URL.createObjectURL(blob);
+  // Listen for download button click
+  downloadButton.addEventListener("click", function () {
+    if (!qr) {
+      alert("Please enter a URL to generate a QR code first.");
+      return;
+    }
 
-            downloadLink.href = objectURL;
-            downloadLink.download = filename;
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-            URL.revokeObjectURL(objectURL);
-        });
-    });
-</script> -->
+    const dataURL = qrCanvas.toDataURL("image/png");
+    const url = inputField.value.trim();
+    const filename = `QR_${url.replace(/[\W_]+/g, "_") || "code"}.png`;
+    const downloadLink = document.createElement("a");
+
+    downloadLink.href = dataURL;
+    downloadLink.download = filename;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  });
+</script>

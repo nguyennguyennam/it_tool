@@ -1,0 +1,104 @@
+<div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
+  <div class="flex w-full flex-col gap-2 text-center">
+    <h1
+      class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+    >
+      Slugify
+    </h1>
+    <p class="w-full">
+      Reformat a string into a 'slug' form, which is an all lowercased,
+      separated by hyphens form of string.
+    </p>
+  </div>
+
+  <div class="flex w-full flex-col gap-4">
+    <label class="flex flex-col gap-2 font-semibold">
+      Input String
+      <textarea
+        id="input-string"
+        class="h-32 resize-none rounded-md bg-zinc-300 px-4 py-2 font-normal ring-2 ring-transparent duration-200 outline-none placeholder:opacity-50 hover:ring-yellow-500/50 focus:ring-yellow-500 dark:bg-zinc-700 dark:hover:ring-orange-500/50 dark:focus:ring-orange-500"
+        placeholder="Enter string to slugify..."
+      >
+This is a Sample String with Spaces and Special Characters!</textarea
+      >
+    </label>
+
+    <button
+      id="slugify-button"
+      class="from-cadillac to-bashful dark:from-cotton-candy dark:to-cadillac text-pearl cursor-pointer self-end rounded-md border-yellow-500 bg-gradient-to-r px-4 py-2 font-semibold duration-200 hover:bg-transparent dark:border-orange-500 dark:text-black dark:hover:bg-transparent"
+    >
+      Slugify
+    </button>
+  </div>
+
+  <div class="flex w-full flex-col gap-4">
+    <h2 class="text-xl font-semibold">Slugified String</h2>
+
+    <div
+      class="flex items-center justify-between rounded-md bg-zinc-300 px-4 py-2 dark:bg-zinc-700"
+    >
+      <input
+        type="text"
+        id="output-slug"
+        readonly
+        class="w-full font-normal outline-none dark:bg-zinc-700 dark:text-white"
+        placeholder="Slugified string will appear here"
+      />
+      <button
+        id="output-copy"
+        class="dark:fill-pearl dark:hover:fill-pearl/50 group relative ml-2 shrink-0 cursor-pointer! fill-zinc-950 hover:fill-zinc-950/50"
+      >
+        <span
+          class="dark:bg-pearl text-pearl absolute bottom-0 left-1/2 z-10 hidden -translate-x-1/2 -translate-y-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-semibold uppercase group-hover:flex dark:text-black"
+          >Copy</span
+        >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 -960 960 960"
+          class="size-6"
+        >
+          <path
+            d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $("#slugify-button").click(() => {
+      const inputString = $("#input-string").val();
+      const outputSlug = $("#output-slug");
+
+      if (!inputString) {
+        outputSlug.val("");
+        return;
+      }
+
+      const slug = inputString
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-") // Replace spaces with hyphens
+        .replace(/[^\w-]+/g, "") // Remove all non-word chars (except hyphens)
+        .replace(/--+/g, "-") // Replace multiple hyphens with single hyphen
+        .replace(/^-+|-+$/g, ""); // Trim - from start of text
+
+      outputSlug.val(slug);
+    });
+
+    $("#output-copy").click(() => {
+      const result = $("#output-slug").val();
+      if (result) {
+        navigator.clipboard.writeText(result);
+        const copyButton = $("#output-copy");
+        const span = copyButton.find("span");
+        span.text("Copied!");
+        setTimeout(() => {
+          span.text("Copy");
+        }, 3000);
+      }
+    });
+  });
+</script>

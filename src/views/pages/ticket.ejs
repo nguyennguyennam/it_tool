@@ -1,47 +1,70 @@
-
 <div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
-    <div
-        class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-700 py-4"
+  <div
+    class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-700 py-4"
+  >
+    <h1
+      class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
     >
-        <h1
-            class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
-        >
-            Ticket Drawer
-        </h1>
+      Ticket Drawer
+    </h1>
 
-        <p class="w-full text-gray-600 dark:text-gray-400">
-            Randomly pick out a ticket in a box of tickets, like lottery picking.
-        </p>
-    </div>
-    <div class="flex flex-col gap-3 w-full items-start">
-        <label for="tickets" class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-xl font-semibold text-transparent">Tickets (one per line)</label>
-        <textarea id="tickets" rows="4" class="bg-pearl border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-zinc-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Ticket A&#x0a;Ticket B&#x0a;Ticket C"></textarea>
-    </div>
-    <div class="flex flex-col gap-3 w-full items-start">
-        <label for="drawnTicket" class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-xl font-semibold text-transparent">Drawn Ticket</label>
-        <input type="text" id="drawnTicket" class="bg-bashful border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-zinc-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Click 'Draw' to pick a ticket" readonly />
-    </div>
-    <div class="w-full">
-        <button id="drawButton" class="w-full py-3 rounded-md bg-gradient-to-r from-cadillac to-bashful text-white text-xl font-semibold hover:shadow-md focus:outline-none">
-            Draw!
-        </button>
-    </div>
+    <p class="w-full text-gray-600 dark:text-gray-400">
+      Randomly pick out a ticket in a box of tickets, like lottery picking.
+    </p>
+  </div>
+  <div class="flex w-full flex-col items-start gap-3">
+    <label
+      for="tickets"
+      class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-xl font-semibold text-transparent"
+      >Tickets (one per line)</label
+    >
+    <textarea
+      id="tickets"
+      rows="4"
+      class="bg-pearl block w-full rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-zinc-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+      placeholder="Ticket A&#x0a;Ticket B&#x0a;Ticket C"
+    ></textarea>
+  </div>
+  <div class="flex w-full flex-col items-start gap-3">
+    <label
+      for="drawnTicket"
+      class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-xl font-semibold text-transparent"
+      >Drawn Ticket</label
+    >
+    <input
+      type="text"
+      id="drawnTicket"
+      class="bg-bashful block w-full rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-zinc-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+      placeholder="Click 'Draw' to pick a ticket"
+      readonly
+    />
+  </div>
+  <div class="w-full">
+    <button
+      id="drawButton"
+      class="from-cadillac to-bashful w-full rounded-md bg-gradient-to-r py-3 text-xl font-semibold text-white hover:shadow-md focus:outline-none"
+    >
+      Draw!
+    </button>
+  </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $('#drawButton').click(function () {
-            const ticketsText = $('#tickets').val();
-            const ticketArray = ticketsText.split('\n').filter(ticket => ticket.trim() !== '');
+  $(document).ready(function () {
+    $("#drawButton").click(function () {
+      const ticketsText = $("#tickets").val();
+      const ticketArray = ticketsText
+        .split("\n")
+        .filter((ticket) => ticket.trim() !== "");
 
-            if (ticketArray.length > 0) {
-                const randomIndex = Math.floor(Math.random() * ticketArray.length);
-                const drawnTicket = ticketArray[randomIndex].trim();
-                $('#drawnTicket').val(drawnTicket);
-            } else {
-                $('#drawnTicket').val('Please enter tickets.');
-            }
-        });
+      if (ticketArray.length > 0) {
+        const randomIndex = Math.floor(Math.random() * ticketArray.length);
+        const drawnTicket = ticketArray[randomIndex].trim();
+        $("#drawnTicket").val(drawnTicket);
+      } else {
+        $("#drawnTicket").val("Please enter tickets.");
+      }
     });
+  });
 </script>
