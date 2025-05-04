@@ -1,79 +1,103 @@
-
 <div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
-    <div
-        class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-700 py-4"
+  <div
+    class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-700 py-4"
+  >
+    <h1
+      class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
     >
-        <h1
-            class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
-        >
-            Math evaluator
-        </h1>
+      Math evaluator
+    </h1>
 
-        <p class="w-full text-gray-600 dark:text-gray-400">
-            Evaluate a simple math expression using a simple wheel of evaluation choices.
-        </p>
-    </div>
-    <div class="flex flex-col gap-3 w-full items-start">
-        <label for="expression" class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-xl font-semibold text-transparent">Expression</label>
-        <input type="text" id="expression" class="bg-pearl border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-zinc-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g., 2 + 3 * 4, derivative(x^2), integral(x, 0, 2)" required />
-    </div>
-    <div class="flex flex-col gap-3 w-full items-start">
-        <label for="result" class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-xl font-semibold text-transparent">Result</label>
-        <textarea id="result" rows="4" class="bg-pearl border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-zinc-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Result will be displayed here"></textarea>
-    </div>
-    <div class="w-full">
-        <button id="calculateButton" class="w-full py-3 rounded-md bg-gradient-to-r from-cadillac to-bashful text-white text-xl font-semibold hover:shadow-md focus:outline-none">
-            Calculate!
-        </button>
-    </div>
+    <p class="w-full text-gray-600 dark:text-gray-400">
+      Evaluate a simple math expression using a simple wheel of evaluation
+      choices.
+    </p>
+  </div>
+  <div class="flex w-full flex-col items-start gap-3">
+    <label
+      for="expression"
+      class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-xl font-semibold text-transparent"
+      >Expression</label
+    >
+    <input
+      type="text"
+      id="expression"
+      class="bg-pearl block w-full rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-zinc-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+      placeholder="e.g., 2 + 3 * 4, derivative(x^2), integral(x, 0, 2)"
+      required
+    />
+  </div>
+  <div class="flex w-full flex-col items-start gap-3">
+    <label
+      for="result"
+      class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-xl font-semibold text-transparent"
+      >Result</label
+    >
+    <textarea
+      id="result"
+      rows="4"
+      class="bg-pearl block w-full rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-zinc-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+      placeholder="Result will be displayed here"
+    ></textarea>
+  </div>
+  <div class="w-full">
+    <button
+      id="calculateButton"
+      class="from-cadillac to-bashful w-full rounded-md bg-gradient-to-r py-3 text-xl font-semibold text-white hover:shadow-md focus:outline-none"
+    >
+      Calculate!
+    </button>
+  </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $('#calculateButton').click(function () {
-            const expression = $('#expression').val();
-            try {
-                // Kiểm tra xem có phải là phép đạo hàm không
-                if (expression.startsWith('derivative(')) {
-                    const match = expression.match(/derivative\((.+?),(.+?)\)/);
-                    if (match) {
-                        const func = math.parse(match[1]);
-                        const variable = math.symbolNode(match[2].trim());
-                        const result = math.derivative(func, variable).toString();
-                        $('#result').val(result);
-                    } else {
-                        $('#result').val('Error: Invalid derivative syntax');
-                    }
-                }
-                // Kiểm tra xem có phải là phép tích phân không
-                else if (expression.startsWith('integral(')) {
-                    const match = expression.match(/integral\((.+?),(.+?),(.+?),(.+?)\)/);
-                    if (match) {
-                        const func = match[1];
-                        const variable = match[2].trim();
-                        const lowerBound = match[3];
-                        const upperBound = match[4];
-                        const result = math.evaluate(`integral(${func}, ${variable}, ${lowerBound}, ${upperBound})`);
-                        $('#result').val(result);
-                    } else {
-                        $('#result').val('Error: Invalid integral syntax');
-                    }
-                }
-                // Nếu không phải đạo hàm hoặc tích phân, tính toán biểu thức thông thường
-                else {
-                    const result = math.evaluate(expression);
-                    $('#result').val(result);
-                }
-            } catch (error) {
-                $('#result').val('Error: ' + error);
-            }
-        });
-
-        $('#expression').on('keypress', function (event) {
-            if (event.key === 'Enter') {
-                $('#calculateButton').click();
-            }
-        });
+  $(document).ready(function () {
+    $("#calculateButton").click(function () {
+      const expression = $("#expression").val();
+      try {
+        // Kiểm tra xem có phải là phép đạo hàm không
+        if (expression.startsWith("derivative(")) {
+          const match = expression.match(/derivative\((.+?),(.+?)\)/);
+          if (match) {
+            const func = math.parse(match[1]);
+            const variable = math.symbolNode(match[2].trim());
+            const result = math.derivative(func, variable).toString();
+            $("#result").val(result);
+          } else {
+            $("#result").val("Error: Invalid derivative syntax");
+          }
+        }
+        // Kiểm tra xem có phải là phép tích phân không
+        else if (expression.startsWith("integral(")) {
+          const match = expression.match(/integral\((.+?),(.+?),(.+?),(.+?)\)/);
+          if (match) {
+            const func = match[1];
+            const variable = match[2].trim();
+            const lowerBound = match[3];
+            const upperBound = match[4];
+            const result = math.evaluate(
+              `integral(${func}, ${variable}, ${lowerBound}, ${upperBound})`,
+            );
+            $("#result").val(result);
+          } else {
+            $("#result").val("Error: Invalid integral syntax");
+          }
+        }
+        // Nếu không phải đạo hàm hoặc tích phân, tính toán biểu thức thông thường
+        else {
+          const result = math.evaluate(expression);
+          $("#result").val(result);
+        }
+      } catch (error) {
+        $("#result").val("Error: " + error);
+      }
     });
+
+    $("#expression").on("keypress", function (event) {
+      if (event.key === "Enter") {
+        $("#calculateButton").click();
+      }
+    });
+  });
 </script>

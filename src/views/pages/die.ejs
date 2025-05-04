@@ -1,58 +1,72 @@
 <div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
-    <div
-        class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-700 py-4"
+  <div
+    class="flex w-full flex-col items-start gap-2 border-b-2 border-zinc-700 py-4"
+  >
+    <h1
+      class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
     >
-        <h1
-            class="dark:from-cotton-candy dark:to-cadillac from-cadillac to-bashful bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
-        >
-            Random Image Generator
-        </h1>
+      Random Image Generator
+    </h1>
 
-        <p class="w-full">
-            Click the button to generate a random image.
-        </p>
-    </div>
+    <p class="w-full">Click the button to generate a random image.</p>
+  </div>
 
-    <div class="w-full">
-        <button
-            id="generate-button"
-            class="w-full py-3 rounded-md bg-gradient-to-r from-cadillac to-bashful text-white text-xl font-semibold hover:shadow-md focus:outline-none cursor-pointer"
-        >
-            Generate Random Image
-        </button>
-    </div>
+  <div class="w-full">
+    <button
+      id="generate-button"
+      class="from-cadillac to-bashful w-full cursor-pointer rounded-md bg-gradient-to-r py-3 text-xl font-semibold text-white hover:shadow-md focus:outline-none"
+    >
+      Generate Random Image
+    </button>
+  </div>
 
-    <div class="flex w-full flex-col gap-4 items-center">
-        <h2 class="font-semibold">Random Image</h2>
-        <div id="image-output-container" class="rounded-md flex justify-center items-center" style="min-height: 200px; width: 100%; max-width: 400px;">
-            <img id="random-image-output" src="" alt="Random Image" style="max-width: 100%; max-height: 300px; display: none;">
-            <span id="loading-message" class="text-gray-600 dark:text-gray-400">Click the button to generate a random image.</span>
-        </div>
+  <div class="flex w-full flex-col items-center gap-4">
+    <h2 class="font-semibold">Random Image</h2>
+    <div
+      id="image-output-container"
+      class="flex items-center justify-center rounded-md"
+      style="min-height: 200px; width: 100%; max-width: 400px"
+    >
+      <img
+        id="random-image-output"
+        src=""
+        alt="Random Image"
+        style="max-width: 100%; max-height: 300px; display: none"
+      />
+      <span id="loading-message" class="text-gray-600 dark:text-gray-400"
+        >Click the button to generate a random image.</span
+      >
     </div>
+  </div>
 </div>
 
 <script>
-    $(document).ready(function() {
-        $("#generate-button").on("click", function() {
-            $("#random-image-output").hide();
-            $("#loading-message").text("Wait a second...").show();
+  $(document).ready(function () {
+    $("#generate-button").on("click", function () {
+      $("#random-image-output").hide();
+      $("#loading-message").text("Wait a second...").show();
 
-            // Generate random width and height
-            const randomWidth = Math.floor(Math.random() * 400) + 200;
-            const randomHeight = Math.floor(Math.random() * 300) + 150;
-            const imageUrl = `https://picsum.photos/${randomWidth}/${randomHeight}`;
+      // Generate random width and height
+      const randomWidth = Math.floor(Math.random() * 400) + 200;
+      const randomHeight = Math.floor(Math.random() * 300) + 150;
+      const imageUrl = `https://picsum.photos/${randomWidth}/${randomHeight}`;
 
-            $("#random-image-output").on("load", function() {
-                $("#loading-message").hide();
-                $("#random-image-output").show();
-            });
+      $("#random-image-output").on("load", function () {
+        $("#loading-message").hide();
+        $("#random-image-output").show();
+      });
 
-            $("#random-image-output").on("error", function() {
-                $("#loading-message").hide();
-                $("#random-image-output").attr("src", "https://via.placeholder.com/400x300?text=Failed+to+Load").show();
-            });
+      $("#random-image-output").on("error", function () {
+        $("#loading-message").hide();
+        $("#random-image-output")
+          .attr(
+            "src",
+            "https://via.placeholder.com/400x300?text=Failed+to+Load",
+          )
+          .show();
+      });
 
-            $("#random-image-output").attr("src", imageUrl);
-        });
+      $("#random-image-output").attr("src", imageUrl);
     });
+  });
 </script>
