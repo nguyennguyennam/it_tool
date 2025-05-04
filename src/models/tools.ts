@@ -31,6 +31,6 @@ export const tools = pg.pgTable("tools", {
   description: pg.text().notNull(),
   path: pg.text().notNull().unique(),
   premium: pg.boolean().default(false),
-  state: visibility().default("disabled"),
+  state: visibility().default("enabled"),
   section: pg.serial("section_id").references(() => sections.id),
 });

@@ -21,7 +21,7 @@ export const users = pg.pgTable(
     email: pg.text().notNull(),
     avatar: pg.text(),
     password: pg.text().notNull(),
-    premium: pg.date(),
+    premium: pg.timestamp(),
     role: userRole().notNull().default("user"),
   },
   (table) => [

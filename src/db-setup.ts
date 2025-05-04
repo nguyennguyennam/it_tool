@@ -93,6 +93,7 @@ async function setup() {
         "Take a swing at the most commonly used encoding algorithm used for passwords across the web. For example, Spring Security provides BCrypt out of the box!",
       path: "bcrypt",
       section: 1,
+      premium: true,
     },
     {
       name: "UUID Generator",
@@ -169,6 +170,7 @@ async function setup() {
         "Preview basic settings of a flex-box in a playground-like canvas to better understand what flexboxes do.",
       path: "flexbox",
       section: 4,
+      state: "hidden",
     },
     {
       name: "Pastebin",
@@ -196,6 +198,7 @@ async function setup() {
         "Calculate using the relativity formula, considering the connection between the object's velocity relative to light and the object's mass.",
       path: "relativity",
       section: 5,
+      premium: true,
     },
     {
       name: "Sequences",
@@ -210,6 +213,7 @@ async function setup() {
         "Reduce a matrix down to the row echelon form or even the reduced row echelon form.",
       path: "row-echelon",
       section: 6,
+      premium: true,
     },
     {
       name: "Math evaluator",
@@ -217,6 +221,7 @@ async function setup() {
         "Evaluate a simple math expression using a simple wheel of evaluation choices.",
       path: "math",
       section: 6,
+      premium: true,
     },
     {
       name: "Prime factorization",
@@ -250,6 +255,7 @@ async function setup() {
         "Look up a categorized list of anime, curated over 10 years. Maybe your next waifu or husbando is here.",
       path: "anime",
       section: 8,
+      state: "disabled",
     },
     {
       name: "Weather",
@@ -270,6 +276,7 @@ async function setup() {
       description: "Runs a mask on a bitmap image for various simple results.",
       path: "mask",
       section: 9,
+      state: "disabled",
     },
     {
       name: "QR Code Generator",

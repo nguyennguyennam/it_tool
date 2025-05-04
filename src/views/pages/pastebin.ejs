@@ -23,7 +23,7 @@
 
     <div class="mt-6 text-center">
       <button
-        id="hastebinBtn"
+        id="send"
         class="from-cadillac to-bashful dark:from-cotton-candy dark:to-cadillac cursor-pointer rounded-lg bg-gradient-to-r px-6 py-2 text-white transition hover:opacity-90"
       >
         Create Hastebin
@@ -34,31 +34,38 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/hastebin@0.2.1/src/hastebin.min.js"></script>
 <script>
-  document.getElementById("hastebinBtn").addEventListener("click", function () {
-    var code = document.getElementById("codeInput").value.trim();
+  $("#send").click(() => {
+    const textEncoder = new TextEncoder();
+    textEncoder.encode($("#codeInput").val()).toString();
 
-    if (code === "") {
-      alert("Please enter some code!");
-      return;
-    }
-
-    // Use the global hastebin object from the CDN
-    hastebin
-      .post(code, "https://hastebin.com")
-      .then(function (url) {
-        // Display the URL of the newly created paste
-        var resultDiv = document.getElementById("result");
-        resultDiv.innerHTML = `
-                    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
-                        <p class="font-semibold text-gray-700 dark:text-gray-300">Your Hastebin URL:</p>
-                        <a href="${url}" target="_blank" class="text-blue-500">View your paste here</a>
-                    </div>
-                `;
-      })
-      .catch(function (error) {
-        alert("Error creating paste: " + error);
-      });
+    const query = encodeURIComponent(btoa($("#codeInput").val()));
+    window.location.href = `/paste?text=${query}`;
   });
+
+  // document.getElementById("hastebinBtn").addEventListener("click", function () {
+  //   var code = document.getElementById("codeInput").value.trim();
+
+  //   if (code === "") {
+  //     alert("Please enter some code!");
+  //     return;
+  //   }
+
+  //   // Use the global hastebin object from the CDN
+  //   hastebin
+  //     .post(code, "https://hastebin.com")
+  //     .then(function (url) {
+  //       // Display the URL of the newly created paste
+  //       var resultDiv = document.getElementById("result");
+  //       resultDiv.innerHTML = `
+  //                   <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+  //                       <p class="font-semibold text-gray-700 dark:text-gray-300">Your Hastebin URL:</p>
+  //                       <a href="${url}" target="_blank" class="text-blue-500">View your paste here</a>
+  //                   </div>
+  //               `;
+  //     })
+  //     .catch(function (error) {
+  //       alert("Error creating paste: " + error);
+  //     });
+  // });
 </script>
