@@ -197,43 +197,49 @@
         </svg>
       </button>
 
-      <% content.tools.forEach(section => { %>
-      <div class="flex flex-col gap-4">
-        <h2 class="text-sm font-semibold text-zinc-400 uppercase">
-          <%= section.name %>
-        </h2>
+ <% content.tools.forEach(section => { %>
+    <div class="flex flex-col gap-4">
+      <h2 class="text-sm font-semibold text-zinc-400 uppercase">
+        <%= section.name %>
+      </h2>
 
-        <div class="flex flex-col items-start gap-1">
-          <% section.tools.forEach(tool => { %>
-          <div
-            class="hover:text-bashful dark:hover:text-pearl/50 flex flex-row items-center gap-2 duration-200"
-          >
-            <img
-              src="/static/images/tools/light/<%= tool.path %>.svg"
-              alt=""
-              class="size-4 dark:hidden"
-            />
-            <img
-              src="/static/images/tools/dark/<%= tool.path %>.svg"
-              alt=""
-              class="hidden size-4 dark:block"
-            />
-
-            <% if (content.selectedTool && content.selectedTool == tool.id) { %>
-            <a
-              href="/<%= tool.path %>"
-              class="dark:from-pearl from-cadillac to-bashful dark:to-cotton-candy bg-gradient-to-r bg-clip-text font-semibold text-transparent underline"
-              ><%= tool.name %></a
+      <div class="flex flex-col items-start gap-1">
+        <% if (section && section.tools) {
+          section.tools.forEach(tool => { %>
+            <div
+              class="hover:text-bashful dark:hover:text-pearl/50 flex flex-row items-center gap-2 duration-200 relative"
             >
-            <% } else { %>
-            <a href="/<%= tool.path %>"><%= tool.name %></a>
-            <% } %>
-          </div>
-          <% }) %>
-        </div>
+              <img
+                src="/static/images/tools/light/<%= tool.path %>.svg"
+                alt=""
+                class="size-4 dark:hidden"
+              />
+              <img
+                src="/static/images/tools/dark/<%= tool.path %>.svg"
+                alt=""
+                class="hidden size-4 dark:block"
+              />
+
+              <% if (content.selectedTool && content.selectedTool == tool.id) { %>
+                <a
+                  href="/<%= tool.path %>"
+                  class="dark:from-pearl from-cadillac to-bashful dark:to-cotton-candy bg-gradient-to-r bg-clip-text font-semibold text-transparent underline"
+                  ><%= tool.name %></a
+                >
+              <% } else { %>
+                <a href="/<%= tool.path %>"><%= tool.name %></a>
+              <% } %>
+              <% if (tool.premium) { %>
+                <img src="/static/images/vip.png" alt="Premium" class="w-4 h-4 ml-2" />
+              <% }  %>
+            </div>
+          <% });
+        } %>
       </div>
-      <% }) %>
-    </aside>
+    </div>
+  <% });
+%>
+</aside>
 
     <main
       id="main-content"

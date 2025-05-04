@@ -1,6 +1,5 @@
 import express from "express";
 import { getHomeHandler, getToolHandler } from "../controllers/base-controller";
-
 /**
  * This router for base-path routing, with no additional depths.
  *
@@ -8,6 +7,7 @@ import { getHomeHandler, getToolHandler } from "../controllers/base-controller";
  * this router only accepts the base path mappings.
  */
 const mainRouter = express.Router();
+
 
 mainRouter.get("/", getHomeHandler);
 mainRouter.get("/:tool", getToolHandler);
