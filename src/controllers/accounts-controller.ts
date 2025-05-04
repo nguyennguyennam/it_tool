@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import expressAsyncHandler from "express-async-handler";
+import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { getAccountByEmail } from "../services/accounts-service";
 import { getToolsFormatted } from "../services/tools-service";
@@ -16,7 +17,7 @@ export const getLoginController = expressAsyncHandler(async (req, res) => {
     },
     content: {
       tools: await getToolsFormatted(),
-      session: req.session["user"],
+      session: req["user"],
     },
   });
 });
@@ -39,7 +40,7 @@ export const postLoginController = expressAsyncHandler(async (req, res) => {
       },
       content: {
         tools: await getToolsFormatted(),
-        session: req.session["user"],
+        session: req["user"],
         errorMessage:
           "Email is invalid or password is shorter than 2 characters.",
       },
@@ -58,7 +59,7 @@ export const postLoginController = expressAsyncHandler(async (req, res) => {
       },
       content: {
         tools: await getToolsFormatted(),
-        session: req.session["user"],
+        session: req["user"],
         errorMessage: "That email doesn't exist.",
       },
     });
@@ -74,7 +75,7 @@ export const postLoginController = expressAsyncHandler(async (req, res) => {
       },
       content: {
         tools: await getToolsFormatted(),
-        session: req.session["user"],
+        session: req["user"],
         errorMessage: "Incorrect password.",
       },
     });
@@ -82,13 +83,28 @@ export const postLoginController = expressAsyncHandler(async (req, res) => {
   }
 
   // Correct.
-  req.session["user"] = {
-    id: accounts[0].id,
-    username: accounts[0].username,
-    role: accounts[0].role,
-    premium: accounts[0].premium,
-    favoriteTools: [],
-  } satisfies UserInfo;
-  req.session.save();
-  res.redirect("/");
+  res
+    .cookie(
+      "authorization",
+      jwt.sign(
+        {
+          id: accounts[0].id,
+          username: accounts[0].username,
+          role: accounts[0].role,
+          premium: accounts[0].premium,
+          favoriteTools: [],
+        } satisfies UserInfo,
+        process.env.SESSION_SECRET!,
+      ),
+      {
+        httpOnly: true,
+        sameSite: "none",
+        secure: false,
+      },
+    )
+    .redirect("/");
+});
+
+export const logoutController = expressAsyncHandler(async (req, res) => {
+  res.clearCookie("authorization").redirect("/login");
 });

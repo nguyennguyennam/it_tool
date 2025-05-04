@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A set of useful IT tools in a MVC-architecture.",
   "scripts": {
-    "start": "tailwindcss -o public/css/tailwind.css -m && tsx src/index.ts",
+    "start": "tailwindcss -i src/views/input.css -o public/css/tailwind.css -m && tsx src/index.ts",
     "dev": "concurrently \"tsx --watch src/index.ts\" \"tailwindcss -i src/views/input.css -o public/css/tailwind.css -m -w\"",
     "format": "prettier --w ./src"
   },
@@ -17,9 +17,9 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@types/jsonwebtoken": "^9.0.9",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.6.0",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.41.0",
     "ejs": "^3.1.10",
@@ -33,8 +33,10 @@
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.0.17",
+    "@types/cookie-parser": "^1.4.8",
     "@types/express": "^5.0.1",
     "@types/express-session": "^1.18.1",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.13.15",
     "@types/pg": "^8.11.11",
     "autoprefixer": "^10.4.21",

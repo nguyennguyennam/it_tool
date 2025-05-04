@@ -1,4 +1,4 @@
-import { and, eq, sql } from "drizzle-orm";
+import { eq, not, sql } from "drizzle-orm";
 import { favorites } from "../models/favorite-tools";
 import { sections, tools } from "../models/tools";
 import { db } from "./db-service";
@@ -7,11 +7,10 @@ import { db } from "./db-service";
  * Fetch the tools from the database and reformat it into a proper form
  * for EJS to handle.
  *
- * @param params the credentials params
  * @returns a list of sections, containing tools in each sections.
  */
-export async function getToolsFormatted(params: { user?: number }) {
-  const query = await getAllTools(params);
+export async function getToolsFormatted() {
+  const query = await getAllTools();
 
   // We want to make this into an easy to consume data type for frontend.
   // We want to return an array of sections, where each section contains a "tools" array.
@@ -34,27 +33,22 @@ export async function getToolsFormatted(params: { user?: number }) {
       tools: sectionsMap.get(k),
     });
   });
+
   return contentData;
 }
 
 /**
  * Retrieves a list of tools from the database, without any post processing.
  *
- * @param params the provided credentials
  * @returns a list of unformatted tools
  */
-export async function getAllTools(params: { user?: number }) {
+export async function getAllTools() {
   let query = db
     .select()
     .from(tools)
-    .innerJoin(sections, eq(tools.section, sections.id));
+    .innerJoin(sections, eq(tools.section, sections.id))
+    .where(not(eq(tools.state, "hidden")));
 
-  if (params.user) {
-    query = query.leftJoin(
-      favorites,
-      and(eq(favorites.toolId, tools.id), eq(favorites.userId, params.user)),
-    );
-  }
   const results = await query.execute();
   if (!results || results.length == 0) {
     throw new Error("No tools found.");
@@ -74,4 +68,25 @@ export async function getToolByPath(path: string) {
     .from(tools)
     .where(eq(sql`lower(${tools.path})`, path))
     .limit(1);
+}
+
+/**
+ * Checks for the favorite tools of the user.
+ *
+ * @param userId The user to check for.
+ * @returns the favorite tools of a user
+ */
+export async function getFavoriteTools(userId: number) {
+  return db
+    .select({
+      id: tools.id,
+      name: tools.name,
+      description: tools.description,
+      path: tools.path,
+      state: tools.state,
+      premium: tools.premium,
+    })
+    .from(tools)
+    .innerJoin(favorites, eq(favorites.toolId, tools.id))
+    .where(eq(favorites.userId, userId));
 }

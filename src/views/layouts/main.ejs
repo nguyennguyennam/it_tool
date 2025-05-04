@@ -79,7 +79,7 @@
 
     @media screen and (min-width: 1024px) {
       body {
-        grid-template-columns: 256px 1fr;
+        grid-template-columns: 300px 1fr;
       }
 
       .toolbar-opened > aside {
@@ -170,11 +170,27 @@
           </svg>
         </button>
 
+        <% if (content.session) { %>
+        <div class="flex flex-row items-center gap-4">
+          <p>
+            Hello, @<span class="underline"
+              ><%= content.session.username %></span
+            >
+          </p>
+
+          <a
+            href="/logout"
+            class="rounded-lg border-2 border-rose-600 bg-rose-600 px-4 py-2 font-semibold text-white duration-200 hover:bg-transparent hover:text-black dark:border-rose-300 dark:bg-rose-300 dark:text-black dark:hover:text-white"
+            >Logout</a
+          >
+        </div>
+        <% } else { %>
         <a
           href="/login"
           class="dark:border-cotton-candy border-bashful bg-bashful hover:text-bashful dark:bg-cotton-candy dark:hover:text-cotton-candy text-pearl rounded-full border-2 px-6 py-2 font-semibold duration-200 hover:bg-transparent dark:text-black"
           >Login</a
         >
+        <% } %>
       </div>
     </nav>
 
@@ -202,39 +218,65 @@
       <h2 class="text-sm font-semibold text-zinc-400 uppercase">
         <%= section.name %>
       </h2>
+        <div class="flex flex-col items-start gap-1">
+          <% section.tools.forEach(tool => { %>
+          <div
+            class="hover:text-bashful dark:hover:text-pearl/50 flex flex-row items-center gap-2 duration-200"
+          >
+            <img
+              src="/static/images/tools/light/<%= tool.path %>.svg"
+              alt=""
+              class="size-4 dark:hidden"
+            />
+            <img
+              src="/static/images/tools/dark/<%= tool.path %>.svg"
+              alt=""
+              class="hidden size-4 dark:block"
+            />
 
-      <div class="flex flex-col items-start gap-1">
-        <% if (section && section.tools) {
-          section.tools.forEach(tool => { %>
-            <div
-              class="hover:text-bashful dark:hover:text-pearl/50 flex flex-row items-center gap-2 duration-200 relative"
+            <% if(tool.state == "disabled") { %>
+            <span class="cursor-pointer line-through"><%= tool.name %></span>
+            <% } else if (content.selectedTool && content.selectedTool ==
+            tool.id) { %>
+            <a
+              href="/<%= tool.path %>"
+              class="dark:from-pearl from-cadillac to-bashful dark:to-cotton-candy bg-gradient-to-r bg-clip-text font-semibold text-transparent underline"
+              ><%= tool.name %></a
             >
-              <img
-                src="/static/images/tools/light/<%= tool.path %>.svg"
-                alt=""
-                class="size-4 dark:hidden"
-              />
-              <img
-                src="/static/images/tools/dark/<%= tool.path %>.svg"
-                alt=""
-                class="hidden size-4 dark:block"
-              />
+            <% } else { %>
+            <a href="/<%= tool.path %>"><%= tool.name %></a>
+            <% } %> <% if (tool.premium) { %>
+            <span
+              class="from-cadillac group to-bashful dark:from-lavender dark:to-cotton-candy relative cursor-pointer bg-gradient-to-r bg-clip-text font-bold text-transparent"
+              >P
 
-              <% if (content.selectedTool && content.selectedTool == tool.id) { %>
-                <a
-                  href="/<%= tool.path %>"
-                  class="dark:from-pearl from-cadillac to-bashful dark:to-cotton-candy bg-gradient-to-r bg-clip-text font-semibold text-transparent underline"
-                  ><%= tool.name %></a
-                >
-              <% } else { %>
-                <a href="/<%= tool.path %>"><%= tool.name %></a>
-              <% } %>
-              <% if (tool.premium) { %>
-                <img src="/static/images/vip.png" alt="Premium" class="w-4 h-4 ml-2" />
-              <% }  %>
-            </div>
-          <% });
-        } %>
+              <span
+                class="absolute top-0 left-1/2 hidden w-fit -translate-x-1/2 -translate-y-full rounded-lg bg-white px-2 py-1 text-xs text-black shadow-sm group-hover:block"
+                >Premium</span
+              >
+            </span>
+            <% } %> <% if (tool.state == "disabled") { %>
+            <svg
+              class="h-[16px] w-[16px] text-rose-600 dark:text-rose-300"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-width="2"
+                d="m6 6 12 12m3-6a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+
+            <% } %>
+          </div>
+          <% }) %>
+        </div>
       </div>
     </div>
   <% });
