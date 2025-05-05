@@ -12,9 +12,13 @@ export function authenticate(auth: AuthenticationType = "none") {
       return;
     }
 
-    if (authCookie) {
-      const account = jwt.verify(authCookie, process.env.SESSION_SECRET!);
-      req["user"] = account;
+    try {
+      if (authCookie) {
+        const account = jwt.verify(authCookie, process.env.SESSION_SECRET!);
+        req["user"] = account;
+      }
+    } catch (e) {
+      req["user"] = null;
     }
 
     next();

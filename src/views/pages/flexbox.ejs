@@ -1,111 +1,80 @@
 <div class="flex w-full max-w-4xl flex-col items-center justify-center">
   <h1 class="from-cadillac to-bashful dark:from-cotton-candy dark:to-cadillac">
-    Sequence Tool
+    Flexbox
   </h1>
 
-  <div class="w-full">
-    <div class="mb-3">
-      <label
-        for="typeSelect"
-        class="mb-2 block font-medium text-gray-700 dark:text-gray-300"
-        >Type:</label
-      >
-      <select
-        id="typeSelect"
-        class="w-full rounded-lg border bg-white px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-      >
-        <option value="arithmetic">Arithmetic</option>
-        <option value="geometric">Geometric</option>
+  <div class="flex w-full flex-col gap-4">
+    <label class="flex w-full flex-col gap-2">
+      <span class="font-semibold">Flex Direction</span>
+
+      <select id="select-direction" class="w-full">
+        <option value="vertical" selected>Vertical</option>
+        <option value="horizontal">Horizontal</option>
       </select>
-    </div>
+    </label>
 
-    <div class="mb-6">
-      <label
-        for="startInput"
-        class="mb-2 block font-medium text-gray-700 dark:text-gray-300"
-        >Start:</label
-      >
-      <input
-        type="number"
-        id="startInput"
-        value="1"
-        class="w-full rounded-lg border bg-white px-4 py-2 placeholder-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:placeholder-white"
-      />
-    </div>
+    <label class="flex w-full flex-col gap-2">
+      <span class="font-semibold">Align Items</span>
 
-    <div class="mb-6">
-      <label
-        for="stepInput"
-        class="mb-2 block font-medium text-gray-700 dark:text-gray-300"
-        >Step / Ratio:</label
-      >
-      <input
-        type="number"
-        id="stepInput"
-        value="2"
-        class="w-full rounded-lg border bg-white px-4 py-2 placeholder-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:placeholder-white"
-      />
-    </div>
+      <select id="select-align" class="w-full">
+        <option value="flex-start" selected>Flex Start</option>
+        <option value="flex-end">Flex End</option>
+        <option value="space-between">Space Between</option>
+        <option value="space-around">Space Around</option>
+        <option value="stretch">Stretch</option>
+      </select>
+    </label>
 
-    <div class="mb-6">
-      <label
-        for="lengthInput"
-        class="mb-2 block font-medium text-gray-700 dark:text-gray-300"
-        >Length:</label
-      >
-      <input
-        type="number"
-        id="lengthInput"
-        value="5"
-        class="w-full rounded-lg border bg-white px-4 py-2 placeholder-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:placeholder-white"
-      />
-    </div>
+    <label class="flex w-full flex-col gap-2">
+      <span class="font-semibold">Justify Content</span>
 
-    <div class="mt-8 text-center">
-      <button
-        id="generateSequenceBtn"
-        class="from-cadillac to-bashful dark:from-cotton-candy dark:to-cadillac cursor-pointer rounded-lg bg-gradient-to-r px-8 py-3 text-lg text-white transition hover:opacity-90 focus:ring-4 focus:ring-blue-500 focus:outline-none dark:focus:ring-blue-800"
-      >
-        Generate Sequence
-      </button>
-    </div>
+      <select id="select-justify" class="w-full">
+        <option value="flex-start" selected>Flex Start</option>
+        <option value="flex-end">Flex End</option>
+        <option value="space-between">Space Between</option>
+        <option value="space-around">Space Around</option>
+        <option value="stretch">Stretch</option>
+      </select>
+    </label>
+  </div>
 
-    <div id="sequenceResult" class="mt-8 space-y-4"></div>
+  <div
+    class="dark:border-pearl my-4 flex h-96 w-full gap-2 rounded-lg border border-zinc-700 p-2"
+    id="flex-container"
+  >
+    <div
+      class="bg-cadillac dark:bg-cotton-candy min-h-16 min-w-16 rounded-lg"
+    ></div>
+    <div
+      class="bg-cadillac dark:bg-cotton-candy min-h-16 min-w-16 rounded-lg"
+    ></div>
+    <div
+      class="bg-cadillac dark:bg-cotton-candy min-h-16 min-w-16 rounded-lg"
+    ></div>
+    <div
+      class="bg-cadillac dark:bg-cotton-candy min-h-16 min-w-16 rounded-lg"
+    ></div>
+    <div
+      class="bg-cadillac dark:bg-cotton-candy min-h-16 min-w-16 rounded-lg"
+    ></div>
   </div>
 </div>
 
 <script>
-  $(document).ready(function () {
-    $("#generateSequenceBtn").click(function () {
-      const type = $("#typeSelect").val();
-      const start = parseFloat($("#startInput").val().trim());
-      const step = parseFloat($("#stepInput").val().trim());
-      const length = parseInt($("#lengthInput").val().trim());
-      let sequence = [];
-
-      if (isNaN(start) || isNaN(step) || isNaN(length) || length <= 0) {
-        $("#sequenceResult").html(
-          `<p class="text-red-500 font-semibold">Please enter valid numbers.</p>`,
-        );
-        return;
-      }
-
-      if (type === "arithmetic") {
-        for (let i = 0; i < length; i++) {
-          sequence.push(start + i * step);
-        }
-      } else if (type === "geometric") {
-        for (let i = 0; i < length; i++) {
-          sequence.push(start * Math.pow(step, i));
-        }
-      }
-
-      $("#sequenceResult").html(`
-                <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-inner">
-                    <p class="font-semibold text-gray-700 dark:text-gray-300 mb-2">Generated Sequence:</p>
-                    <pre class="text-lg font-mono text-gray-900 dark:text-white">${sequence.join(", ")}</pre>
-                </div>
-            `);
+  function updateFlexbox() {
+    const state = Flip.getState("#flex-container", {
+      props: "flexDirection,alignItems,justifyContent",
     });
-  });
+    $("#flex-container")
+      .css("flex-direction", $("#select-direction").val())
+      .css("align-items", $("#select-align").val())
+      .css("justify-content", $("#select-justify").val());
+    Flip.from(state, {
+      duration: 0.5,
+    });
+  }
+
+  $("#select-direction").change(updateFlexbox);
+  $("#select-align").change(updateFlexbox);
+  $("#select-justify").change(updateFlexbox);
 </script>

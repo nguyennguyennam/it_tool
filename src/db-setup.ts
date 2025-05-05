@@ -170,7 +170,7 @@ async function setup() {
         "Preview basic settings of a flex-box in a playground-like canvas to better understand what flexboxes do.",
       path: "flexbox",
       section: 4,
-      state: "hidden",
+      state: "enabled",
     },
     {
       name: "Pastebin",
@@ -237,8 +237,8 @@ async function setup() {
       section: 7,
     },
     {
-      name: "Die Roller",
-      description: "Roll a set number of dies of a set number of faces.",
+      name: "Random Image",
+      description: "Retrieve a random placeholder image",
       path: "die",
       section: 7,
     },
