@@ -213,12 +213,11 @@
         </svg>
       </button>
 
-      <% content.tools.forEach(section => { %>
-      <div class="flex flex-col gap-4">
-        <h2 class="text-sm font-semibold text-zinc-400 uppercase">
-          <%= section.name %>
-        </h2>
-
+ <% content.tools.forEach(section => { %>
+    <div class="flex flex-col gap-4">
+      <h2 class="text-sm font-semibold text-zinc-400 uppercase">
+        <%= section.name %>
+      </h2>
         <div class="flex flex-col items-start gap-1">
           <% section.tools.forEach(tool => { %>
           <div
@@ -294,8 +293,10 @@
           <% }) %>
         </div>
       </div>
-      <% }) %>
-    </aside>
+    </div>
+  <% });
+%>
+</aside>
 
     <main
       id="main-content"

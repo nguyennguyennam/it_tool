@@ -32,6 +32,7 @@ mainRouter.get("/401", authenticate("none"), unauthorizedErrorController);
 mainRouter.get("/paste", authenticate("none"), getPasteHandler);
 mainRouter.get("/profile", authenticate("none"), getProfileController);
 
+
 mainRouter
   .route("/login")
   .get(authenticate("none"), getLoginController)
