@@ -119,7 +119,7 @@ export const postLoginController = expressAsyncHandler(async (req, res) => {
       {
         httpOnly: true,
         sameSite: process.env.SESSION_SAME_SITE as any,
-        secure: Boolean(process.env.SESSION_SECURE),
+        secure: process.env.SESSION_SECURE == "true",
       },
     )
     .redirect("/");
@@ -198,7 +198,7 @@ export const postRegisterController = expressAsyncHandler(async (req, res) => {
       {
         httpOnly: true,
         sameSite: process.env.SESSION_SAME_SITE as any,
-        secure: Boolean(process.env.SESSION_SECURE),
+        secure: process.env.SESSION_SECURE == "true",
       },
     )
     .redirect("/");

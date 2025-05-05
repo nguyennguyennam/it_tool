@@ -45,6 +45,26 @@ export const getPasteHandler: RequestHandler = expressAsyncHandler(
   },
 );
 
+export const getProfileController = expressAsyncHandler(async (req, res) => {
+  const user = req["user"];
+  if (!user) {
+    res.redirect("/login");
+    return;
+  }
+
+  res.render("layouts/main", {
+    layout: {
+      title: "Profile",
+      content: "profile",
+    },
+    content: {
+      tools: await getToolsFormatted(),
+      selectedTool: 0,
+      session: req["user"],
+    },
+  });
+});
+
 /**
  * GET /:tool: Retrieve the tool at the path.
  */
