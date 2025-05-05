@@ -23,6 +23,7 @@ export const users = pg.pgTable(
     password: pg.text().notNull(),
     premium: pg.timestamp(),
     role: userRole().notNull().default("user"),
+    requestingPremium: pg.boolean().default(false),
   },
   (table) => [
     {

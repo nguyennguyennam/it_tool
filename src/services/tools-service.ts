@@ -90,3 +90,92 @@ export async function getFavoriteTools(userId: number) {
     .innerJoin(favorites, eq(favorites.toolId, tools.id))
     .where(eq(favorites.userId, userId));
 }
+
+
+/**
+ * Get all of the tools no matters theirs state - enabled, disabled or hidden. for admin
+ * 
+ */
+
+export async function getAllToolAdmin() {
+  return db
+    .select()
+    .from(tools)
+    .innerJoin(sections, eq(tools.section, sections.id))
+    .orderBy(tools.name)
+}
+
+
+/**
+ * Saves tool to DB, sets state "enabled", queries section ID by name.
+ * @param Tool - Tool details (name*, desc, path*, premium, section*).
+ * @returns Promise of insert result (or undefined if section not found).
+ */
+
+export async function saveTool (
+  Tool: {
+    name: string;
+    description: string;
+    path: string;
+    premium: boolean;
+    section: string;
+  })
+  {
+    const sectionId = await db.select({id: sections.id}).from(sections).where(eq(sections.name, Tool.section)).limit(1)
+    return await db.insert(tools).values({
+      name: Tool.name,
+      description: Tool.description,
+      path: Tool.path,
+      premium: Tool.premium,
+      section: sectionId[0].id,
+      state: "enabled",
+    });
+  }
+
+/**
+ * Deletes a tool by its ID.
+ * @param id - ID of the tool to delete (number).
+ * @returns Promise of delete operation result (includes deleted rows).
+ */
+
+export async function deleteToolById(id: number) {
+  return await db.delete(tools).where(eq(tools.id, id)).returning().execute();
+}
+
+/**
+ * Enables/disables a tool by ID by changing its state.
+ * @param id - ID of the tool to update (number).
+ * @param state - New state ('enabled', 'disabled', 'hidden').
+ * @returns Promise of update operation result.
+ */
+
+
+export type visibility = 'enabled' | 'disabled' | 'hidden'
+export async function changingToolVisibility (
+  id: number,
+  state: visibility
+) 
+{
+  return await db
+  .update(tools)
+  .set({state: state})
+  .where(eq(tools.id, id))
+}
+
+
+/**
+ * Toggles a tool's premium status by ID.
+ * @param id - ID of the tool to update (number).
+ * @param premium - New premium status (boolean).
+ * @returns Promise of update operation result.
+ */
+export async function changingPremium (
+  id: number,
+  premium: boolean
+) 
+{
+  return await db
+  .update(tools)
+  .set({premium: premium})
+  .where(eq(tools.id, id))
+}

@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import expressAsyncHandler from "express-async-handler";
-import { getToolByPath, getToolsFormatted, getAllTools } from "../services/tools-service";
+import { getToolByPath, getToolsFormatted, getAllToolAdmin } from "../services/tools-service";
 
 /**
  * GET /: Retrieves the home page.
@@ -108,3 +108,6 @@ export const getToolHandler: RequestHandler = expressAsyncHandler(
     });
   },
 );
+
+
+

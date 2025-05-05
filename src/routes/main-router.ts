@@ -25,13 +25,11 @@ import { authenticate } from "./middlewares";
  */
 const mainRouter = express.Router();
 
-
-mainRouter.get("/", getHomeHandler);
-mainRouter.get("/:tool", getToolHandler);
 mainRouter.get("/", authenticate("none"), getHomeHandler);
 mainRouter.get("/404", authenticate("none"), notFoundErrorController);
 mainRouter.get("/401", authenticate("none"), unauthorizedErrorController);
 mainRouter.get("/paste", authenticate("none"), getPasteHandler);
+
 
 mainRouter
   .route("/login")
