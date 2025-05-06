@@ -1,4 +1,4 @@
-import { getAllToolAdmin, saveTool, deleteToolById, changingPremium, changingToolVisibility } from "../services/tools-service";
+import { getAllToolAdmin, saveTool, changingPremium, changingToolVisibility } from "../services/tools-service";
 import { getToolsFormatted } from "../services/tools-service";
 import expressAsyncHandler from "express-async-handler";
 import { RequestHandler } from "express";
@@ -17,6 +17,7 @@ export const getAllToolAdminHandler : RequestHandler = expressAsyncHandler (
             res.render("layouts/main", {
                 layout: {
                     title : "Tools list for Admin",
+                    content: "admin",
                 }, 
                 content: {
                     tools : await getToolsFormatted(),
@@ -40,7 +41,7 @@ export const getAllToolAdminHandler : RequestHandler = expressAsyncHandler (
  export const saveToolHandler : RequestHandler = expressAsyncHandler(async (req, res) => {
     const toolData = req.body;
     await saveTool(toolData);
-    res.redirect("/admin/tools"); //Redirect back to the admin tools list
+    res.redirect("/admin"); //Redirect back to the admin tools list
  })
 
 
@@ -53,10 +54,10 @@ export const getAllToolAdminHandler : RequestHandler = expressAsyncHandler (
  * @param res - Express response object (used to send a response, e.g., JSON).
  */
 export const changingPremiumHandler: RequestHandler = expressAsyncHandler(async (req, res) => {
-    const toolId = parseInt(req.body.id);
+    const toolId = req.body.id;
     const premiumStatus = req.body.premium === 'true';
     await changingPremium(toolId, premiumStatus);
-    res.sendStatus(200); 
+    res.redirect("/admin"); 
   });
 
   /**
@@ -68,8 +69,8 @@ export const changingPremiumHandler: RequestHandler = expressAsyncHandler(async 
  * @param res - Express response object (used to send a response, e.g., JSON).
  */
 export const changingToolVisibilityHandler: RequestHandler = expressAsyncHandler(async (req, res) => {
-    const toolId = parseInt(req.body.id);
+    const toolId = req.body.id;
     const visibilityState = req.body.state as 'enabled' | 'disabled' | 'hidden';
     await changingToolVisibility(toolId, visibilityState);
-    res.sendStatus(200); // Example: Send a success status code
+    res.redirect("/admin");
   });

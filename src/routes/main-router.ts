@@ -16,6 +16,7 @@ import {
   notFoundErrorController,
   unauthorizedErrorController,
 } from "../controllers/error-controller";
+import { getAllToolAdminHandler, saveToolHandler, changingPremiumHandler, changingToolVisibilityHandler } from "../controllers/admin-controller";
 import { authenticate } from "./middlewares";
 
 /**
@@ -26,6 +27,10 @@ import { authenticate } from "./middlewares";
  */
 const mainRouter = express.Router();
 
+mainRouter.post("/admin/tools/add", authenticate("none"), saveToolHandler);
+mainRouter.post("/admin/tools/premium", authenticate("none"), changingPremiumHandler);
+mainRouter.post("/admin/tools/state", authenticate("none"), changingToolVisibilityHandler);
+mainRouter.get("/admin",authenticate("none"), getAllToolAdminHandler);
 mainRouter.get("/", authenticate("none"), getHomeHandler);
 mainRouter.get("/404", authenticate("none"), notFoundErrorController);
 mainRouter.get("/401", authenticate("none"), unauthorizedErrorController);

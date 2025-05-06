@@ -102,7 +102,7 @@ export async function getAllToolAdmin() {
     .select()
     .from(tools)
     .innerJoin(sections, eq(tools.section, sections.id))
-    .orderBy(tools.name)
+    .orderBy(tools.id)
 }
 
 
@@ -131,16 +131,6 @@ export async function saveTool (
       state: "enabled",
     });
   }
-
-/**
- * Deletes a tool by its ID.
- * @param id - ID of the tool to delete (number).
- * @returns Promise of delete operation result (includes deleted rows).
- */
-
-export async function deleteToolById(id: number) {
-  return await db.delete(tools).where(eq(tools.id, id)).returning().execute();
-}
 
 /**
  * Enables/disables a tool by ID by changing its state.
