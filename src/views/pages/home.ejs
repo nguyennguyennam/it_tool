@@ -145,6 +145,103 @@
 </script>
 
 <div class="mt-12 flex w-full flex-col gap-4 lg:p-4">
+  <% if (content.favoriteTools.length > 0) { %>
+  <div class="flex w-full flex-col items-start justify-between gap-4">
+    <h2 class="text-xl font-semibold">Favorite Tools</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <% content.favoriteTools.forEach(tool => { %>
+      <a
+        class="dark:hover:border-lavender hover:border-bashful relative flex cursor-pointer flex-col gap-4 rounded-xl border-2 border-transparent bg-transparent p-6 duration-200 hover:bg-zinc-300 dark:hover:bg-zinc-700"
+        href="/<%= tool.state == 'disabled' ? '#' : tool.path %>"
+      >
+        <div class="flex w-full flex-row items-center justify-between gap-2">
+          <div class="flex w-full flex-row items-center gap-2">
+            <img
+              src="/static/images/tools/dark/<%= tool.path %>.svg"
+              alt=""
+              class="hidden size-6 dark:block"
+            />
+            <img
+              src="/static/images/tools/light/<%= tool.path %>.svg"
+              alt=""
+              class="size-6 dark:hidden"
+            />
+            <h3
+              class="text-bashful dark:text-cotton-candy text-lg font-semibold"
+            >
+              <%= tool.name %>
+            </h3>
+
+            <% if (tool.premium) { %>
+            <div class="group relative">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 -960 960 960"
+                class="size-6 fill-amber-600 dark:fill-amber-300"
+              >
+                <path
+                  d="M200-160v-80h560v80H200Zm0-140-51-321q-2 0-4.5.5t-4.5.5q-25 0-42.5-17.5T80-680q0-25 17.5-42.5T140-740q25 0 42.5 17.5T200-680q0 7-1.5 13t-3.5 11l125 56 125-171q-11-8-18-21t-7-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820q0 15-7 28t-18 21l125 171 125-56q-2-5-3.5-11t-1.5-13q0-25 17.5-42.5T820-740q25 0 42.5 17.5T880-680q0 25-17.5 42.5T820-620q-2 0-4.5-.5t-4.5-.5l-51 321H200Zm68-80h424l26-167-105 46-133-183-133 183-105-46 26 167Zm212 0Z"
+                />
+              </svg>
+
+              <span
+                class="absolute top-0 left-1/2 hidden w-fit -translate-x-1/2 -translate-y-full rounded-lg bg-white px-2 py-1 text-xs font-semibold text-black shadow-sm group-hover:block"
+              >
+                Premium
+              </span>
+            </div>
+            <% } %> <% if (tool.state == "disabled") { %>
+            <div class="group relative">
+              <svg
+                class="h-[16px] w-[16px] text-rose-600 dark:text-rose-300"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-width="2"
+                  d="m6 6 12 12m3-6a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+
+              <span
+                class="absolute top-0 left-1/2 hidden w-fit -translate-x-1/2 -translate-y-full rounded-lg bg-white px-2 py-1 text-xs font-semibold text-black shadow-sm group-hover:block"
+              >
+                Disabled
+              </span>
+            </div>
+            <% } %>
+          </div>
+
+          <button
+            id="tool-<%= tool.id %>-fav"
+            class="flex cursor-pointer items-center justify-center duration-200 hover:opacity-50"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 -960 960 960"
+              class="dark:fill-cotton-candy fill-cadillac size-5"
+            >
+              <path
+                d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <p><%= tool.description %></p>
+      </a>
+      <% }) %>
+    </div>
+  </div>
+  <% } %>
+
   <div class="flex w-full items-center justify-between gap-4">
     <h2 class="text-xl font-semibold">All Tools</h2>
 
@@ -184,64 +281,113 @@
       class="dark:hover:border-lavender hover:border-bashful relative flex cursor-pointer flex-col gap-4 rounded-xl border-2 border-transparent bg-transparent p-6 duration-200 hover:bg-zinc-300 dark:hover:bg-zinc-700"
       href="/<%= tool.state == 'disabled' ? '#' : tool.path %>"
     >
-      <div class="flex w-full flex-row items-center gap-2">
-        <img
-          src="/static/images/tools/dark/<%= tool.path %>.svg"
-          alt=""
-          class="hidden size-6 dark:block"
-        />
-        <img
-          src="/static/images/tools/light/<%= tool.path %>.svg"
-          alt=""
-          class="size-6 dark:hidden"
-        />
-        <h3 class="text-bashful dark:text-cotton-candy text-lg font-semibold">
-          <%= tool.name %>
-        </h3>
+      <div class="flex w-full flex-row items-center justify-between gap-2">
+        <div class="flex w-full flex-row items-center gap-2">
+          <img
+            src="/static/images/tools/dark/<%= tool.path %>.svg"
+            alt=""
+            class="hidden size-6 dark:block"
+          />
+          <img
+            src="/static/images/tools/light/<%= tool.path %>.svg"
+            alt=""
+            class="size-6 dark:hidden"
+          />
+          <h3 class="text-bashful dark:text-cotton-candy text-lg font-semibold">
+            <%= tool.name %>
+          </h3>
 
-        <% if (tool.premium) { %>
-        <div class="group relative">
+          <% if (tool.premium) { %>
+          <div class="group relative">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 -960 960 960"
+              class="size-6 fill-amber-600 dark:fill-amber-300"
+            >
+              <path
+                d="M200-160v-80h560v80H200Zm0-140-51-321q-2 0-4.5.5t-4.5.5q-25 0-42.5-17.5T80-680q0-25 17.5-42.5T140-740q25 0 42.5 17.5T200-680q0 7-1.5 13t-3.5 11l125 56 125-171q-11-8-18-21t-7-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820q0 15-7 28t-18 21l125 171 125-56q-2-5-3.5-11t-1.5-13q0-25 17.5-42.5T820-740q25 0 42.5 17.5T880-680q0 25-17.5 42.5T820-620q-2 0-4.5-.5t-4.5-.5l-51 321H200Zm68-80h424l26-167-105 46-133-183-133 183-105-46 26 167Zm212 0Z"
+              />
+            </svg>
+
+            <span
+              class="absolute top-0 left-1/2 hidden w-fit -translate-x-1/2 -translate-y-full rounded-lg bg-white px-2 py-1 text-xs font-semibold text-black shadow-sm group-hover:block"
+            >
+              Premium
+            </span>
+          </div>
+          <% } %> <% if (tool.state == "disabled") { %>
+          <div class="group relative">
+            <svg
+              class="h-[16px] w-[16px] text-rose-600 dark:text-rose-300"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-width="2"
+                d="m6 6 12 12m3-6a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+
+            <span
+              class="absolute top-0 left-1/2 hidden w-fit -translate-x-1/2 -translate-y-full rounded-lg bg-white px-2 py-1 text-xs font-semibold text-black shadow-sm group-hover:block"
+            >
+              Disabled
+            </span>
+          </div>
+          <% } %>
+        </div>
+
+        <% if (content.session) { %>
+        <button
+          id="tool-<%= tool.id %>-fav"
+          class="flex cursor-pointer items-center justify-center duration-200 hover:opacity-50"
+        >
+          <% if (content.favoriteTools.some(fav => fav.id == tool.id)) { %>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 -960 960 960"
-            class="size-6 fill-amber-600 dark:fill-amber-300"
+            class="dark:fill-cotton-candy fill-cadillac size-5"
           >
             <path
-              d="M200-160v-80h560v80H200Zm0-140-51-321q-2 0-4.5.5t-4.5.5q-25 0-42.5-17.5T80-680q0-25 17.5-42.5T140-740q25 0 42.5 17.5T200-680q0 7-1.5 13t-3.5 11l125 56 125-171q-11-8-18-21t-7-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820q0 15-7 28t-18 21l125 171 125-56q-2-5-3.5-11t-1.5-13q0-25 17.5-42.5T820-740q25 0 42.5 17.5T880-680q0 25-17.5 42.5T820-620q-2 0-4.5-.5t-4.5-.5l-51 321H200Zm68-80h424l26-167-105 46-133-183-133 183-105-46 26 167Zm212 0Z"
+              d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Z"
             />
           </svg>
-
-          <span
-            class="absolute top-0 left-1/2 hidden w-fit -translate-x-1/2 -translate-y-full rounded-lg bg-white px-2 py-1 text-xs font-semibold text-black shadow-sm group-hover:block"
-          >
-            Premium
-          </span>
-        </div>
-        <% } %> <% if (tool.state == "disabled") { %>
-        <div class="group relative">
+          <% } else { %>
           <svg
-            class="h-[16px] w-[16px] text-rose-600 dark:text-rose-300"
-            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
+            viewBox="0 -960 960 960"
+            class="dark:fill-cotton-candy fill-cadillac size-5"
           >
             <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-width="2"
-              d="m6 6 12 12m3-6a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z"
             />
           </svg>
+          <% } %>
+        </button>
 
-          <span
-            class="absolute top-0 left-1/2 hidden w-fit -translate-x-1/2 -translate-y-full rounded-lg bg-white px-2 py-1 text-xs font-semibold text-black shadow-sm group-hover:block"
-          >
-            Disabled
-          </span>
-        </div>
+        <script defer>
+          $("#tool-<%= tool.id %>-fav").click(async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const id = parseInt("<%= tool.id %>");
+
+            await fetch("/favorite", {
+              method: "POST",
+              credentials: "include",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ id }),
+            });
+            window.location.reload();
+          });
+        </script>
         <% } %>
       </div>
 
