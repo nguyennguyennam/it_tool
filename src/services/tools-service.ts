@@ -91,20 +91,17 @@ export async function getFavoriteTools(userId: number) {
     .where(eq(favorites.userId, userId));
 }
 
-
 /**
  * Get all of the tools no matters theirs state - enabled, disabled or hidden. for admin
- * 
+ *
  */
-
 export async function getAllToolAdmin() {
-  return db
+  return await db
     .select()
-    .from(tools)
-    .innerJoin(sections, eq(tools.section, sections.id))
-    .orderBy(tools.id)
+    .from(sections)
+    .leftJoin(tools, eq(tools.section, sections.id))
+    .orderBy(sections.id, tools.id);
 }
-
 
 /**
  * Saves tool to DB, sets state "enabled", queries section ID by name.
@@ -112,25 +109,27 @@ export async function getAllToolAdmin() {
  * @returns Promise of insert result (or undefined if section not found).
  */
 
-export async function saveTool (
-  Tool: {
-    name: string;
-    description: string;
-    path: string;
-    premium: boolean;
-    section: string;
-  })
-  {
-    const sectionId = await db.select({id: sections.id}).from(sections).where(eq(sections.name, Tool.section)).limit(1)
-    return await db.insert(tools).values({
-      name: Tool.name,
-      description: Tool.description,
-      path: Tool.path,
-      premium: Tool.premium,
-      section: sectionId[0].id,
-      state: "enabled",
-    });
-  }
+export async function saveTool(Tool: {
+  name: string;
+  description: string;
+  path: string;
+  premium: boolean;
+  section: string;
+}) {
+  const sectionId = await db
+    .select({ id: sections.id })
+    .from(sections)
+    .where(eq(sections.name, Tool.section))
+    .limit(1);
+  return await db.insert(tools).values({
+    name: Tool.name,
+    description: Tool.description,
+    path: Tool.path,
+    premium: Tool.premium,
+    section: sectionId[0].id,
+    state: "enabled",
+  });
+}
 
 /**
  * Enables/disables a tool by ID by changing its state.
@@ -139,19 +138,10 @@ export async function saveTool (
  * @returns Promise of update operation result.
  */
 
-
-export type visibility = 'enabled' | 'disabled' | 'hidden'
-export async function changingToolVisibility (
-  id: number,
-  state: visibility
-) 
-{
-  return await db
-  .update(tools)
-  .set({state: state})
-  .where(eq(tools.id, id))
+export type visibility = "enabled" | "disabled" | "hidden";
+export async function changingToolVisibility(id: number, state: visibility) {
+  return await db.update(tools).set({ state: state }).where(eq(tools.id, id));
 }
-
 
 /**
  * Toggles a tool's premium status by ID.
@@ -159,13 +149,50 @@ export async function changingToolVisibility (
  * @param premium - New premium status (boolean).
  * @returns Promise of update operation result.
  */
-export async function changingPremium (
-  id: number,
-  premium: boolean
-) 
-{
+export async function changingPremium(id: number, premium: boolean) {
   return await db
-  .update(tools)
-  .set({premium: premium})
-  .where(eq(tools.id, id))
+    .update(tools)
+    .set({ premium: premium })
+    .where(eq(tools.id, id));
+}
+
+/**
+ * Creates a new tools section.
+ *
+ * @param name the name of the section
+ * @returns the query result
+ */
+export async function createSection(name: string) {
+  return await db.insert(sections).values({ name });
+}
+
+/**
+ * Updates the section with a new name.
+ *
+ * @param id the section id
+ * @param name the new name
+ * @returns the query result
+ */
+export async function updateSection(id: number, name: string) {
+  return await db.update(sections).set({ name }).where(eq(sections.id, id));
+}
+
+/**
+ * Returns a list of tools belonging in a section.
+ *
+ * @param id the section id
+ * @returns the query result
+ */
+export async function getToolsInSection(id: number) {
+  return await db.select().from(tools).where(eq(tools.section, id));
+}
+
+/**
+ * Deletes a section.
+ *
+ * @param id the section id
+ * @returns the query result
+ */
+export async function deleteSection(id: number) {
+  return await db.delete(sections).where(eq(sections.id, id));
 }

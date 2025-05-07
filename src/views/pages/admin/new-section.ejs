@@ -1,0 +1,27 @@
+<div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
+  <h2 class="text-xl font-bold">Create New Section</h2>
+
+  <form
+    method="post"
+    enctype="application/x-www-form-urlencoded"
+    class="flex w-full flex-col gap-4"
+  >
+    <label for="name" class="flex w-full flex-col gap-2">
+      <span class="font-semibold">Section Name</span>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        placeholder="Cool Tools"
+        class="dark:border-pearl min-h-12 rounded-lg border border-zinc-700 px-4 py-2 placeholder:opacity-50"
+      />
+    </label>
+
+    <button
+      type="submit"
+      class="border-bashful bg-bashful hover:text-bashful dark:border-cotton-candy dark:bg-cotton-candy dark:hover:text-cotton-candy text-pearl cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold duration-200 hover:bg-transparent dark:text-black"
+    >
+      Submit
+    </button>
+  </form>
+</div>

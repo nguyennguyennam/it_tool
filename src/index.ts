@@ -14,6 +14,7 @@ app.set("views", path.join(__dirname, "views"));
 // Setup routes
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use("/", mainRouter);
 
 // Setup public folder for static file serving.

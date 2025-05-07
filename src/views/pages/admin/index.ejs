@@ -1,0 +1,189 @@
+<div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
+  <h2 class="text-xl font-bold">Administrative Panel</h2>
+
+  <div class="flex w-full flex-row items-center justify-end gap-2">
+    <a
+      href="/admin/section"
+      class="dark:border-cotton-candy text-pearl dark:bg-cotton-candy dark:hover:text-cotton-candy border-bashful bg-bashful hover:text-bashful w-fit cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold duration-200 hover:bg-transparent disabled:cursor-progress dark:text-black"
+    >
+      Add Section
+    </a>
+    <a
+      href="/admin/tool"
+      class="dark:border-cotton-candy text-pearl dark:bg-cotton-candy dark:hover:text-cotton-candy border-bashful bg-bashful hover:text-bashful w-fit cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold duration-200 hover:bg-transparent disabled:cursor-progress dark:text-black"
+    >
+      Add Tool
+    </a>
+  </div>
+
+  <% content.adminTools.forEach(section => { %>
+  <div class="flex w-full flex-col gap-2">
+    <div class="flex w-full flex-row items-center justify-between">
+      <div
+        class="flex flex-row items-center gap-2"
+        id="section-<%= section.id %>-view"
+      >
+        <h3 class="font-semibold"><%= section.name %></h3>
+        <button
+          class="flex cursor-pointer items-center justify-center hover:opacity-50"
+          id="section-<%= section.id %>-edit-btn"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 -960 960 960"
+            class="dark:fill-pearl size-4 fill-black"
+          >
+            <path
+              d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"
+            />
+          </svg>
+        </button>
+
+        <% if (section.tools.length == 0) { %>
+        <button
+          class="flex cursor-pointer items-center justify-center hover:opacity-50"
+          id="section-<%= section.id %>-delete-btn"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 -960 960 960"
+            class="dark:fill-pearl size-4 fill-black"
+          >
+            <path
+              d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+            />
+          </svg>
+        </button>
+        <% } %>
+      </div>
+      <form
+        class="hidden flex-row items-center gap-2"
+        id="section-<%= section.id %>-edit"
+      >
+        <input
+          class="border-bashful dark:border-cotton-candy w-fit min-w-32 rounded-lg border-2 px-4 py-2"
+          type="text"
+          name="name"
+          value="<%= section.name %>"
+          id="section-<%= section.id %>-name"
+        />
+
+        <button
+          class="flex cursor-pointer items-center justify-center hover:opacity-50"
+          id="section-<%= section.id %>-cancel"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 -960 960 960"
+            class="dark:fill-pearl size-4 fill-black"
+          >
+            <path
+              d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+            />
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          id="section-<%= section.id %>-submit"
+          class="flex cursor-pointer items-center justify-center hover:opacity-50"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 -960 960 960"
+            class="dark:fill-pearl size-4 fill-black"
+          >
+            <path
+              d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"
+            />
+          </svg>
+        </button>
+
+        <script defer>
+          $("#section-<%= section.id %>-edit-btn").click(() => {
+            $("#section-<%= section.id %>-view")
+              .removeClass("flex")
+              .addClass("hidden");
+            $("#section-<%= section.id %>-edit")
+              .removeClass("hidden")
+              .addClass("flex");
+          });
+
+          $("#section-<%= section.id %>-cancel").click(() => {
+            $("#section-<%= section.id %>-view")
+              .removeClass("hidden")
+              .addClass("flex");
+            $("#section-<%= section.id %>-edit")
+              .removeClass("flex")
+              .addClass("hidden");
+          });
+
+          $("#section-<%= section.id %>-submit").click(async (e) => {
+            e.preventDefault();
+            const newName = $("#section-<%= section.id %>-name").val();
+            const id = parseInt("<%= section.id %>");
+
+            const res = await fetch("/admin/section", {
+              method: "PUT",
+              credentials: "include",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ id, name: newName }),
+            });
+            window.location.reload();
+          });
+
+          $("#section-<%= section.id %>-delete-btn").click(async () => {
+            const id = parseInt("<%= section.id %>");
+
+            const res = await fetch("/admin/section", {
+              method: "DELETE",
+              credentials: "include",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ id }),
+            });
+            window.location.reload();
+          });
+        </script>
+      </form>
+
+      <div class="flex flex-row items-center gap-2"></div>
+    </div>
+
+    <% if (section.tools.length == 0) { %>
+    <div
+      class="border-bashful dark:border-cotton-candy flex min-h-24 w-full flex-col items-center justify-center rounded-lg border-2 bg-zinc-200 dark:bg-zinc-700"
+    >
+      No tools yet
+    </div>
+    <% } else { %>
+    <div
+      class="border-bashful dark:border-cotton-candy divide-bashful dark:divide-cotton-candy flex w-full flex-col divide-y-2 rounded-lg border-2 bg-zinc-200 dark:bg-zinc-700"
+    >
+      <% section.tools.forEach(tool => { %>
+      <div class="flex flex-row items-center gap-2 px-4 py-2">
+        <img
+          src="/static/images/tools/light/<%= tool.path %>.svg"
+          alt=""
+          class="size-6 shrink-0 dark:hidden"
+        />
+        <img
+          src="/static/images/tools/dark/<%= tool.path %>.svg"
+          alt=""
+          class="hidden size-6 shrink-0 dark:block"
+        />
+
+        <div class="flex w-full flex-col">
+          <span class="font-semibold"><%= tool.name %></span>
+          <span><%= tool.description %></span>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+    <% } %>
+  </div>
+  <% }) %>
+</div>

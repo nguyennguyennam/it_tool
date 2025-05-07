@@ -8,7 +8,6 @@ import {
   registerAccount,
 } from "../services/accounts-service";
 import { getToolsFormatted } from "../services/tools-service";
-import { UserInfo } from "../types";
 
 /**
  * GET /login: Retrieve the login page.
@@ -109,11 +108,7 @@ export const postLoginController = expressAsyncHandler(async (req, res) => {
       jwt.sign(
         {
           id: accounts[0].id,
-          username: accounts[0].username,
-          role: accounts[0].role,
-          premium: accounts[0].premium,
-          favoriteTools: [],
-        } satisfies UserInfo,
+        },
         process.env.SESSION_SECRET!,
       ),
       {
@@ -188,11 +183,7 @@ export const postRegisterController = expressAsyncHandler(async (req, res) => {
       jwt.sign(
         {
           id: result[0].id,
-          username: result[0].username,
-          role: result[0].role,
-          premium: result[0].premium,
-          favoriteTools: [],
-        } satisfies UserInfo,
+        },
         process.env.SESSION_SECRET!,
       ),
       {

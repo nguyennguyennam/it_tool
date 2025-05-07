@@ -1,6 +1,7 @@
 export interface UserInfo {
   id: number;
   username: string;
+  email: string;
   role: "user" | "admin";
   premium: Date | null;
   favoriteTools: ToolInfo[];

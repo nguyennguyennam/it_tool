@@ -2,6 +2,21 @@ import { eq, or, sql } from "drizzle-orm";
 import { users } from "../models/users";
 import { db } from "./db-service";
 
+export async function getAccountById(id: number) {
+  return await db
+    .select({
+      id: users.id,
+      username: users.username,
+      email: users.email,
+      role: users.role,
+      premium: users.premium,
+      requestingPremium: users.requestingPremium,
+    })
+    .from(users)
+    .where(eq(users.id, id))
+    .limit(1);
+}
+
 /**
  * Attempts to lookup a user using an email.
  *
