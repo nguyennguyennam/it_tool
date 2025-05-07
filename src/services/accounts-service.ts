@@ -1,4 +1,4 @@
-import { eq, or, sql } from "drizzle-orm";
+import { eq, or, sql,and } from "drizzle-orm";
 import { users } from "../models/users";
 import { db } from "./db-service";
 
@@ -70,4 +70,14 @@ export async function registerAccount(data: {
       password: data.password,
     })
     .returning();
+}
+
+
+/**
+ * Fetch all of the users need requestingPremium
+ * 
+ */
+
+export async function getRequestPremiumUser () {
+  return await db.select().from(users).where(and(eq(users.requestingPremium, true), eq(users.role, "user")));
 }

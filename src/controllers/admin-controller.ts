@@ -15,6 +15,7 @@ import {
   saveTool,
   updateSection,
 } from "../services/tools-service";
+import { getRequestPremiumUser } from "../services/accounts-service";
 
 /**
  * Handles admin tool list route. Fetches tools, renders admin view if user is 'admin'.
@@ -354,3 +355,21 @@ export const changingToolVisibilityHandler: RequestHandler =
     await changingToolVisibility(toolId, visibilityState);
     res.redirect("/admin");
   });
+
+/**
+ * GET: Get all of the users need requestingPremium
+ */
+
+export const getRequestPremiumUserHandler : RequestHandler = 
+expressAsyncHandler(async (req, res) => {
+    res.render("layouts/main", {
+        layout: {
+            layout: "Requesting Premium Users",
+            content: "admin/requesting-premium-user"
+        },
+        content: {
+            tools: await getToolsFormatted(),
+            requestingUser : await getRequestPremiumUser()
+        }
+    })
+})

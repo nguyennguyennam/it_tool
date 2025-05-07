@@ -17,6 +17,7 @@ import {
   postAdminSectionController,
   postAdminToolController,
   putAdminSectionController,
+  getRequestPremiumUserHandler
 } from "../controllers/admin-controller";
 import {
   getHomeHandler,
@@ -45,6 +46,9 @@ mainRouter.get("/paste", authenticate("none"), getPasteHandler);
 mainRouter.get("/profile", authenticate("none"), getProfileController);
 
 mainRouter.route("/admin").get(authenticate("admin"), getAllToolAdminHandler);
+mainRouter
+  .route("/admin/user")
+  .get(authenticate("admin"), getRequestPremiumUserHandler)
 mainRouter
   .route("/admin/section")
   .get(authenticate("admin"), getAdminSectionController)
