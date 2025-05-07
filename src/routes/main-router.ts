@@ -13,11 +13,12 @@ import {
   getAdminSectionController,
   getAdminToolController,
   getAllToolAdminHandler,
+  getRequestPremiumUserHandler,
   postAdminEditToolController,
   postAdminSectionController,
   postAdminToolController,
+  postRequestPremiumAdminController,
   putAdminSectionController,
-  getRequestPremiumUserHandler
 } from "../controllers/admin-controller";
 import {
   getHomeHandler,
@@ -25,6 +26,7 @@ import {
   getProfileController,
   getToolHandler,
   postFavoriteToolHandler,
+  postRequestPremiumHandler,
 } from "../controllers/base-controller";
 import {
   notFoundErrorController,
@@ -46,11 +48,13 @@ mainRouter.get("/401", authenticate("none"), unauthorizedErrorController);
 mainRouter.get("/paste", authenticate("none"), getPasteHandler);
 mainRouter.get("/profile", authenticate("none"), getProfileController);
 mainRouter.post("/favorite", authenticate("user"), postFavoriteToolHandler);
+mainRouter.post("/premium", authenticate("user"), postRequestPremiumHandler);
 
 mainRouter.route("/admin").get(authenticate("admin"), getAllToolAdminHandler);
 mainRouter
   .route("/admin/user")
   .get(authenticate("admin"), getRequestPremiumUserHandler)
+  .post(authenticate("admin"), postRequestPremiumAdminController);
 mainRouter
   .route("/admin/section")
   .get(authenticate("admin"), getAdminSectionController)
@@ -62,7 +66,6 @@ mainRouter
   .get(authenticate("admin"), getAdminToolController)
   .post(authenticate("admin"), postAdminToolController)
   .delete(authenticate("admin"), deleteAdminToolController);
-
 mainRouter
   .route("/admin/tool/:id")
   .get(authenticate("admin"), getAdminEditToolController)

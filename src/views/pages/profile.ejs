@@ -41,14 +41,29 @@
       >
         Admin Tools
       </a>
-      <% } %>
-
-      <button
-        id="request-premium"
-        class="border-bashful bg-bashful hover:text-bashful dark:border-cotton-candy dark:bg-cotton-candy dark:hover:text-cotton-candy text-pearl mt-4 cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold duration-200 hover:bg-transparent dark:text-black"
+      <% } %> <% if (content.session?.role == "user" &&
+      content.session?.requestingPremium == false) { %>
+      <form
+        action="/premium"
+        method="post"
+        enctype="application/x-www-form-urlencoded"
       >
-        Request Premium
+        <button
+          type="submit"
+          id="request-premium"
+          class="border-bashful bg-bashful hover:text-bashful dark:border-cotton-candy dark:bg-cotton-candy dark:hover:text-cotton-candy text-pearl mt-4 cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold duration-200 hover:bg-transparent dark:text-black"
+        >
+          Request Premium
+        </button>
+      </form>
+      <% } else if(content.session?.role == "user") { %>
+      <button
+        type="button"
+        class="border-bashful bg-bashful hover:text-bashful dark:border-cotton-candy dark:bg-cotton-candy dark:hover:text-cotton-candy text-pearl mt-4 cursor-not-allowed cursor-pointer self-end rounded-md border-2 px-4 py-2 font-semibold opacity-50 duration-200 hover:bg-transparent dark:text-black"
+      >
+        Already requesting...
       </button>
+      <% } %>
     </div>
   </div>
 </div>

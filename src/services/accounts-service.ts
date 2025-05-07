@@ -1,4 +1,4 @@
-import { eq, or, sql,and } from "drizzle-orm";
+import { and, eq, or, sql } from "drizzle-orm";
 import { users } from "../models/users";
 import { db } from "./db-service";
 
@@ -72,12 +72,52 @@ export async function registerAccount(data: {
     .returning();
 }
 
+/**
+ * Extends the premium subscription of a user by 7 days starting from today.
+ *
+ * @param user the user id
+ */
+export async function extendPremium(user: number) {
+  const current = await getAccountById(user);
+  if (current.length == 0) {
+    return;
+  }
+
+  await db
+    .update(users)
+    .set({
+      premium: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      requestingPremium: false,
+    })
+    .where(eq(users.id, user));
+}
+
+/**
+ * Marks the user's requesting premium state as true.
+ *
+ * @param user the user id
+ */
+export async function requestPremium(user: number) {
+  await db
+    .update(users)
+    .set({ requestingPremium: true })
+    .where(eq(users.id, user));
+}
 
 /**
  * Fetch all of the users need requestingPremium
- * 
+ *
  */
-
-export async function getRequestPremiumUser () {
-  return await db.select().from(users).where(and(eq(users.requestingPremium, true), eq(users.role, "user")));
+export async function getRequestPremiumUser() {
+  return await db
+    .select({
+      id: users.id,
+      username: users.username,
+      email: users.email,
+      role: users.role,
+      premium: users.premium,
+      requestingPremium: users.requestingPremium,
+    })
+    .from(users)
+    .where(and(eq(users.requestingPremium, true), eq(users.role, "user")));
 }

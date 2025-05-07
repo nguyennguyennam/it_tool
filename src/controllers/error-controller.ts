@@ -25,7 +25,7 @@ export const unauthorizedErrorController = expressAsyncHandler(
     res.render("layouts/main", {
       layout: {
         title: "Unauthorized",
-        content: "400",
+        content: "401",
       },
       content: {
         tools: await getToolsFormatted(),

@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { z } from "zod";
+import { requestPremium } from "../services/accounts-service";
 import {
   getFavoriteTools,
   getToolByPath,
@@ -52,6 +53,17 @@ export const postFavoriteToolHandler = expressAsyncHandler(async (req, res) => {
   await toggleFavorite(req["user"].id, body.data.id);
   res.status(200).json({});
 });
+
+/**
+ * POST /premium: Applies for a premium subscription.
+ */
+export const postRequestPremiumHandler = expressAsyncHandler(
+  async (req, res) => {
+    const user = req["user"];
+    await requestPremium(user.id);
+    res.redirect("/profile");
+  },
+);
 
 /**
  * GET /paste?text=: Displays the text encoded in the

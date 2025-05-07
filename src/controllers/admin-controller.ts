@@ -2,6 +2,10 @@ import { RequestHandler } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { z } from "zod";
 import {
+  extendPremium,
+  getRequestPremiumUser,
+} from "../services/accounts-service";
+import {
   createSection,
   deleteSection,
   deleteTool,
@@ -13,7 +17,6 @@ import {
   saveTool,
   updateSection,
 } from "../services/tools-service";
-import { getRequestPremiumUser } from "../services/accounts-service";
 
 /**
  * Handles admin tool list route. Fetches tools, renders admin view if user is 'admin'.
@@ -304,16 +307,41 @@ export const postAdminEditToolController = expressAsyncHandler(
   },
 );
 
-export const getRequestPremiumUserHandler : RequestHandler = 
-expressAsyncHandler(async (req, res) => {
+/**
+ * GET /admin/user: Gets a list of requesting premium users.
+ */
+export const getRequestPremiumUserHandler: RequestHandler = expressAsyncHandler(
+  async (req, res) => {
     res.render("layouts/main", {
-        layout: {
-            layout: "Requesting Premium Users",
-            content: "admin/requesting-premium-user"
-        },
-        content: {
-            tools: await getToolsFormatted(),
-            requestingUser : await getRequestPremiumUser()
-        }
-    })
-})
+      layout: {
+        layout: "Requesting Premium Users",
+        content: "admin/requesting-premium-user",
+      },
+      content: {
+        tools: await getToolsFormatted(),
+        requestingUsers: await getRequestPremiumUser(),
+        session: req["user"],
+      },
+    });
+  },
+);
+
+/**
+ * POST /admin/user: Extends a user's premium date.
+ */
+export const postRequestPremiumAdminController = expressAsyncHandler(
+  async (req, res) => {
+    const schema = z.object({
+      id: z.coerce.number().min(1),
+    });
+
+    const body = schema.safeParse(req.body);
+    if (body.error) {
+      res.redirect("/admin/user");
+      return;
+    }
+
+    await extendPremium(body.data.id);
+    res.redirect("/admin/user");
+  },
+);

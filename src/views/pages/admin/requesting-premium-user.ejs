@@ -1,0 +1,66 @@
+<div class="flex w-full max-w-4xl flex-col items-center justify-center gap-8">
+  <h2 class="text-xl font-bold">Manage Users</h2>
+
+  <% if (content.requestingUsers.length == 0) { %>
+  <div
+    class="border-bashful dark:border-cotton-candy flex min-h-24 w-full flex-col items-center justify-center rounded-lg border-2 bg-zinc-200 dark:bg-zinc-700"
+  >
+    No users requesting premium
+  </div>
+  <% } else {%>
+  <div
+    class="border-bashful dark:border-cotton-candy divide-bashful dark:divide-cotton-candy flex w-full flex-col divide-y-2 rounded-lg border-2 bg-zinc-200 dark:bg-zinc-700"
+  >
+    <% content.requestingUsers.forEach(user => { %>
+    <div class="flex flex-row items-center justify-between p-4">
+      <div class="flex w-full flex-col">
+        <span class="font-semibold"
+          >@<%= user.username %><span
+            class="dark:text-pearl/50 ml-2 text-sm text-black/50"
+          >
+            <%= user.email %></span
+          ></span
+        >
+
+        <p>
+          <span class="font-semibold">Premium: </span>
+          <% if (user?.role == "admin") { %>
+          <span
+            class="from-bashful to-cadillac dark:from-lavender dark:to-cotton-candy bg-gradient-to-r bg-clip-text font-bold text-transparent"
+            >Infinite</span
+          >
+          <% } else if(user.premium && user.premium.getTime() < Date.now()) { %>
+          <span class="text-rose-500 dark:text-rose-300">Expired</span>
+          <% } else if(user.premium) { %>
+          <span class="text-sky-600 dark:text-sky-300"
+            >Until <%= user.premium.toLocaleString() %></span
+          >
+          <% } else if(user.requestingPremium) { %>
+          <span class="dark:text-cotton-candy font-semibold italic"
+            >Requesting...</span
+          >
+          <% } %>
+        </p>
+      </div>
+
+      <form method="post" enctype="application/x-www-form-urlencoded">
+        <input type="hidden" name="id" value="<%= user.id %>" />
+
+        <button
+          type="submit"
+          class="flex cursor-pointer items-center justify-center duration-200 hover:opacity-50"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 -960 960 960"
+            class="dark:fill-pearl size-6 fill-black"
+          >
+            <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
+          </svg>
+        </button>
+      </form>
+    </div>
+    <% }) %>
+  </div>
+  <% } %>
+</div>
