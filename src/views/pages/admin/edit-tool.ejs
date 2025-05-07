@@ -115,9 +115,20 @@
         <option value="0" disabled>Pick a section</option>
         <% content.tools.forEach(section => { %> <% if (content.tool.section ==
         section.id) { %>
-        <option value="<%= section.id %>" selected><%= section.name %></option>
+        <option
+          class="text-pearl bg-zinc-800 shadow-sm"
+          value="<%= section.id %>"
+          selected
+        >
+          <%= section.name %>
+        </option>
         <% } else { %>
-        <option value="<%= section.id %>"><%= section.name %></option>
+        <option
+          class="text-pearl bg-zinc-800 shadow-sm"
+          value="<%= section.id %>"
+        >
+          <%= section.name %>
+        </option>
         <% } %> <% }) %>
       </select>
     </label>
