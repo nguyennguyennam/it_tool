@@ -2,8 +2,6 @@ import { RequestHandler } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { z } from "zod";
 import {
-  changingPremium,
-  changingToolVisibility,
   createSection,
   deleteSection,
   deleteTool,
@@ -285,7 +283,6 @@ export const postAdminEditToolController = expressAsyncHandler(
     }
 
     const body = bodySchema.safeParse(req.body);
-    console.log(req.body, body.error);
     if (body.error) {
       res.render("layouts/main", {
         layout: {
@@ -306,59 +303,6 @@ export const postAdminEditToolController = expressAsyncHandler(
     res.redirect("/admin");
   },
 );
-
-/**
- * Handles the route for saving a new tool.
- * It extracts tool data from the request body and uses the `saveTool` service to save it.
- * After saving, it typically redirects or sends a success response.
- *
- * @param req - Express request object (expects tool data in the request body).
- * @param res - Express response object (used to send a response, e.g., redirect or JSON).
- */
-export const saveToolHandler: RequestHandler = expressAsyncHandler(
-  async (req, res) => {
-    const toolData = req.body;
-    await saveTool(toolData);
-    res.redirect("/admin"); //Redirect back to the admin tools list
-  },
-);
-
-/**
- * Handles the route for changing the premium status of a tool.
- * It extracts the tool ID and the new premium status from the request body and uses the `changingPremium` service to update it.
- * After the update, it typically sends a success response.
- *
- * @param req - Express request object (expects tool ID and premium status in the request body).
- * @param res - Express response object (used to send a response, e.g., JSON).
- */
-export const changingPremiumHandler: RequestHandler = expressAsyncHandler(
-  async (req, res) => {
-    const toolId = req.body.id;
-    const premiumStatus = req.body.premium === "true";
-    await changingPremium(toolId, premiumStatus);
-    res.redirect("/admin");
-  },
-);
-
-/**
- * Handles the route for changing the visibility (state) of a tool.
- * It extracts the tool ID and the new visibility state from the request body and uses the `changingToolVisibility` service to update it.
- * After the update, it typically sends a success response.
- *
- * @param req - Express request object (expects tool ID and state in the request body).
- * @param res - Express response object (used to send a response, e.g., JSON).
- */
-export const changingToolVisibilityHandler: RequestHandler =
-  expressAsyncHandler(async (req, res) => {
-    const toolId = req.body.id;
-    const visibilityState = req.body.state as "enabled" | "disabled" | "hidden";
-    await changingToolVisibility(toolId, visibilityState);
-    res.redirect("/admin");
-  });
-
-/**
- * GET: Get all of the users need requestingPremium
- */
 
 export const getRequestPremiumUserHandler : RequestHandler = 
 expressAsyncHandler(async (req, res) => {

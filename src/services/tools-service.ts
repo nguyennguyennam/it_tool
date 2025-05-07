@@ -1,4 +1,4 @@
-import { eq, not, sql } from "drizzle-orm";
+import { and, eq, not, sql } from "drizzle-orm";
 import { favorites } from "../models/favorite-tools";
 import { sections, tools } from "../models/tools";
 import { db } from "./db-service";
@@ -81,14 +81,37 @@ export async function getFavoriteTools(userId: number) {
     .select({
       id: tools.id,
       name: tools.name,
+      premium: tools.premium,
+      state: tools.state,
       description: tools.description,
       path: tools.path,
-      state: tools.state,
-      premium: tools.premium,
     })
     .from(tools)
     .innerJoin(favorites, eq(favorites.toolId, tools.id))
     .where(eq(favorites.userId, userId));
+}
+
+/**
+ * Toggles favoritism of a user towards a tool.
+ *
+ * @param user the user id
+ * @param tool the tool id
+ */
+export async function toggleFavorite(user: number, tool: number) {
+  const query = await db
+    .select()
+    .from(favorites)
+    .where(and(eq(favorites.userId, user), eq(favorites.toolId, tool)));
+
+  if (query.length == 0) {
+    // Add favorite.
+    await db.insert(favorites).values({ userId: user, toolId: tool });
+  } else {
+    // Remove favorite.
+    await db
+      .delete(favorites)
+      .where(and(eq(favorites.userId, user), eq(favorites.toolId, tool)));
+  }
 }
 
 /**
@@ -172,31 +195,6 @@ export async function editTool(data: {
       section: data.section,
     })
     .where(eq(tools.id, data.id));
-}
-
-/**
- * Enables/disables a tool by ID by changing its state.
- * @param id - ID of the tool to update (number).
- * @param state - New state ('enabled', 'disabled', 'hidden').
- * @returns Promise of update operation result.
- */
-
-export type visibility = "enabled" | "disabled" | "hidden";
-export async function changingToolVisibility(id: number, state: visibility) {
-  return await db.update(tools).set({ state: state }).where(eq(tools.id, id));
-}
-
-/**
- * Toggles a tool's premium status by ID.
- * @param id - ID of the tool to update (number).
- * @param premium - New premium status (boolean).
- * @returns Promise of update operation result.
- */
-export async function changingPremium(id: number, premium: boolean) {
-  return await db
-    .update(tools)
-    .set({ premium: premium })
-    .where(eq(tools.id, id));
 }
 
 /**

@@ -24,6 +24,7 @@ import {
   getPasteHandler,
   getProfileController,
   getToolHandler,
+  postFavoriteToolHandler,
 } from "../controllers/base-controller";
 import {
   notFoundErrorController,
@@ -44,6 +45,7 @@ mainRouter.get("/404", authenticate("none"), notFoundErrorController);
 mainRouter.get("/401", authenticate("none"), unauthorizedErrorController);
 mainRouter.get("/paste", authenticate("none"), getPasteHandler);
 mainRouter.get("/profile", authenticate("none"), getProfileController);
+mainRouter.post("/favorite", authenticate("user"), postFavoriteToolHandler);
 
 mainRouter.route("/admin").get(authenticate("admin"), getAllToolAdminHandler);
 mainRouter

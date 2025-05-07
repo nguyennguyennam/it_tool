@@ -1,6 +1,12 @@
 import { RequestHandler } from "express";
 import expressAsyncHandler from "express-async-handler";
-import { getToolByPath, getToolsFormatted, getAllToolAdmin } from "../services/tools-service";
+import { z } from "zod";
+import {
+  getFavoriteTools,
+  getToolByPath,
+  getToolsFormatted,
+  toggleFavorite,
+} from "../services/tools-service";
 
 /**
  * GET /: Retrieves the home page.
@@ -10,18 +16,42 @@ import { getToolByPath, getToolsFormatted, getAllToolAdmin } from "../services/t
  */
 export const getHomeHandler: RequestHandler = expressAsyncHandler(
   async (req, res) => {
+    const [toolsFormatted, favoriteTools] = await Promise.all([
+      getToolsFormatted(),
+      getFavoriteTools(req["user"]?.id ?? 0),
+    ]);
+
     res.render("layouts/main", {
       layout: {
         title: "IT Tools",
         content: "home",
       },
       content: {
-        tools: await getToolsFormatted(),
+        tools: toolsFormatted,
+        favoriteTools: favoriteTools,
         session: req["user"],
       },
     });
   },
 );
+
+/**
+ * POST /favorite: Toggles a tool's favoritism.
+ */
+export const postFavoriteToolHandler = expressAsyncHandler(async (req, res) => {
+  const schema = z.object({
+    id: z.coerce.number().min(1),
+  });
+
+  const body = schema.safeParse(req.body);
+  if (body.error) {
+    res.status(400).json({});
+    return;
+  }
+
+  await toggleFavorite(req["user"].id, body.data.id);
+  res.status(200).json({});
+});
 
 /**
  * GET /paste?text=: Displays the text encoded in the
@@ -128,6 +158,3 @@ export const getToolHandler: RequestHandler = expressAsyncHandler(
     });
   },
 );
-
-
-
