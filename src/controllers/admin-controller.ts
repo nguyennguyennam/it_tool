@@ -6,7 +6,10 @@ import {
   changingToolVisibility,
   createSection,
   deleteSection,
+  deleteTool,
+  editTool,
   getAllToolAdmin,
+  getToolById,
   getToolsFormatted,
   getToolsInSection,
   saveTool,
@@ -143,6 +146,163 @@ export const deleteAdminSectionController = expressAsyncHandler(
 
     await deleteSection(body.data.id);
     res.status(200).json({});
+  },
+);
+
+/**
+ * GET /admin/tool: Retrieve the new tool form.
+ */
+export const getAdminToolController = expressAsyncHandler(async (req, res) => {
+  res.render("layouts/main", {
+    layout: {
+      title: "New Tool",
+      content: "admin/new-tool",
+    },
+    content: {
+      tools: await getToolsFormatted(),
+      session: req["user"],
+    },
+  });
+});
+
+/**
+ * POST /admin/tool: Create a new tool.
+ */
+export const postAdminToolController = expressAsyncHandler(async (req, res) => {
+  const schema = z.object({
+    name: z.string(),
+    description: z.string(),
+    path: z.string(),
+    premium: z.coerce.boolean().default(false),
+    enabled: z.coerce.boolean().default(true),
+    section: z.coerce.number().min(1),
+  });
+
+  const body = schema.safeParse(req.body);
+  if (body.error) {
+    res.render("layouts/main", {
+      layout: {
+        title: "New Tool",
+        content: "admin/new-tool",
+      },
+      content: {
+        tools: await getToolsFormatted(),
+        session: req["user"],
+        errorMessage: "Some fields are not filled in correctly.",
+      },
+    });
+    return;
+  }
+
+  await saveTool(body.data);
+  res.redirect("/admin");
+});
+
+/**
+ * DELETE /admin/tool: Deletes a tool.
+ */
+export const deleteAdminToolController = expressAsyncHandler(
+  async (req, res) => {
+    const schema = z.object({
+      id: z.coerce.number().min(1),
+    });
+
+    const body = schema.safeParse(req.body);
+    if (body.error) {
+      res.status(400).json({});
+      return;
+    }
+
+    await deleteTool(body.data.id);
+    res.status(200).json({});
+  },
+);
+
+/**
+ * GET /admin/tool/:id: Gets the editing form for editing a tool.
+ */
+export const getAdminEditToolController = expressAsyncHandler(
+  async (req, res) => {
+    const schema = z.object({
+      id: z.coerce.number().min(1),
+    });
+
+    const params = schema.safeParse(req.params);
+    if (params.error) {
+      res.redirect("/admin");
+      return;
+    }
+
+    const tools = await getToolById(params.data.id);
+    if (tools.length == 0) {
+      res.redirect("/admin");
+      return;
+    }
+
+    res.render("layouts/main", {
+      layout: {
+        title: "Edit Tool",
+        content: "admin/edit-tool",
+      },
+      content: {
+        tools: await getToolsFormatted(),
+        tool: tools[0],
+        session: req["user"],
+      },
+    });
+  },
+);
+
+/**
+ * POST /admin/tool/:id: Edits a tool render endpoint.
+ */
+export const postAdminEditToolController = expressAsyncHandler(
+  async (req, res) => {
+    const paramsSchema = z.object({
+      id: z.coerce.number().min(1),
+    });
+    const bodySchema = z.object({
+      id: z.coerce.number().min(1),
+      name: z.string(),
+      description: z.string(),
+      path: z.string(),
+      premium: z.coerce.boolean().default(false),
+      enabled: z.coerce.boolean().default(true),
+      section: z.coerce.number().min(1),
+    });
+
+    const params = paramsSchema.safeParse(req.params);
+    if (params.error) {
+      res.redirect("/admin");
+      return;
+    }
+
+    const tools = await getToolById(params.data.id);
+    if (tools.length == 0) {
+      res.redirect("/admin");
+      return;
+    }
+
+    const body = bodySchema.safeParse(req.body);
+    console.log(req.body, body.error);
+    if (body.error) {
+      res.render("layouts/main", {
+        layout: {
+          title: "Edit Tool",
+          content: "admin/edit-tool",
+        },
+        content: {
+          tools: await getToolsFormatted(),
+          session: req["user"],
+          tool: tools[0],
+          errorMessage: "Some fields have invalid values",
+        },
+      });
+      return;
+    }
+
+    await editTool(body.data);
+    res.redirect("/admin");
   },
 );
 

@@ -104,31 +104,74 @@ export async function getAllToolAdmin() {
 }
 
 /**
+ * Attempts to get tool by their ID.
+ *
+ * @param id the tool's id
+ * @returns the tools array
+ */
+export async function getToolById(id: number) {
+  return await db.select().from(tools).where(eq(tools.id, id));
+}
+
+/**
  * Saves tool to DB, sets state "enabled", queries section ID by name.
- * @param Tool - Tool details (name*, desc, path*, premium, section*).
+ * @param tool - Tool details (name*, desc, path*, premium, section*).
  * @returns Promise of insert result (or undefined if section not found).
  */
-
-export async function saveTool(Tool: {
+export async function saveTool(tool: {
   name: string;
   description: string;
   path: string;
   premium: boolean;
-  section: string;
+  enabled: boolean;
+  section: number;
 }) {
-  const sectionId = await db
-    .select({ id: sections.id })
-    .from(sections)
-    .where(eq(sections.name, Tool.section))
-    .limit(1);
   return await db.insert(tools).values({
-    name: Tool.name,
-    description: Tool.description,
-    path: Tool.path,
-    premium: Tool.premium,
-    section: sectionId[0].id,
-    state: "enabled",
+    name: tool.name,
+    description: tool.description,
+    path: tool.path,
+    premium: tool.premium,
+    section: tool.section,
+    state: tool.enabled ? "enabled" : "disabled",
   });
+}
+
+/**
+ * Deletes a tool.
+ *
+ * @param id the tool ID to delete
+ * @returns the query result
+ */
+export async function deleteTool(id: number) {
+  return await db.delete(tools).where(eq(tools.id, id));
+}
+
+/**
+ * Edits a tool using a tool ID.
+ *
+ * @param data the tool's data
+ * @returns the query result
+ */
+export async function editTool(data: {
+  id: number;
+  name: string;
+  description: string;
+  path: string;
+  premium: boolean;
+  enabled: boolean;
+  section: number;
+}) {
+  return await db
+    .update(tools)
+    .set({
+      name: data.name,
+      description: data.description,
+      path: data.path,
+      premium: data.premium,
+      state: data.enabled ? "enabled" : "disabled",
+      section: data.section,
+    })
+    .where(eq(tools.id, data.id));
 }
 
 /**

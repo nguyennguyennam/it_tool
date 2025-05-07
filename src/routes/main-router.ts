@@ -8,9 +8,14 @@ import {
 } from "../controllers/accounts-controller";
 import {
   deleteAdminSectionController,
+  deleteAdminToolController,
+  getAdminEditToolController,
   getAdminSectionController,
+  getAdminToolController,
   getAllToolAdminHandler,
+  postAdminEditToolController,
   postAdminSectionController,
+  postAdminToolController,
   putAdminSectionController,
 } from "../controllers/admin-controller";
 import {
@@ -46,6 +51,16 @@ mainRouter
   .post(authenticate("admin"), postAdminSectionController)
   .put(authenticate("admin"), putAdminSectionController)
   .delete(authenticate("admin"), deleteAdminSectionController);
+mainRouter
+  .route("/admin/tool")
+  .get(authenticate("admin"), getAdminToolController)
+  .post(authenticate("admin"), postAdminToolController)
+  .delete(authenticate("admin"), deleteAdminToolController);
+
+mainRouter
+  .route("/admin/tool/:id")
+  .get(authenticate("admin"), getAdminEditToolController)
+  .post(authenticate("admin"), postAdminEditToolController);
 
 mainRouter
   .route("/login")
